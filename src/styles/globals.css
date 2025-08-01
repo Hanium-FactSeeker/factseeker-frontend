@@ -61,27 +61,25 @@ html {
   display: none;
 }
 
-/** 전체 바디 스타일 **/
+/** 공통 바디 스타일 **/
 body {
   background-color: var(--background);
   color: var(--foreground);
   margin: 0 auto;
-  padding: 1rem;
   max-width: 1280px;
+  /* background-color: pink; 데스크톱 확인용 기본 색 */
 }
 
-/* 모바일 (0~639px) */
+/** 모바일 (0~639px) */
 @media (max-width: 639px) {
   body {
-    padding: 1rem;
     max-width: 100%;
+    /* background-color: blue; 모바일 배경 */
   }
 }
 
-/* 태블릿 (640px~1023px) */
-@media (min-width: 640px) and (max-width: 1023px) {
-  body {
-    padding: 1.5rem;
-    max-width: 100%;
-  }
+input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: inherit !important;
 }
