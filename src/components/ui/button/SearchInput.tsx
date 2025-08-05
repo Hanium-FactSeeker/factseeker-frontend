@@ -15,7 +15,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     {
       iconLeft,
       iconRight,
-      inputSize = "lg", // ✅ 커스텀 이름 사용
+      inputSize = "lg", 
       className,
       fullWidth,
       disabled,
