@@ -28,7 +28,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         className={clsx(
           "relative",
           fullWidth ? "w-full" : "w-[708px]",
-          sizeMap[inputSize], // ✅ string literal union만 허용
+          sizeMap[inputSize],
           "flex items-center border border-[#D9DBDC] bg-white text-[#626262] font-pretendard",
           disabled && "opacity-50 cursor-not-allowed",
           className
