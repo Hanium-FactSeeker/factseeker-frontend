@@ -31,6 +31,12 @@ module.exports = {
         'true-4': 'var(--true-4)',
         'true-5': 'var(--true-5)',
       },
+      backgroundImage: {
+        'main-gradient-desktop':
+          'linear-gradient(180deg, #000000 4%, #B1C8FF 14%, #FFFFFF 20%)',
+        'main-gradient-mobile':
+          'linear-gradient(180deg, #000000 2%, #B1C8FF 10%, #FFFFFF 12%)',
+      },
     },
   },
   plugins: [],
