@@ -3,6 +3,7 @@ import TextInput from "../../components/ui/button/TextInput"
 import { NaverLoginButton } from "../../components/ui/button/NaverLoginButton";
 import { KakaoLoginButton } from "../../components/ui/button/KakaoLoginButton";
 import { FaUser, FaLock } from "react-icons/fa";
+import  { Button } from "../../components/ui/button/index";
 import Logo from "../../assets/Logo";
 
 export default function LoginPage() {
@@ -23,9 +24,9 @@ export default function LoginPage() {
           <TextInput type="password" placeholder="비밀번호" iconLeft={<FaLock />} />
         </div>
 
-        <button className="w-96 h-12 bg-black text-white rounded-xl mt-2 text-sm font-semibold hover:opacity-90">
-          로그인
-        </button>
+        <Button color="black" size="lg" fullWidth>
+            로그인
+        </Button>
 
         
         <div className="flex items-center justify-center text-xs text-[#626262] font-[Pretendard] gap-2">
