@@ -79,7 +79,7 @@ export default function SignUpPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validate()) {
-      console.log("✅ 회원가입 성공", formData);
+      console.log(" 회원가입 성공", formData);
     }
   };
 
