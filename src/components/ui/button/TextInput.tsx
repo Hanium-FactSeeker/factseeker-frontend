@@ -5,9 +5,9 @@ import clsx from "clsx";
 import { TextInputProps } from "./types";
 
 const sizeMap = {
-  sm: "h-10 text-sm px-3 rounded-lg",
-  md: "h-12 text-base px-4 rounded-xl",
-  lg: "h-14 text-base px-5 rounded-[20px]",
+  sm: "h-10 md:h-10 text-sm md:text-sm px-3 md:px-3 rounded-lg md:rounded-lg",
+  md: "h-12 md:h-12 text-base md:text-base px-4 md:px-5 rounded-xl md:rounded-2xl",
+  lg: "h-14 md:h-16 text-base md:text-lg px-5 md:px-6 rounded-[20px] md:rounded-[24px]",
 };
 
 export default function TextInput({
@@ -18,17 +18,20 @@ export default function TextInput({
   fullWidth,
   ...props
 }: TextInputProps) {
+  const widthClass = fullWidth ? "w-full" : "w-full md:w-96";
+
   return (
     <div
       className={clsx(
-        "relative flex items-center gap-2 bg-[#F2F2F2] text-black",
+        "relative flex items-center gap-2 md:gap-3",
+        "bg-gray-light text-foreground",
+        widthClass,
         sizeMap[inputSize],
-        fullWidth ? "w-full" : "w-96",
         className
       )}
     >
       {iconLeft && (
-        <div className="text-[#B0B0B0] flex items-center justify-center">
+        <div className="text-gray-strong flex items-center justify-center">
           {iconLeft}
         </div>
       )}
@@ -36,13 +39,13 @@ export default function TextInput({
       <input
         {...props}
         className={clsx(
-          "flex-1 bg-transparent text-black placeholder-[#A0A0A0] font-normal outline-none",
-          "focus:outline-none focus:ring-0 selection:bg-transparent appearance-none select-text"
+          "flex-1 bg-transparent text-foreground placeholder:text-gray-strong",
+          "focus:outline-none focus:ring-0 selection:bg-transparent appearance-none"
         )}
       />
 
       {iconRight && (
-        <div className="text-[#B0B0B0] flex items-center justify-center">
+        <div className="text-gray-strong flex items-center justify-center">
           {iconRight}
         </div>
       )}
