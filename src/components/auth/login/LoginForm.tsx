@@ -1,14 +1,22 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import Logo                 from '@/assets/Logo'
 import TextInput            from '@/components/ui/button/TextInput'
 import { Button }           from '@/components/ui/button'
 import { NaverLoginButton } from '@/components/ui/button/NaverLoginButton'
 import { KakaoLoginButton } from '@/components/ui/button/KakaoLoginButton'
 import { FaUser, FaLock }   from 'react-icons/fa'
+import { FindIdModal, FindPasswordModal } from '@/components/findmodal'
+import { useRouter } from 'next/navigation'
+
 
 export default function LoginForm() {
-  return (
+    const router = useRouter()
+    const [openFindId, setOpenFindId] = useState(false)
+    const [openFindPw, setOpenFindPw] = useState(false)
+  
+  
+    return (
     <div className="flex flex-col items-center gap-6 w-full">
       <div className="flex flex-col items-center gap-2">
         <Logo width={30} height={30} />
@@ -38,13 +46,14 @@ export default function LoginForm() {
       </Button>
 
       <div className="flex items-center justify-center text-xs text-black-normal gap-2">
-        <span className="cursor-pointer">회원가입</span>
+        <button className="cursor-pointer hover:underline" onClick={() => router.push('/sign-up')}>회원가입</button>
         <span>|</span>
-        <span className="cursor-pointer">아이디 찾기</span>
+        <button className="cursor-pointer hover:underline" onClick={() => setOpenFindId(true)}>아이디 찾기</button>
         <span>|</span>
-        <span className="cursor-pointer">비밀번호 찾기</span>
+        <button className="cursor-pointer hover:underline" onClick={() => setOpenFindPw(true)}>비밀번호 찾기</button>
       </div>
-
+        <FindIdModal open={openFindId} onClose={() => setOpenFindId(false)} />
+        <FindPasswordModal open={openFindPw} onClose={() => setOpenFindPw(false)} />
       <div className="w-full h-px bg-gray-normal" />
 
       <p className="mt-4 text-sm">소셜 로그인</p>
