@@ -33,9 +33,9 @@ module.exports = {
       },
       backgroundImage: {
         'main-gradient-desktop':
-          'linear-gradient(180deg, #000000 4%, #B1C8FF 14%, #FFFFFF 20%)',
+          'linear-gradient(180deg, #000000 4%, #B1C8FF 16%, #FFFFFF 20%)',
         'main-gradient-mobile':
-          'linear-gradient(180deg, #000000 2%, #B1C8FF 14%, #FFFFFF 16%)',
+          'linear-gradient(180deg, #000000 2%, #B1C8FF 16%, #FFFFFF 18%)',
       },
     },
   },
