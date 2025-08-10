@@ -19,7 +19,7 @@ module.exports = {
       colors: {
         'primary-light': 'var(--primary-light)',
         'primary-normal': 'var(--primary-normal)',
-        'primary--navy': 'var(--parimary-navy)',
+        'primary-navy': 'var(--primary-navy)',
         'gray-strong': 'var(--gray-strong)',
         'gray-normal': 'var(--gray-normal)',
         'gray-light': 'var(--gray-light)',
@@ -35,7 +35,7 @@ module.exports = {
         'main-gradient-desktop':
           'linear-gradient(180deg, #000000 4%, #B1C8FF 14%, #FFFFFF 20%)',
         'main-gradient-mobile':
-          'linear-gradient(180deg, #000000 2%, #B1C8FF 10%, #FFFFFF 12%)',
+          'linear-gradient(180deg, #000000 2%, #B1C8FF 14%, #FFFFFF 16%)',
       },
     },
   },
