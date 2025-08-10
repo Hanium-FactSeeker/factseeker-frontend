@@ -1,0 +1,25 @@
+import Image from 'next/image';
+import defaultImg from '@/assets/politician.png';
+
+interface PoliticianImageProps {
+  src: string;
+  alt: string;
+  className?: string;
+}
+
+export default function PoliticianImage({
+  src,
+  alt,
+  className,
+}: PoliticianImageProps) {
+  return (
+    <div className={className}>
+      <Image
+        src={src || defaultImg}
+        alt={alt}
+        fill
+        className="rounded-full object-cover"
+      />
+    </div>
+  );
+}
