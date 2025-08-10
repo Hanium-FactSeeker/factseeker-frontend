@@ -1,6 +1,6 @@
 'use client';
 
-import { useRotatingKeyword } from '@/hooks/useRotatingKeyword';
+import { useRotatingList } from '@/hooks/useRotatingList';
 import { KEYWORDS } from '@/constants/hotKeywords';
 
 /**
@@ -19,7 +19,7 @@ import { KEYWORDS } from '@/constants/hotKeywords';
  * - `KEYWORDS` 배열(상위 5개 검색어)을 받아 2.5초마다 순서대로 전환함
  **/
 const InfoBar = () => {
-  const { idx, transform, rowHeight } = useRotatingKeyword(KEYWORDS, {
+  const { transform, rowHeight } = useRotatingList(KEYWORDS, {
     intervalMs: 2500,
     rowHeight: 24,
   });

@@ -15,7 +15,7 @@ interface Options {
  * @param {number} [rowHeight=24] - 한 줄 높이(px)
  * @returns {{ idx: number, transform: { transform: string }, setIdx: Function }}
  */
-export function useRotatingKeyword<T>(
+export function useRotatingList<T>(
   items: T[],
   { intervalMs = 2500, rowHeight = 24, autoplay = true }: Options = {},
 ) {
