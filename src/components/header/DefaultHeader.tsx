@@ -2,7 +2,7 @@ import { useState } from 'react';
 import NavBar from './moclue/NavBar';
 import Search from '../ui/search';
 import { FaUserCircle } from 'react-icons/fa';
-import Logo from '../ui/logo';
+import Logo from '@/components/ui/logo';
 import ProfileButton from './atom/ProfileBtn';
 import AuthText from './atom/AuthBtn';
 

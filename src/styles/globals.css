@@ -83,3 +83,23 @@ input:focus {
   box-shadow: none !important;
   border-color: inherit !important;
 }
+/** Swiper 스타일 **/
+/* 화살표 색상 변경 */
+.swiper-button-prev,
+.swiper-button-next {
+  color: #802bff !important;
+}
+
+/* 페이지네이션 점 기본 색 */
+.swiper-pagination-bullet {
+  background-color: #979999 !important;
+  opacity: 1;
+}
+
+/* 활성 점 색 */
+.swiper-pagination-bullet-active {
+  background-color: #802bff !important;
+}
+.swiper-pagination {
+  bottom: -2% !important;
+}

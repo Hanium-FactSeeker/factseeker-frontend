@@ -1,5 +1,5 @@
-import LogoStar from '@/assets/Logo';
-import type { LogoProps } from './type';
+import LogoStar from '@/components/ui/logo/LogoStar';
+import type { LogoProps } from '../../../types/logo';
 
 const Logo = ({ type }: LogoProps) => {
   const textColor = type === 'main' ? 'text-white' : 'text-primary-normal';
