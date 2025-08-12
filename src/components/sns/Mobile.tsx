@@ -42,7 +42,6 @@ export default function Mobile() {
       <DefaultHeader isLoggedIn={false} />
       <section className="bg-background text-foreground">
         <div className="mx-auto w-full px-4 pt-4">
-          {/* 인풋 + 토글 한 줄 강제 */}
           <div className="grid grid-cols-[1fr_auto] items-center gap-2">
             <Input
               placeholder="정치인 이름 검색"
@@ -72,7 +71,6 @@ export default function Mobile() {
             </div>
           </div>
 
-          {/* 카드 중앙 + 짤림 방지 */}
           <div className="mt-5 flex items-center justify-center">
             <button
               aria-label="prev"
@@ -91,7 +89,7 @@ export default function Mobile() {
                   party={p.party}
                   percentage={p.percentage}
                   figureImg={p.figureImg ?? ""}
-                  className="mx-auto w-52 h-80 md:w-56 md:h-84"  // 살짝 크게 + 중앙
+                  className="mx-auto w-52 h-80 md:w-56 md:h-84" 
                 />
               ))}
             </div>
