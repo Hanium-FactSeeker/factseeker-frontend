@@ -1,5 +1,5 @@
-const Sns = () => {
-  return <div>SNS 페이지</div>;
-};
+import SNSPage from '@/components/sns';
 
-export default Sns;
+export default function Page() {
+  return <SNSPage />;
+}
