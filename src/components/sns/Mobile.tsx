@@ -65,7 +65,7 @@ export default function Mobile() {
                 onClick={() => { setPage(1); setSortKey("latest"); }}
               />
               <ToggleButton
-                label="신뢰성 높은 순"
+                label="신뢰 높은 순"
                 size="xxs"
                 color={sortKey === "trust" ? "purple" : "gray"}
                 onClick={() => { setPage(1); setSortKey("trust"); }}
