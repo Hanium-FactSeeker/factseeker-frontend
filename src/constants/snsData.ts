@@ -1,5 +1,6 @@
 export interface SnsItem {
   name: string;
+  id?: string; 
   party: string;
   type: string;
   percentage: number;

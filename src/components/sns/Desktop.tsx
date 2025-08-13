@@ -70,9 +70,9 @@ export default function Desktop() {
           </div>
 
           <div className="mt-6 grid grid-cols-5 gap-6">
-            {current.map((p, i) => (
+            {current.map((p) => (
               <SnsCard
-                key={`${p.name}-${i}`}
+                key={p.id}
                 type={p.type as any}
                 name={p.name}
                 party={p.party}
