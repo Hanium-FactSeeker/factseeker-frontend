@@ -26,7 +26,7 @@ interface videoListProps {
  * @see FactBadge - 신뢰도 등급을 표시하는 Atom 뱃지 컴포넌트
  * @see Video - videoList 데이터 타입
  */
-const VideoItemDesktop = ({ idx, video }: videoListProps) => {
+const MainVideoItemDesktop = ({ idx, video }: videoListProps) => {
   return (
     <div
       key={idx}
@@ -60,4 +60,4 @@ const VideoItemDesktop = ({ idx, video }: videoListProps) => {
   );
 };
 
-export default VideoItemDesktop;
+export default MainVideoItemDesktop;
