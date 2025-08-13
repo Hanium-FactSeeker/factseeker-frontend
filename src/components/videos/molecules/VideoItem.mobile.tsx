@@ -1,7 +1,10 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import FactMark from '@/components/ui/factMark';
 import { ValidityType } from '@/types/validity';
 import { VideoItem } from '@/types/videos';
+import { useRouter } from 'next/navigation';
 
 interface VideoItemProps {
   idx: number;
@@ -9,6 +12,7 @@ interface VideoItemProps {
 }
 
 const VideoItemMobile = ({ idx, video }: VideoItemProps) => {
+  const router = useRouter();
   return (
     <div className="flex w-full gap-2">
       <div>
@@ -44,6 +48,7 @@ const VideoItemMobile = ({ idx, video }: VideoItemProps) => {
           color="gray"
           size="xxs"
           className="w-[80%]"
+          onClick={() => router.push(`/videos/related/${video.id}`)}
         >
           연관 분석하기
         </Button>

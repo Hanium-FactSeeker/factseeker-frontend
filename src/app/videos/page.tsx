@@ -1,5 +1,5 @@
 import DefaultHeader from '@/components/header/DefaultHeader';
-import FilterBar from '@/components/videos/molecules/FilterBar';
+import FilterBar from '@/components/ui/filterBar.tsx';
 import Desktop from '@/components/videos/organisms/VideoLists.desktop';
 import Mobile from '@/components/videos/organisms/VideoLists.mobile';
 import { HotVideosProps } from '@/types/videos';

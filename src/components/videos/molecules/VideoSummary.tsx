@@ -1,0 +1,20 @@
+import { VideoItem } from '@/types/videos';
+
+export const VideoSummary = ({ video }: { video: VideoItem }) => {
+  return (
+    <div className="flex w-full items-center justify-center gap-4 md:h-32 md:w-140 md:gap-6">
+      <img
+        src={video.thumbnail}
+        className="h-16 w-28 rounded-xl md:h-32 md:w-60"
+      />
+      <div className="flex flex-col">
+        <p className="text-black-normal mb-4 text-sm font-bold md:mb-6 md:text-xl">
+          {video.title}
+        </p>
+        <p className="text-black-alternative md:text-md text-xs font-medium">
+          {video.channelName}
+        </p>
+      </div>
+    </div>
+  );
+};
