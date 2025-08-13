@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import NavBar from './moclue/NavBar';
 import Search from '../ui/search';
@@ -41,7 +43,7 @@ const DefaultHeader: React.FC<DefaultHeaderProps> = ({ isLoggedIn }) => {
         />
         <NavBar isLoggedIn={false} textColor="black" />
       </div>
-      <hr className="text-gray-normal mx-8 mt-6 border-0 outline md:mx-4 md:mt-10" />
+      <hr className="text-gray-normal mx-8 mt-6 border-0 outline md:mx-2 md:mt-10" />
     </header>
   );
 };
