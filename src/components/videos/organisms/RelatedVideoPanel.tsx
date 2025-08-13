@@ -11,6 +11,13 @@ import RelatedCard from '../molecules/RelatedCard';
 
 type Props = { items?: VideoItem[] };
 
+/**
+ * 연관 영상 조회 컴포넌트
+ *
+ * - 키워드가 선택되지 않았을 경우 '키워드를 선택해 주세요' 문구를 중앙에 표시했습니다.
+ * - 선택된 키워드에 맞는 영상 목록을 캐러셀로 구현했습니다.
+ * - Swiper 라이브러리를 사용해 네비게이션 및 페이지네이션 기능을 사용했습니다.
+ */
 const RelatedVideoPanel = ({ items }: Props) => {
   const data = items ?? [];
 

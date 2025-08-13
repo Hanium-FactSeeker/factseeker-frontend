@@ -1,5 +1,8 @@
 import { VideoItem } from '@/types/videos';
 
+/**
+ * 영상 썸네일, 제목, 채널명을 보여주는 컴포넌트입니다.
+ */
 export const VideoSummary = ({ video }: { video: VideoItem }) => {
   return (
     <div className="flex w-full items-center justify-center gap-4 md:h-32 md:w-140 md:gap-6">

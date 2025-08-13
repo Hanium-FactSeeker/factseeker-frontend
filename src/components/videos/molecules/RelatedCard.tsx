@@ -1,6 +1,14 @@
 import { Button } from '@/components/ui/button';
 import { VideoItem } from '@/types/videos';
 
+/**
+ * 개별 연관 영상을 카드 형태로 보여주는 컴포넌트
+ *
+ * - 썸네일 클릭 시 새 탭에서 영상 링크로 이동합니다.
+ * - 영상 제목은 최대 두 줄까지만 표시되며 말줄임 처리를 했습니다.
+ *
+ * TODO: '분석하기' 버튼에 추후 조회 페이지 라우터 연결 필요
+ */
 const RelatedCard = ({ item }: { item: VideoItem }) => {
   return (
     <div className="flex flex-col items-center gap-2 rounded-xl md:gap-4">
