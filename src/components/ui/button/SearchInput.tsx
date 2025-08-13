@@ -15,12 +15,14 @@ interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
   inputSize?: SizeKey;
   fullWidth?: boolean;
   iconRight?: React.ReactNode;
+  iconLeft?: React.ReactNode;
 }
 
 export default function SearchInput({
   className = "",
   inputSize = "md",
   fullWidth,
+  iconLeft,
   iconRight,
   ...props
 }: SearchInputProps) {

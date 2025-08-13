@@ -40,9 +40,10 @@ export default function Mobile() {
   return (
     <>
       <DefaultHeader isLoggedIn={false} />
+
       <section className="bg-background text-foreground">
         <div className="mx-auto w-full px-4 pt-4">
-          <div className="grid grid-cols-[1fr_auto] items-center gap-2">
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
             <Input
               placeholder="정치인 이름 검색"
               value={query}
@@ -52,10 +53,11 @@ export default function Mobile() {
               }}
               inputSize="sm"
               fullWidth
-              iconRight={<Magnifier />}
-              className="min-w-[140px] border-gray-normal text-black-normal"
+              iconLeft={<Magnifier />}             
+              className="min-w-0 border-gray-normal text-black-normal"
             />
-            <div className="flex gap-1 whitespace-nowrap">
+
+            <div className="flex shrink-0 gap-2">
               <ToggleButton
                 label="최신순"
                 size="xxs"
@@ -70,7 +72,7 @@ export default function Mobile() {
               />
             </div>
           </div>
-
+          
           <div className="mt-5 flex items-center justify-center">
             <button
               aria-label="prev"
@@ -89,7 +91,7 @@ export default function Mobile() {
                   party={p.party}
                   percentage={p.percentage}
                   figureImg={p.figureImg ?? ""}
-                  className="mx-auto w-52 h-80 md:w-56 md:h-84" 
+                  className="mx-auto w-52 h-80 md:w-56 md:h-84"
                 />
               ))}
             </div>
@@ -117,6 +119,7 @@ export default function Mobile() {
           </div>
         </div>
       </section>
+
       <Footer />
     </>
   );
