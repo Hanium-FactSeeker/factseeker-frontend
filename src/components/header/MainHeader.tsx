@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import FrontStars from '@/assets/front_starts.svg';
 import BackStars from '@/assets/back_stars.svg';
 import Logo from '@/components/ui/logo';
-import SearchBar from '@/components/ui/search';
+import Search from '@/components/ui/search';
 import NavBar from './moclue/NavBar';
 import ProfileButton from './atom/ProfileBtn';
 import AuthText from './atom/AuthBtn';
@@ -14,7 +15,16 @@ interface MainHeaderProps {
 }
 
 const MainHeader: React.FC<MainHeaderProps> = ({ isLoggedIn }) => {
+  const router = useRouter();
+
   const [search, setSearch] = useState('');
+
+  const handleSearch = () => {
+    if (search) {
+      const url = encodeURIComponent(search);
+      router.push(`/report/${url}`);
+    }
+  };
 
   return (
     <header className="relative top-0 left-0 z-50 flex h-[30%] w-full flex-col items-center overflow-hidden bg-cover px-4 py-8 text-white md:px-8 md:py-6">
@@ -39,22 +49,19 @@ const MainHeader: React.FC<MainHeaderProps> = ({ isLoggedIn }) => {
         </span>
 
         <div className="z-30 flex w-full flex-col items-center justify-center gap-2 md:flex-row md:items-center md:justify-evenly md:gap-6">
-          <SearchBar
+          <Search
             value={search}
             onChange={function (e: React.ChangeEvent<HTMLInputElement>): void {
               setSearch(e.target.value);
             }}
             placeHolder={'팩트를 확인하고 싶은 기사나 유튜브를 입력해 주세요'}
-            onClick={function (): void {
-              console.log('검색:', search);
-            }}
+            onClick={handleSearch}
           />
           <NavBar isLoggedIn={false} textColor="white" />
         </div>
         <hr className="text-gray-normal border-outline mx-8 mt-6 md:mx-4 md:mt-10" />
         <div className="absolute right-0 bottom-10 left-0 z-10 scale-50 opacity-80 md:scale-100">
           <FrontStars />
-          {/* -right-44 bottom-14  */}
         </div>
       </div>
     </header>

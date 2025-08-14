@@ -1,3 +1,5 @@
+import { FaSearch } from 'react-icons/fa';
+
 interface SearchBarProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -11,19 +13,19 @@ const Search: React.FC<SearchBarProps> = ({
   onClick,
 }) => {
   return (
-    <div className="border-gray-normal relative mt-4 w-full rounded-2xl border-1 bg-white md:max-w-[708px]">
+    <div className="border-gray-normal relative mt-4 flex w-full items-center rounded-2xl border-1 bg-white md:max-w-[708px]">
       <input
         type="text"
         value={value}
         onChange={onChange}
         placeholder={placeHolder}
-        className="w-full rounded-full px-6 py-3 text-[10px] text-gray-800 md:w-[708px] md:text-lg"
+        className="text-black-normal w-[90%] overflow-hidden rounded-full px-6 py-3 text-[10px] text-ellipsis whitespace-nowrap focus:outline-none md:text-lg"
       />
       <button
-        className="absolute top-1/2 right-4 -translate-y-1/2 transform text-sm md:text-xl"
+        className="absolute right-6 transform text-sm text-gray-400 md:text-xl"
         onClick={onClick}
       >
-        🔍
+        <FaSearch />
       </button>
     </div>
   );
