@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import NavBar from './moclue/NavBar';
 import Search from '../ui/search';
 import { FaUserCircle } from 'react-icons/fa';
@@ -11,9 +12,22 @@ import AuthText from './atom/AuthBtn';
 interface DefaultHeaderProps {
   isLoggedIn: boolean;
   navTextColor?: 'white' | 'black';
+  initialSearch?: string;
 }
-const DefaultHeader: React.FC<DefaultHeaderProps> = ({ isLoggedIn }) => {
-  const [search, setSearch] = useState('');
+const DefaultHeader: React.FC<DefaultHeaderProps> = ({
+  isLoggedIn,
+  initialSearch,
+}) => {
+  const router = useRouter();
+
+  const [search, setSearch] = useState(initialSearch ?? '');
+
+  const handleSearch = () => {
+    if (search) {
+      const url = encodeURIComponent(search);
+      router.push(`/reports/${url}`);
+    }
+  };
 
   return (
     <header className="z-50 flex h-auto w-full flex-col bg-cover px-4 py-3 md:px-8 md:py-6">
@@ -37,9 +51,7 @@ const DefaultHeader: React.FC<DefaultHeaderProps> = ({ isLoggedIn }) => {
             setSearch(e.target.value);
           }}
           placeHolder={'팩트를 확인하고 싶은 기사나 유튜브를 입력해 주세요'}
-          onClick={function (): void {
-            console.log('검색:', search);
-          }}
+          onClick={handleSearch}
         />
         <NavBar isLoggedIn={false} textColor="black" />
       </div>
