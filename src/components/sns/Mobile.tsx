@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Input from '@/components/ui/button/SearchInput';
-import { ToggleButton } from '@/components/ui/button/ToggleButton';
+import SwitchButton from '@/components/ui/button/SwitchButton';
 import SnsCard from '@/components/ui/sns/SnsCard';
 import { snsData, SnsItem } from '@/constants/snsData';
 
@@ -52,26 +52,18 @@ export default function Mobile() {
             className="min-w-0 border-gray-normal text-black-normal"
           />
 
-          <div className="flex shrink-0 gap-2">
-            <ToggleButton
-              label="최신순"
-              size="xxs"
-              color={sortKey === 'latest' ? 'purple' : 'gray'}
-              onClick={() => {
-                setPage(1);
-                setSortKey('latest');
-              }}
-            />
-            <ToggleButton
-              label="신뢰 높은 순"
-              size="xxs"
-              color={sortKey === 'trust' ? 'purple' : 'gray'}
-              onClick={() => {
-                setPage(1);
-                setSortKey('trust');
-              }}
-            />
-          </div>
+          <SwitchButton
+            value={sortKey}
+            onChange={(val) => {
+              setPage(1);
+              setSortKey(val as 'latest' | 'trust');
+            }}
+            options={[
+              { label: '최신순', value: 'latest' },
+              { label: '신뢰성 높은 순', value: 'trust' },
+            ]}
+            className="shrink-0"
+          />
         </div>
 
         <div className="mt-5 flex items-center justify-center">
@@ -97,7 +89,7 @@ export default function Mobile() {
             ))}
           </div>
 
-        <button
+          <button
             aria-label="next"
             onClick={goNext}
             className="ml-3 h-9 w-9 rounded-full border border-gray-normal text-black-normal"

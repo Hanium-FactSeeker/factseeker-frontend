@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Input from '@/components/ui/button/SearchInput';
-import { ToggleButton } from '@/components/ui/button/ToggleButton';
+import SwitchButton from '@/components/ui/button/SwitchButton';
 import SnsCard from '@/components/ui/sns/SnsCard';
 import { snsData, SnsItem } from '@/constants/snsData';
 
@@ -40,26 +40,19 @@ export default function Desktop() {
               }}
             />
           </div>
-          <div className="flex items-center gap-2">
-            <ToggleButton
-              label="최신순"
-              color={sortKey === 'latest' ? 'purple' : 'gray'}
-              size="sm"
-              onClick={() => {
-                setPage(1);
-                setSortKey('latest');
-              }}
-            />
-            <ToggleButton
-              label="신뢰 높은 순"
-              color={sortKey === 'trust' ? 'purple' : 'gray'}
-              size="sm"
-              onClick={() => {
-                setPage(1);
-                setSortKey('trust');
-              }}
-            />
-          </div>
+
+          <SwitchButton
+            value={sortKey}
+            onChange={(val) => {
+              setPage(1);
+              setSortKey(val as 'latest' | 'trust');
+            }}
+            options={[
+              { label: '최신순', value: 'latest' },
+              { label: '신뢰성 높은 순', value: 'trust' },
+            ]}
+            className="shrink-0"
+          />
         </div>
 
         <div className="mt-6 grid grid-cols-5 gap-6">
