@@ -37,3 +37,10 @@ export interface TextInputProps extends Omit<InputHTMLAttributes<HTMLInputElemen
   inputSize?: InputSize;
   fullWidth?: boolean;
 }
+
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  iconLeft?: ReactNode;
+  iconRight?: ReactNode;
+  inputSize?: 'sm' | 'md' | 'lg';
+  fullWidth?: boolean;
+}
