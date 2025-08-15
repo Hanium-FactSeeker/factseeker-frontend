@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import ModalBase from './Modalbase'
+import ModalBase from './ModalBase'
 import TextInput from '@/components/ui/button/TextInput'
 import { Button } from '@/components/ui/button'
 import { FaUser, FaLock } from 'react-icons/fa'

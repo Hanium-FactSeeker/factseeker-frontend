@@ -1,24 +1,32 @@
-"use client";
+'use client';
 
-import React from "react";
-import clsx from "clsx";
-import { InputProps } from "./types";
+import React from 'react';
+import clsx from 'clsx';
+import { InputHTMLAttributes } from 'react';
 
 const sizeMap = {
-  sm: "h-10 text-sm px-3 rounded-lg",
-  md: "h-12 text-base px-4 rounded-xl",
-  lg: "h-14 text-base px-5 rounded-[20px]",
+  sm: 'h-10 text-sm px-3 rounded-lg',
+  md: 'h-12 text-base px-4 rounded-xl',
+  lg: 'h-14 text-base px-5 rounded-[20px]',
 };
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
+type SizeKey = keyof typeof sizeMap;
+
+export interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
+  inputSize?: SizeKey;
+  fullWidth?: boolean;
+  iconRight?: React.ReactNode;
+  iconLeft?: React.ReactNode;
+}
+
+const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
   (
     {
+      className = '',
+      inputSize = 'md',
+      fullWidth,
       iconLeft,
       iconRight,
-      inputSize = "lg", 
-      className,
-      fullWidth,
-      disabled,
       ...props
     },
     ref
@@ -26,36 +34,30 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div
         className={clsx(
-          "relative",
-          fullWidth ? "w-full" : "w-[708px]",
+          'relative flex items-center gap-2 bg-white border border-gray-normal',
           sizeMap[inputSize],
-          "flex items-center border border-[#D9DBDC] bg-white text-[#626262] font-pretendard",
-          disabled && "opacity-50 cursor-not-allowed",
+          fullWidth ? 'w-full' : 'w-96',
+          'rounded-xl',
           className
         )}
       >
-        {iconLeft && (
-          <div className="pl-3 flex-shrink-0 text-[#D9DBDC]">{iconLeft}</div>
-        )}
+        {iconLeft && <div className="flex items-center pl-3">{iconLeft}</div>}
+
         <input
           ref={ref}
           {...props}
           className={clsx(
-            "flex-1 bg-transparent outline-none placeholder:text-[#B0B0B0]",
-            iconLeft ? "pl-2" : "pl-4",
-            iconRight ? "pr-10" : "pr-4"
+            'flex-1 bg-transparent text-black-normal placeholder-gray-normal outline-none',
+            iconLeft && 'pl-1',
+            iconRight && 'pr-1'
           )}
-          disabled={disabled}
         />
-        {iconRight && (
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-[#D9DBDC]">
-            {iconRight}
-          </div>
-        )}
+
+        {iconRight && <div className="flex items-center pr-3">{iconRight}</div>}
       </div>
     );
   }
 );
 
-Input.displayName = "Input";
-export default Input;
+SearchInput.displayName = 'SearchInput';
+export default SearchInput;

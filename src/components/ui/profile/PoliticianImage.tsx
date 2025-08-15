@@ -18,6 +18,7 @@ export default function PoliticianImage({
         src={src || defaultImg}
         alt={alt}
         fill
+        sizes="(max-width: 768px) 56px, 80px"
         className="rounded-full object-cover"
       />
     </div>

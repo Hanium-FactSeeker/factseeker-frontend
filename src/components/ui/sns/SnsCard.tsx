@@ -1,9 +1,9 @@
 import PoliticianImage from '../profile/PoliticianImage';
-
 import X from '@/assets/logo/logo_x.svg';
 import Youtube from '@/assets/logo/logo_youtube.svg';
 import Facebook from '@/assets/logo/logo_facebook.svg';
 import { SnsType } from '@/types/logo';
+import clsx from 'clsx';
 
 const SNS_MAP: Record<SnsType, React.FC<React.SVGProps<SVGSVGElement>>> = {
   x: X,
@@ -17,6 +17,7 @@ interface SnsCardProps {
   party: string;
   percentage: number;
   figureImg: string;
+  className?: string;
 }
 
 const SnsCard = ({
@@ -25,11 +26,21 @@ const SnsCard = ({
   party,
   percentage,
   figureImg,
+  className,
 }: SnsCardProps) => {
-  const SnsLogo = SNS_MAP[type];
+  const SnsLogo = SNS_MAP[type] ?? X;
+
   return (
-    <div className="border-gray-normal flex h-62 w-40 flex-col items-center gap-5 rounded-xl border bg-white py-2 md:h-74 md:w-56">
-      <SnsLogo className="mt-2 h-6 w-12 md:h-8 md:w-16" />
+    <div
+      className={clsx(
+        'border-gray-normal flex h-62 w-40 flex-col items-center gap-5 rounded-xl border bg-white py-2 md:h-74 md:w-56',
+        className,
+      )}
+    >
+      <div className="mt-2 flex h-8 shrink-0 items-center justify-center">
+        <SnsLogo className="block h-6 w-12 md:h-8 md:w-16" />
+      </div>
+
       <div className="flex gap-4">
         <PoliticianImage
           src={figureImg}
@@ -48,11 +59,12 @@ const SnsCard = ({
           </p>
         </div>
       </div>
+
       <div className="border-gray-normal w-11 border-b-1" />
       <p className="line-clamp-3 h-16 w-34 text-center text-xs break-all md:h-24 md:w-46 md:text-xs md:leading-6">
         글자수제한에따른텍스트잘림처리까지해뒀습니다
         냐옹야옹야옹야옹사실저는강아지가더좋습니다 이건 첫 번째 레슨 좋은 건
-        나눠 갖기
+        나눠 갖기ㅋㅋㅋㅋㅋㅋㅋㅋ
       </p>
       <p
         className="text-primary-normal text-xs font-normal hover:cursor-pointer md:text-sm"
