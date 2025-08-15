@@ -12,7 +12,7 @@ interface ReportProps {
 const Page = ({ params }: ReportProps) => {
   const originalUrl = decodeURIComponent(params.url);
   return (
-    <div className="">
+    <div>
       <DefaultHeader isLoggedIn={false} initialSearch={originalUrl} />
       <main className="bg-gray-light flex w-full flex-col items-center justify-center p-4">
         <ReportTitle />
