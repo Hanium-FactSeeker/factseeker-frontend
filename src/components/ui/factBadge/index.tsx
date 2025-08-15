@@ -7,15 +7,9 @@ interface FactBadgeProps {
   width?: number;
   height?: number;
   className?: string;
-  textSize?: 'xs' | 'sm';
+  textSize?: 'xs' | 'sm' | 'lg';
 }
 
-/**
- * 신뢰도 등급별 SVG 컴포넌트 뱃지 (퍼센티지 ver)
- *
- * api 연결 시 신뢰도 등급 데이터에 따라 변경이 필요할 수 있습니다.
- * @type {Record<BadgeType, React.FC<React.SVGProps<SVGSVGElement>>>}
- */
 const SVG_MAP: Record<ValidityType, string> = {
   true1: '/badge/true1.svg',
   true2: '/badge/true2.svg',
@@ -23,6 +17,12 @@ const SVG_MAP: Record<ValidityType, string> = {
   true4: '/badge/true4.svg',
   true5: '/badge/true5.svg',
 };
+
+const sizeMap = {
+  xs: { text: 'text-xs', top: 'top-[3%]' },
+  sm: { text: 'text-sm', top: 'top-[3%]' },
+  lg: { text: 'text-lg', top: 'top-[6%]' },
+} as const;
 
 const FactBadge = ({
   type,
@@ -32,7 +32,8 @@ const FactBadge = ({
   textSize = 'sm',
   className = '',
 }: FactBadgeProps) => {
-  const textClass = textSize === 'xs' ? 'text-xs' : 'text-sm';
+  const { text, top } = sizeMap[textSize] ?? sizeMap.sm;
+
   return (
     <div className={`relative ${className}`} style={{ width, height }}>
       <Image
@@ -40,11 +41,11 @@ const FactBadge = ({
         alt="validityBadge"
         width={width}
         height={height}
-        unoptimized // SVG는 최적화 대상 아님 → 켜두면 안전
+        unoptimized
         priority={false}
       />
       <span
-        className={`absolute top-[6%] left-1/2 -translate-x-1/2 font-bold text-white ${textClass} w-full text-center drop-shadow-[0_0_4px_rgba(0,0,0,0.2)]`}
+        className={`absolute ${top} left-1/2 w-full -translate-x-1/2 text-center font-bold text-white ${text} drop-shadow-[0_0_4px_rgba(0,0,0,0.2)]`}
       >
         {percent}
       </span>
