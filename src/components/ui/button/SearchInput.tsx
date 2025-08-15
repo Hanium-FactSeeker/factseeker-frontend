@@ -1,47 +1,63 @@
-"use client";
+'use client';
 
-import clsx from "clsx";
-import { InputHTMLAttributes } from "react";
+import React from 'react';
+import clsx from 'clsx';
+import { InputHTMLAttributes } from 'react';
 
 const sizeMap = {
-  sm: "h-10 text-sm px-3 rounded-lg",
-  md: "h-12 text-base px-4 rounded-xl",
-  lg: "h-14 text-base px-5 rounded-[20px]",
+  sm: 'h-10 text-sm px-3 rounded-lg',
+  md: 'h-12 text-base px-4 rounded-xl',
+  lg: 'h-14 text-base px-5 rounded-[20px]',
 };
 
-type SizeKey = keyof typeof sizeMap; // 'sm' | 'md' | 'lg'
+type SizeKey = keyof typeof sizeMap;
 
-interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
   inputSize?: SizeKey;
   fullWidth?: boolean;
   iconRight?: React.ReactNode;
   iconLeft?: React.ReactNode;
 }
 
-export default function SearchInput({
-  className = "",
-  inputSize = "md",
-  fullWidth,
-  iconLeft,
-  iconRight,
-  ...props
-}: SearchInputProps) {
-  return (
-    <div
-      className={clsx(
-        "relative flex items-center gap-2 bg-white border border-gray-normal rounded-xl",
-        sizeMap[inputSize],
-        fullWidth ? "w-full" : "w-96",
-        className
-      )}
-    >
-      <input
-        {...props}
+const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
+  (
+    {
+      className = '',
+      inputSize = 'md',
+      fullWidth,
+      iconLeft,
+      iconRight,
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <div
         className={clsx(
-          "flex-1 bg-transparent text-black-normal placeholder-gray-normal outline-none"
+          'relative flex items-center gap-2 bg-white border border-gray-normal',
+          sizeMap[inputSize],
+          fullWidth ? 'w-full' : 'w-96',
+          'rounded-xl',
+          className
         )}
-      />
-      {iconRight && <div className="flex items-center pr-3">{iconRight}</div>}
-    </div>
-  );
-}
+      >
+        {iconLeft && <div className="flex items-center pl-3">{iconLeft}</div>}
+
+        <input
+          ref={ref}
+          {...props}
+          className={clsx(
+            'flex-1 bg-transparent text-black-normal placeholder-gray-normal outline-none',
+            iconLeft && 'pl-1',
+            iconRight && 'pr-1'
+          )}
+        />
+
+        {iconRight && <div className="flex items-center pr-3">{iconRight}</div>}
+      </div>
+    );
+  }
+);
+
+SearchInput.displayName = 'SearchInput';
+export default SearchInput;

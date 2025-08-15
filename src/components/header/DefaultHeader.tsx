@@ -3,60 +3,64 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import NavBar from './moclue/NavBar';
-import Search from '../ui/search';
-import { FaUserCircle } from 'react-icons/fa';
 import Logo from '@/components/ui/logo';
 import ProfileButton from './atom/ProfileBtn';
 import AuthText from './atom/AuthBtn';
+import UrlModal from '@/components/common/UrlModal';
 
 interface DefaultHeaderProps {
   isLoggedIn: boolean;
   navTextColor?: 'white' | 'black';
   initialSearch?: string;
 }
+
 const DefaultHeader: React.FC<DefaultHeaderProps> = ({
   isLoggedIn,
   initialSearch,
 }) => {
   const router = useRouter();
+  const [open, setOpen] = useState(false);
 
-  const [search, setSearch] = useState(initialSearch ?? '');
-
-  const handleSearch = () => {
-    if (search) {
-      const url = encodeURIComponent(search);
-      router.push(`/reports/${url}`);
-    }
+  const handleSubmit = (value: string) => {
+    const encoded = encodeURIComponent(value);
+    router.push(`/report/${encoded}`);
+    setOpen(false);
   };
 
   return (
-    <header className="z-50 flex h-auto w-full flex-col bg-cover px-4 py-3 md:px-8 md:py-6">
-      <div className="flex items-center justify-between">
-        <div className="ml-10">
-          <Logo />
+    <>
+      <header className="z-50 flex h-auto w-full flex-col bg-cover px-4 py-3 md:px-8 md:py-6">
+        <div className="flex items-center justify-between">
+          <div className="ml-10">
+            <Logo />
+          </div>
+
+          <div className="mr-2 flex justify-end gap-4 text-sm font-medium md:mt-4 md:text-lg">
+            {isLoggedIn ? (
+              <ProfileButton label={'홍길동'} />
+            ) : (
+              <AuthText textColor={'black'} />
+            )}
+          </div>
         </div>
 
-        <div className="mr-2 flex justify-end gap-4 text-sm font-medium md:mt-4 md:text-lg">
-          {isLoggedIn ? (
-            <ProfileButton label={'홍길동'} />
-          ) : (
-            <AuthText textColor={'black'} />
-          )}
+        <div className="z-30 flex w-full flex-col items-center justify-center md:mt-4 md:flex-row md:items-center md:justify-start">
+          <NavBar
+            isLoggedIn={isLoggedIn}
+            textColor="black"
+            onOpenUrlModal={() => setOpen(true)}
+          />
         </div>
-      </div>
-      <div className="z-30 flex w-full flex-col items-center justify-center md:mt-4 md:flex-row md:items-center md:justify-evenly">
-        <Search
-          value={search}
-          onChange={function (e: React.ChangeEvent<HTMLInputElement>): void {
-            setSearch(e.target.value);
-          }}
-          placeHolder={'팩트를 확인하고 싶은 기사나 유튜브를 입력해 주세요'}
-          onClick={handleSearch}
-        />
-        <NavBar isLoggedIn={false} textColor="black" />
-      </div>
-      <hr className="text-gray-normal mx-8 mt-6 border-0 outline md:mx-2 md:mt-10" />
-    </header>
+        <hr className="text-gray-normal mx-8 mt-6 border-0 outline md:mx-2 md:mt-10" />
+      </header>
+
+      <UrlModal
+        open={open}
+        initialValue={initialSearch ?? ''}
+        onClose={() => setOpen(false)}
+        onSubmit={handleSubmit}
+      />
+    </>
   );
 };
 
