@@ -1,5 +1,5 @@
 import FactBadge from '@/components/ui/factBadge';
-import { BadgeType } from '@/types/validity';
+import { ValidityType } from '@/types/validity';
 import { VideoItem } from '@/types/videos';
 
 interface videoListProps {
@@ -22,7 +22,7 @@ const MainVideoItemMobile = ({ idx, video }: videoListProps) => {
             percent={video?.gradePercent}
             width={70}
             height={60}
-            type={video?.grade as BadgeType}
+            type={video?.grade as ValidityType}
             textSize="xs"
           />
         </div>

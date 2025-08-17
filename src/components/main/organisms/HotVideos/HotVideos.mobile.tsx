@@ -1,6 +1,5 @@
 'use client';
 
-import { BadgeType } from '@/types/validity';
 import { HotVideosProps } from '@/types/videos';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
