@@ -22,7 +22,6 @@ export default function PoliticianBoard() {
 
   return (
     <div className="flex w-full max-w-[1000px] flex-col items-center gap-6">
-      {/* 돋보기 아이콘 왼쪽에 붙임 */}
       <Input
         value={query}
         onChange={(e) => setQuery(e.target.value)}
