@@ -5,7 +5,6 @@ export interface SnsItem {
   type: string;
   percentage: number;
   figureImg?: string; 
-  id?: string;
 }
 
 export const snsData: SnsItem[] = [
