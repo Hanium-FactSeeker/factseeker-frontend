@@ -7,7 +7,7 @@ interface videoListProps {
   video: VideoItem;
 }
 
-const VideoItemMobile = ({ idx, video }: videoListProps) => {
+const MainVideoItemMobile = ({ idx, video }: videoListProps) => {
   return (
     <div className="flex h-52 w-36 flex-col gap-2">
       <p className="text-md font-bold">Top {idx + 1}</p>
@@ -34,4 +34,4 @@ const VideoItemMobile = ({ idx, video }: videoListProps) => {
   );
 };
 
-export default VideoItemMobile;
+export default MainVideoItemMobile;

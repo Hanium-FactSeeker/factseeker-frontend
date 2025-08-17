@@ -5,7 +5,7 @@ import { HotVideosProps } from '@/types/videos';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
-import VideoItemMobile from '../../molecules/VideoItem.mobile';
+import VideoItemMobile from '../../molecules/MainVideoItem.mobile';
 import Link from 'next/link';
 
 const MobileHotVideosSection = ({ videos }: HotVideosProps) => {

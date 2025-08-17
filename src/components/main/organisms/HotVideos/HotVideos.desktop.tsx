@@ -1,6 +1,6 @@
 'use client';
 
-import VideoList from '../../molecules/VideoItem.desktop';
+import MainVideoList from '../../molecules/MainVideoItem.desktop';
 import FactBadge from '@/components/ui/factBadge';
 import { BadgeType } from '@/types/validity';
 import { HotVideosProps } from '@/types/videos';
@@ -43,7 +43,7 @@ const DesktopHotVideosSection = ({ videos }: HotVideosProps) => {
         <p className="text-black-normal text-xl font-bold">Top 2 ~ 5</p>
         <div className="h-36 flex-1 items-center justify-center">
           {slicedVideos.slice(1, 5).map((slicedVideos, idx) => (
-            <VideoList key={idx} idx={idx} video={slicedVideos} />
+            <MainVideoList key={idx} idx={idx} video={slicedVideos} />
           ))}
         </div>
       </div>

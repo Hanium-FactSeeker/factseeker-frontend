@@ -4,7 +4,8 @@ export interface SnsItem {
   party: string;
   type: string;
   percentage: number;
-  figureImg?: string; // 추가
+  figureImg?: string; 
+  id?: string;
 }
 
 export const snsData: SnsItem[] = [
