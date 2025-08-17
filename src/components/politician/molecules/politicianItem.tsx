@@ -5,15 +5,16 @@ import ReliabilityStat from '@/components/ui/validity';
 import PoliticianImage from '@/components/ui/profile/PoliticianImage';
 
 type Stat = { fact: number; gpt: number; claude: number };
-type Item = { name: string; party: string; img: string; stats: Stat; href?: string };
+type Item = { name: string; party: string; img: string; stats: Stat };
 
 interface Props { item: Item }
 
 export default function PoliticianItem({ item }: Props) {
   return (
     <Link
-      href={item.href ?? '#'}
-      className="flex w-full max-w-[320px] flex-col gap-3 rounded-xl border bg-white p-4"
+      // ✅ 정치인 이름을 기반으로 라우트 이동
+      href={`/politician/${encodeURIComponent(item.name)}`}
+      className="flex w-full max-w-[320px] flex-col gap-3 rounded-xl border bg-white p-4 hover:shadow-md transition"
     >
       <div className="flex items-center gap-4">
         <div className="relative h-14 w-14 md:h-16 md:w-16">

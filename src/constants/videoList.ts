@@ -1,3 +1,14 @@
+export type VideoItem = {
+  id: string;
+  grade: 'true1' | 'true2' | 'true3' | 'true4' | 'true5';
+  gradePercent: string;
+  gradeColor: string; // tailwind bg-*
+  title: string;
+  thumbnail: string;
+  link: string;
+  channelName: string;
+};
+
 export const videoList = [
   {
     id: 'ytn-001',
