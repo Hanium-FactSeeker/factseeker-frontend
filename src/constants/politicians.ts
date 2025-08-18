@@ -29,4 +29,11 @@ export const POLITICIANS = [
     img: '',
     stats: { fact: 73, gpt: 68, claude: 60 },
   },
+  {
+    name: '이주민',
+    party: '더불어살꺼당',
+    img: '',
+    stats: { fact: 25, gpt: 27, claude: 35 },
+  },
+  
 ];

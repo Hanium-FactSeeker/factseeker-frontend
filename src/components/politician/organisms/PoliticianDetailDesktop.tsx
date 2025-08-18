@@ -42,7 +42,6 @@ export default function PoliticianDetailDesktop({
   const goNext = () => setPage((p) => Math.min(totalPages, p + 1));
 
   return (
-    // ✅ 스크린샷처럼 "큰 카드 하나" 안에서 2열 레이아웃
     <section className="border-gray-normal w-full rounded-2xl border bg-white p-6">
       <div className="mb-4">
         <Link
@@ -53,9 +52,7 @@ export default function PoliticianDetailDesktop({
         </Link>
       </div>
 
-      {/* ✅ 콤마(,) 대신 언더스코어(_) 사용 → Tailwind 버전 상관없이 확실히 적용 */}
       <div className="grid w-full grid-cols-[320px_minmax(0,1fr)] gap-8">
-        {/* LEFT */}
         <aside className="rounded-2xl border border-gray-200 p-5">
           <p className="mb-4 text-center text-sm text-gray-500">선택 인물</p>
           <div className="mb-4 flex items-center justify-center">
@@ -100,7 +97,6 @@ export default function PoliticianDetailDesktop({
             ]}
             className="w-full justify-between"
           />
-          {/* 내부 버튼이 w-full일 경우 대비 */}
           <style jsx>{`
             [role='tablist'] button {
               width: auto !important;
@@ -109,7 +105,6 @@ export default function PoliticianDetailDesktop({
           `}</style>
         </aside>
 
-        {/* RIGHT */}
         <section className="min-w-0 rounded-2xl border border-gray-200">
           <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
             <h3 className="text-black-normal text-base font-semibold">

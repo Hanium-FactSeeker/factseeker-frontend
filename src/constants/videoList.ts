@@ -2,7 +2,7 @@ export type VideoItem = {
   id: string;
   grade: 'true1' | 'true2' | 'true3' | 'true4' | 'true5';
   gradePercent: string;
-  gradeColor: string; // tailwind bg-*
+  gradeColor: string; 
   title: string;
   thumbnail: string;
   link: string;
@@ -16,7 +16,7 @@ export const videoList = [
     gradePercent: '96%',
     gradeColor: 'bg-green-600',
     title: '[자막뉴스] 지이 보일 풍경 / YTN',
-    thumbnail: 'https://img.youtube.com/vi/xxx/0.jpg', // 임시
+    thumbnail: 'https://img.youtube.com/vi/xxx/0.jpg', 
     link: 'https://www.naver.com/',
     channelName: 'YTN',
   },

@@ -12,7 +12,6 @@ interface Props { item: Item }
 export default function PoliticianItem({ item }: Props) {
   return (
     <Link
-      // ✅ 정치인 이름을 기반으로 라우트 이동
       href={`/politician/${encodeURIComponent(item.name)}`}
       className="flex w-full max-w-[320px] flex-col gap-3 rounded-xl border bg-white p-4 hover:shadow-md transition"
     >
@@ -25,10 +24,11 @@ export default function PoliticianItem({ item }: Props) {
           <p className="text-black-normal text-sm font-normal md:text-base">{item.party}</p>
         </div>
       </div>
-      <div className="flex flex-col gap-2">
-        <ReliabilityStat iconWidth={30} iconHeight={30} name="팩씨" value={item.stats.fact} />
-        <ReliabilityStat iconWidth={20} iconHeight={20} name="GPT" value={item.stats.gpt} />
-        <ReliabilityStat iconWidth={20} iconHeight={20} name="Claude" value={item.stats.claude} />
+
+      <div className="flex flex-col gap-2 text-black-normal [&_svg]:shrink-0">
+        <ReliabilityStat iconWidth={18} iconHeight={18} name="팩씨"   value={item.stats.fact} />
+        <ReliabilityStat iconWidth={18} iconHeight={18} name="GPT"    value={item.stats.gpt} />
+        <ReliabilityStat iconWidth={18} iconHeight={18} name="Claude" value={item.stats.claude} />
       </div>
     </Link>
   );
