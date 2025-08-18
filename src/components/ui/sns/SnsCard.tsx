@@ -33,7 +33,7 @@ const SnsCard = ({
   return (
     <div
       className={clsx(
-        'border-gray-normal flex h-62 w-40 flex-col items-center gap-5 rounded-xl border bg-white py-2 md:h-74 md:w-56',
+        'border-gray-normal flex h-62 w-40 flex-col items-center gap-3 rounded-xl border bg-white py-2 md:h-74 md:w-56',
         className,
       )}
     >
@@ -61,10 +61,10 @@ const SnsCard = ({
       </div>
 
       <div className="border-gray-normal w-11 border-b-1" />
-      <p className="line-clamp-3 h-16 w-34 text-center text-xs break-all md:h-24 md:w-46 md:text-xs md:leading-6">
-        글자수제한에따른텍스트잘림처리까지해뒀습니다
-        냐옹야옹야옹야옹사실저는강아지가더좋습니다 이건 첫 번째 레슨 좋은 건
-        나눠 갖기ㅋㅋㅋㅋㅋㅋㅋㅋ
+      <p className="line-clamp-3 w-34 text-center text-xs break-all md:w-46 md:text-xs md:leading-6">
+        글자수제한에따른 텍스트잘림 처리까지 해뒀습니다. 냐옹야옹야옹야옹. 사실
+        저는 강아지가 더 좋습니다. 이건 첫 번째 레슨 좋은 건 나눠
+        갖기ㅋㅋㅋㅋㅋㅋㅋㅋ
       </p>
       <p
         className="text-primary-normal text-xs font-normal hover:cursor-pointer md:text-sm"
