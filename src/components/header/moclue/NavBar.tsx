@@ -8,33 +8,25 @@ interface NavItem {
 }
 
 interface NavBarProps {
+  items: NavItem[];
   isLoggedIn: boolean;
   textColor?: 'white' | 'black';
   onOpenUrlModal?: () => void;
+  className?: string;
 }
 
 const NavBar: React.FC<NavBarProps> = ({
+  items,
   isLoggedIn,
   textColor = 'white',
   onOpenUrlModal,
+  className,
 }) => {
-  const navItems: NavItem[] = [
-    { label: 'URL 검색하기', onClick: onOpenUrlModal },
-    { label: '인기영상', href: '/videos' },
-    { label: 'SNS 분석', href: '/sns' },
-    { label: '인물분석', href: '/politician' },
-    { label: 'MY 히스토리', href: '/my-history' },
-  ];
-
   return (
     <nav
-      className="
-        mt-4 flex w-full 
-        justify-center gap-3 text-xs
-        md:justify-start md:gap-10 md:text-xl
-      "
+      className={`z-30 mt-4 flex w-full gap-3 text-xs md:gap-10 md:text-xl ${className}`}
     >
-      {navItems.map((item) =>
+      {items.map((item) =>
         item.href ? (
           <Nav key={item.label} href={item.href} textColor={textColor}>
             {item.label}
@@ -43,17 +35,17 @@ const NavBar: React.FC<NavBarProps> = ({
           <button
             key={item.label}
             onClick={item.onClick}
-            className={`font-semibold text-xs md:text-xl hover:text-primary-normal cursor-pointer ${
+            className={`hover:text-primary-normal cursor-pointer text-xs font-semibold md:text-xl ${
               textColor === 'white'
                 ? 'text-white'
                 : textColor === 'black'
-                ? 'text-black-normal'
-                : ''
+                  ? 'text-black-normal'
+                  : ''
             }`}
           >
             {item.label}
           </button>
-        )
+        ),
       )}
     </nav>
   );

@@ -1,17 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import NavBar from './moclue/NavBar';
 import Logo from '@/components/ui/logo';
 import ProfileButton from './atom/ProfileBtn';
 import AuthText from './atom/AuthBtn';
 import UrlModal from '@/components/common/UrlModal';
+import { getNavItems } from '@/constants/navItems';
 
 interface DefaultHeaderProps {
   isLoggedIn: boolean;
   navTextColor?: 'white' | 'black';
   initialSearch?: string;
+}
+
+interface NavItem {
+  label: string;
+  href?: string;
+  onClick?: () => void;
 }
 
 const DefaultHeader: React.FC<DefaultHeaderProps> = ({
@@ -26,6 +33,10 @@ const DefaultHeader: React.FC<DefaultHeaderProps> = ({
     router.push(`/report/${encoded}`);
     setOpen(false);
   };
+
+  const { default: defaultItems } = useMemo(() => {
+    return getNavItems(() => setOpen(true));
+  }, []);
 
   return (
     <>
@@ -44,11 +55,13 @@ const DefaultHeader: React.FC<DefaultHeaderProps> = ({
           </div>
         </div>
 
-        <div className="z-30 flex w-full flex-col items-center justify-center md:mt-4 md:flex-row md:items-center md:justify-start">
+        <div className="0 z-30 mt-4 flex w-full">
           <NavBar
             isLoggedIn={isLoggedIn}
             textColor="black"
             onOpenUrlModal={() => setOpen(true)}
+            items={defaultItems as NavItem[]}
+            className="ml-10 flex justify-start"
           />
         </div>
         <hr className="text-gray-normal mx-8 mt-6 border-0 outline md:mx-2 md:mt-10" />

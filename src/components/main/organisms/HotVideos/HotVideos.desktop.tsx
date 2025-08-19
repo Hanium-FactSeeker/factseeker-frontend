@@ -2,7 +2,7 @@
 
 import MainVideoList from '../../molecules/MainVideoItem.desktop';
 import FactBadge from '@/components/ui/factBadge';
-import { BadgeType } from '@/types/validity';
+import { ValidityType } from '@/types/validity';
 import { HotVideosProps } from '@/types/videos';
 
 const DesktopHotVideosSection = ({ videos }: HotVideosProps) => {
@@ -29,7 +29,7 @@ const DesktopHotVideosSection = ({ videos }: HotVideosProps) => {
               percent={slicedVideos[0]?.gradePercent}
               width={90}
               height={110}
-              type={slicedVideos[0]?.grade as BadgeType}
+              type={slicedVideos[0]?.grade as ValidityType}
             />
 
             <p className="mt-12 w-64 text-xl font-bold">
