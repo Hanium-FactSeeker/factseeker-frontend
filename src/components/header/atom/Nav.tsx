@@ -23,7 +23,7 @@ const Nav: React.FC<NavLinkProps> = ({
   return (
     <Link
       href={href}
-      className={`md:text-black-normal hover:text-primary-normal font-semibold ${colorClass} md:text-xl ${className ?? ''}`}
+      className={`hover:text-primary-normal font-semibold ${colorClass} md:text-xl ${className ?? ''}`}
     >
       {children}
     </Link>

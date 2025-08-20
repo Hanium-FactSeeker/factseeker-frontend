@@ -7,9 +7,9 @@ interface LogoProps {
 
 const LogoStar = ({ className = '' }: LogoProps) => {
   return (
-    <div className="flex flex-col items-center">
+    <span className="flex flex-col items-center">
       <FrontStar className={className} />
-    </div>
+    </span>
   );
 };
 

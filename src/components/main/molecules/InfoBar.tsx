@@ -24,14 +24,16 @@ const InfoBar = () => {
     rowHeight: 24,
   });
   return (
-    <div className="flex w-full items-center justify-between px-4 py-2 md:px-10">
-      <div className="text-primary-navy flex gap-2 text-xs font-medium md:text-sm">
+    <div className="flex w-full items-center justify-between px-4 md:px-10">
+      <div className="text-primary-navy flex gap-2 text-[10px] font-medium md:text-sm">
         <span>업데이트 시간</span>
         <span>20:00:00</span>
       </div>
 
-      <div className="flex w-50 items-center gap-3 rounded-xl border-1 border-gray-200 bg-white p-2 md:w-80 md:gap-4 md:p-4">
-        <span className="text-xs font-semibold md:text-sm">실시간 검색어</span>
+      <div className="flex w-50 items-center rounded-xl border-1 border-gray-200 bg-white p-2 md:w-80 md:gap-4 md:p-4">
+        <span className="mr-2 text-[10px] font-semibold md:text-sm">
+          실시간 검색어
+        </span>
 
         <div
           className="relative h-6 overflow-hidden md:h-6"
@@ -45,7 +47,7 @@ const InfoBar = () => {
             {KEYWORDS.map((kw, i) => (
               <div
                 key={kw}
-                className="flex h-6 items-center justify-between text-xs md:text-sm"
+                className="flex h-6 w-28 items-center justify-between text-xs md:w-full md:text-sm"
                 style={{ height: rowHeight }}
               >
                 <span className="font-bold tabular-nums">{i + 1}</span>

@@ -1,84 +1,53 @@
 'use client';
 
-import ReliabilityStat from '@/components/ui/validity';
-import PoliticianImage from '../../ui/profile/PoliticianImage';
-import { useRotatingList } from '@/hooks/useRotatingList';
+import SectionTitle from '@/components/ui/title/SectionTitle';
+import PoliticianCard, {
+  Politician,
+} from '@/components/main/molecules/PoliticianItem';
+import VerticalSlider from '@/components/ui/slider/VerticalSlider';
 import { POLITICIANS } from '@/constants/politicians';
-import Link from 'next/link';
+import { MAX_ITEMS, SLIDE_SIZE } from '@/constants/main';
+import { Grouping } from '@/utils/grouping';
 
+/**
+ * 메인페이지 내 인물 분석 컴포넌트
+ *
+ * POLITICIANS에서 MAX_ITEMS만큼 잘라 반응형 슬라이더로 보여줍니다.
+ * - 모바일: 1열, rowHeight=160, SLIDE_SIZE.mobile로 그룹핑
+ * - 데스크톱: 3열, rowHeight=224, SLIDE_SIZE.desktop로 그룹핑
+ *
+ */
 const PoliticianSection = () => {
-  const { idx, transform, rowHeight } = useRotatingList(POLITICIANS, {
-    intervalMs: 3000,
-    rowHeight: 224,
-  });
+  const top10 = POLITICIANS.slice(0, MAX_ITEMS);
+
+  const slidesMobile = Grouping(top10, SLIDE_SIZE.mobile);
+  const slidesDesktop = Grouping(top10, SLIDE_SIZE.desktop);
+
   return (
-    <div className="flex h-40 w-[90%] flex-col items-center md:h-auto md:w-[759px]">
-      <div className="mb-3 flex w-full items-center justify-between px-4 md:px-8">
-        <p className="text-primary-normal text-md font-extrabold md:text-xl">
-          현재 신뢰도 {idx + 1}위
-        </p>
-        <Link
-          href="/politician"
-          className="z-50 -mb-3 flex text-xs font-medium hover:cursor-pointer md:text-sm"
-        >
-          정치인 신뢰도 분석 바로가기 &gt;
-        </Link>
+    <div className="flex w-[90%] flex-col items-center md:w-[1000px]">
+      <div className="mb-3 w-full">
+        <SectionTitle title="인물 분석 바로가기 &gt;" link="/politician" />
       </div>
 
-      {/* 뷰포트(고정높이) */}
-      <div className="relative h-56 w-full overflow-hidden rounded-xl border bg-white">
-        {/* 슬라이더 트랙 */}
-        <div
-          className="transition-transform duration-500 ease-out will-change-transform"
-          style={transform}
-        >
-          {POLITICIANS.map((p) => (
-            <div
-              key={p.name}
-              className="flex h-56 w-full items-center justify-around"
-              style={{ height: rowHeight }}
-            >
-              <div>
-                <PoliticianImage
-                  src={p.img}
-                  alt={`${p.name} 이미지`}
-                  className="relative h-18 w-18 md:h-40 md:w-40"
-                />
-              </div>
+      {/* 모바일: 1열 */}
+      <VerticalSlider
+        slides={slidesMobile}
+        cols={1}
+        className="pt-2 md:hidden"
+        intervalMs={3000}
+        rowHeight={160}
+        renderItem={(p: Politician) => <PoliticianCard p={p} />}
+      />
 
-              <div className="flex flex-col items-center gap-1 md:gap-3">
-                <p className="text-black-normal text-md font-bold md:text-2xl">
-                  {p.name}
-                </p>
-                <p className="text-black-normal text-sm font-normal md:text-base">
-                  {p.party}
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <ReliabilityStat
-                  iconWidth={30}
-                  iconHeight={30}
-                  name="팩씨"
-                  value={p.stats.fact}
-                />
-                <ReliabilityStat
-                  iconWidth={20}
-                  iconHeight={20}
-                  name="GPT"
-                  value={p.stats.gpt}
-                />
-                <ReliabilityStat
-                  iconWidth={20}
-                  iconHeight={20}
-                  name="Claude"
-                  value={p.stats.claude}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* 데스크톱: 3열 */}
+      <VerticalSlider
+        slides={slidesDesktop}
+        cols={3}
+        className="hidden md:block"
+        intervalMs={3000}
+        rowHeight={224}
+        renderItem={(p: Politician) => <PoliticianCard p={p} />}
+      />
     </div>
   );
 };

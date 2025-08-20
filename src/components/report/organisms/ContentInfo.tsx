@@ -1,6 +1,6 @@
 const ContentInfo = () => {
   return (
-    <div className="border-gray-normal flex h-auto w-[80%] flex-col items-center rounded-md border bg-white p-8 md:w-[70%] md:flex-row">
+    <div className="border-gray-normal flex h-auto w-[90%] flex-col items-center rounded-md border bg-white p-8 md:w-[70%] md:flex-row">
       <div className="flex w-full flex-col items-center gap-4 md:w-3/7">
         <img
           className="h-20 w-36 rounded-xl md:h-40 md:w-72"
@@ -23,7 +23,9 @@ const ContentInfo = () => {
           '핵보유국' 인도·파키스탄 미사일 폭격...확전 가능성 고조 [지금이뉴스] /
           YTN
         </h1>
-        <h2 className="mt-2 text-sm font-bold md:text-base">자료 세 줄 요약</h2>
+        <h2 className="mt-2 text-sm font-bold md:text-base">
+          &lt;전체 요약&gt;
+        </h2>
         <p className="w-full text-center text-xs leading-6 md:w-[80%] md:text-base md:leading-9">
           인도가 테러에 대한 보복으로 파키스탄과 카슈미르 9곳에 미사일 공격을
           단행했습니다. 파키스탄은 민간인 피해와 인도 전투기 격추를 주장하며
