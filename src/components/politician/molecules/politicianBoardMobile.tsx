@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Input from '@/components/ui/button/SearchInput';
-import PoliticianItem from './politicianItem';
+import PoliticianItemMobile from '../atoms/politicianItemMobile';
 import { POLITICIANS } from '@/constants/politicians';
 
 const Magnifier = () => (
@@ -12,28 +12,36 @@ const Magnifier = () => (
   </svg>
 );
 
-export default function PoliticianBoard() {
+export default function PoliticianBoardMobile() {
   const [query, setQuery] = useState('');
+
   const list = useMemo(() => {
     const q = query.trim();
-    const src = q ? POLITICIANS.filter(p => p.name.includes(q) || p.party.includes(q)) : POLITICIANS;
+    const src = q
+      ? POLITICIANS.filter((p) => p.name.includes(q) || p.party.includes(q))
+      : POLITICIANS;
     return src.slice(0, 10);
   }, [query]);
 
   return (
-    <div className="flex w-full max-w-[1000px] flex-col items-center gap-6">
+    <div className="w-full ">
       <Input
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="선택한 인물 또는 정당으로 검색하세요"
+        placeholder="정치인 검색"
         onClick={() => {}}
-        iconLeft={<Magnifier />}
-        className="w-[92%] h-10 text-sm md:h-14 md:text-base md:max-w-[900px]"
+        iconRight={<Magnifier />}
+        className="h-8 w-full rounded-[20px] md:text-xs" 
       />
+      <div className="mt-4 flex flex-col gap-5">
 
-      <div className="grid w-full grid-cols-1 place-items-center gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <span className="text-gray-strong text-xs font-normal ml-3">
+        2000년 00월 00일 기준 00:00
+      </span>
+      </div>
+      <div className="mt-4 flex flex-col gap-5">
         {list.map((p) => (
-          <PoliticianItem key={p.name} item={p as any} />
+          <PoliticianItemMobile key={p.name} item={p as any} />
         ))}
       </div>
     </div>
