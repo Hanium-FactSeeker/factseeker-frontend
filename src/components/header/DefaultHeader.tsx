@@ -15,12 +15,6 @@ interface DefaultHeaderProps {
   initialSearch?: string;
 }
 
-interface NavItem {
-  label: string;
-  href?: string;
-  onClick?: () => void;
-}
-
 const DefaultHeader: React.FC<DefaultHeaderProps> = ({
   isLoggedIn,
   initialSearch,
@@ -40,31 +34,25 @@ const DefaultHeader: React.FC<DefaultHeaderProps> = ({
 
   return (
     <>
-      <header className="z-50 flex h-auto w-full flex-col bg-cover px-4 py-3 md:px-8 md:py-6">
+      <header className="z-50 w-full bg-white/90 px-4 py-3 md:px-8 md:py-5">
+
         <div className="flex items-center justify-between">
           <div className="ml-10">
             <Logo />
           </div>
-
-          <div className="mr-2 flex justify-end gap-4 text-sm font-medium md:mt-4 md:text-lg">
-            {isLoggedIn ? (
-              <ProfileButton label={'홍길동'} />
-            ) : (
-              <AuthText textColor={'black'} />
-            )}
+          <div className="mr-2 flex justify-end gap-4 text-sm font-medium md:text-lg">
+            {isLoggedIn ? <ProfileButton label="홍길동" /> : <AuthText textColor="black" />}
           </div>
         </div>
 
-        <div className="0 z-30 mt-4 flex w-full">
+        <div className="mt-3">
           <NavBar
             isLoggedIn={isLoggedIn}
             textColor="black"
             onOpenUrlModal={() => setOpen(true)}
-            items={defaultItems as NavItem[]}
-            className="ml-10 flex justify-start"
-          />
+            items={defaultItems}
+            className="ml-5"/>
         </div>
-        <hr className="text-gray-normal mx-8 mt-6 border-0 outline md:mx-2 md:mt-10" />
       </header>
 
       <UrlModal
