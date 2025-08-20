@@ -2,39 +2,52 @@
 
 import type { VideoItem } from '@/constants/videoList';
 import FactBadge from '@/components/ui/factBadge';
-import { BadgeType } from '@/types/validity';
+import { ValidityType } from '@/types/validity';
 
 interface Props { video: VideoItem }
 
 export default function VideoRow({ video }: Props) {
+  const dateText = video.publishedAt ?? video.date ?? '';
+
   return (
     <a
       href={video.link}
       target="_blank"
       rel="noreferrer"
-      className="group flex w-full items-center gap-4 border-b border-gray-200 py-4 hover:bg-gray-50"
+      className="group grid w-full grid-cols-[1fr_144px] items-center gap-4 border-b border-gray-200 py-4 hover:bg-gray-50"
     >
-      <div className="relative h-16 w-28 shrink-0 overflow-hidden rounded-lg">
+      <div className="min-w-0">
+        <p className="line-clamp-2 text-sm text-black-normal group-hover:underline md:text-base">
+          {video.title}
+        </p>
+        <div className="mt-1 flex items-center gap-2 text-xs text-gray-500">
+          <span className="truncate">{video.channelName}</span>
+          {dateText && (
+            <>
+              <span>·</span>
+              <span>{dateText}</span>
+            </>
+          )}
+        </div>
+      </div>
+
+      <div className="relative h-20 w-36 justify-self-end overflow-hidden rounded-lg">
         <img
           src={video.thumbnail}
           alt={video.title}
           className="h-full w-full object-cover"
         />
-        <div className="absolute left-0 top-0 z-10">
-          <FactBadge
-            percent={video.gradePercent}
-            width={48}
-            height={58}
-            type={video.grade as BadgeType}
-          />
-        </div>
-      </div>
-
-      <div className="min-w-0 flex-1">
-        <p className="truncate text-black-normal text-sm md:text-base">
-          {video.title}
-        </p>
-        <p className="mt-1 text-xs text-gray-500">{video.channelName}</p>
+        {video.grade && (
+          <div className="absolute left-0 top-0 z-10">
+            <FactBadge
+              type={video.grade as ValidityType}
+              percent={`${video.gradePercent ?? 0}`}
+              width={48}
+              height={56}
+              textSize="xs"
+            />
+          </div>
+        )}
       </div>
     </a>
   );

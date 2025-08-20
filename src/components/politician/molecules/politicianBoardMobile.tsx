@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import Input from '@/components/ui/button/SearchInput';
+import SearchInput from '@/components/ui/search';
 import PoliticianItemMobile from '../atoms/politicianItemMobile';
 import { POLITICIANS } from '@/constants/politicians';
 
@@ -25,13 +25,11 @@ export default function PoliticianBoardMobile() {
 
   return (
     <div className="w-full ">
-      <Input
+      <SearchInput
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="정치인 검색"
+        placeHolder="순위에 없는 정치인도 검색해보세요"
         onClick={() => {}}
-        iconRight={<Magnifier />}
-        className="h-8 w-full rounded-[20px] md:text-xs" 
       />
       <div className="mt-4 flex flex-col gap-5">
 

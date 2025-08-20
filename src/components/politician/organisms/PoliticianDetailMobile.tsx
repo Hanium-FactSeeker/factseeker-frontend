@@ -7,6 +7,8 @@ import ReliabilityStat from '@/components/ui/validity';
 import SwitchButton from '@/components/ui/button/SwitchButton';
 import VideoCard from '@/components/politician/molecules/VideoCard';
 import type { VideoItem } from '@/constants/videoList';
+import { BiLeftArrow, BiRightArrow } from 'react-icons/bi';
+import SearchInput from '@/components/ui/search';
 
 type Stat = { fact: number; gpt: number; claude: number };
 type Politician = {
@@ -45,28 +47,73 @@ export default function PoliticianDetailMobile({
   const goPrev = () => setPage((p) => Math.max(1, p - 1));
   const goNext = () => setPage((p) => Math.min(totalPages, p + 1));
 
+  const [keyword, setKeyword] = useState('');
+
   return (
     <section className="w-full md:hidden">
-      <div className="mb-3">
-        <Link href="/politician" className="text-sm font-medium text-gray-500 hover:underline">
-          {'< 다시 선택'}
-        </Link>
+      <div className="mb-4">
+        <SearchInput
+          placeHolder="순위에 없는 다른 정치인도 검색해 보세요"
+          value={keyword}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setKeyword(e.target.value)
+          }
+          onClick={() => {}}
+        />
       </div>
 
-      <div className="rounded-2xl border border-gray-normal bg-white p-5">
-        <p className="mb-3 text-center text-xs text-gray-500">선택 인물</p>
-        <div className="mb-3 flex items-center justify-center">
-          <div className="relative h-16 w-16">
-            <PoliticianImage src={imgSrc} alt={`${politician.name} 이미지`} />
-          </div>
-        </div>
-        <p className="text-center text-base font-bold text-black-normal">{politician.name}</p>
-        <p className="mb-4 text-center text-xs text-black-normal">{politician.party}</p>
+      <div className="mt-6 mb-2 flex items-center justify-end ">
+        {updatedAt && <p className="text-[11px] text-gray-normal">{updatedAt}</p>}
+      </div>
 
-        <div className="mb-4 flex flex-col gap-2">
-          <ReliabilityStat iconWidth={16} iconHeight={16} name="팩씨" value={politician.stats.fact} />
-          <ReliabilityStat iconWidth={16} iconHeight={16} name="GPT" value={politician.stats.gpt} />
-          <ReliabilityStat iconWidth={16} iconHeight={16} name="Claude" value={politician.stats.claude} />
+      <div className="gap-3 rounded-2xl bg-white p-5">
+        <div className='mb-5 rounded-2xl border border-gray-200 p-4'>
+          <div className="mb-3">
+          <Link
+            href="/politician"
+            className="text-sm font-medium text-gray-500 hover:underline"
+          >
+            {'< 다시 선택'}
+          </Link>
+        </div>
+
+        <div className="mb-5 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="relative h-16 w-16 shrink-0">
+              <PoliticianImage src={imgSrc} alt={`${politician.name} 이미지`} />
+            </div>
+            <div className="min-w-0">
+              <p className="text-black-normal truncate text-base font-bold">
+                {politician.name}
+              </p>
+              <p className="text-black-normal mt-1 truncate text-xs">
+                {politician.party}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex min-w-[150px] flex-col gap-2 text-left">
+            <ReliabilityStat
+              iconWidth={16}
+              iconHeight={16}
+              name="팩씨"
+              value={politician.stats.fact}
+            />
+            <ReliabilityStat
+              iconWidth={16}
+              iconHeight={16}
+              name="GPT"
+              value={politician.stats.gpt}
+            />
+            <ReliabilityStat
+              iconWidth={16}
+              iconHeight={16}
+              name="Claude"
+              value={politician.stats.claude}
+            />
+          </div>
+          </div>
+        
         </div>
 
         <SwitchButton
@@ -82,15 +129,11 @@ export default function PoliticianDetailMobile({
           className="w-full justify-between"
         />
         <style jsx>{`
-          [role='tablist'] button { width: auto !important; flex: 0 0 auto !important; }
+          [role='tablist'] button {
+            width: auto !important;
+            flex: 0 0 auto !important;
+          }
         `}</style>
-      </div>
-
-      <div className="mt-6 mb-2 flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-black-normal">
-          {politician.name} 관련 {tab === 'youtube' ? '영상' : '뉴스'}
-        </h3>
-        {updatedAt && <p className="text-[11px] text-gray-500">{updatedAt}</p>}
       </div>
 
       {tab === 'youtube' ? (
@@ -101,15 +144,17 @@ export default function PoliticianDetailMobile({
             ))}
           </div>
 
-          <div className="mt-4 flex items-center justify-center gap-3">
+          <div className="mt-4 flex items-center justify-between">
             <button
               onClick={goPrev}
-              className="rounded-md px-2 py-1 text-xs text-gray-600 hover:bg-gray-100 disabled:opacity-40"
+              className="rounded-md p-2 text-gray-600 hover:bg-gray-100 disabled:opacity-40"
               disabled={page === 1}
+              aria-label="이전 페이지"
             >
-              이전
+              <BiLeftArrow className="h-4 w-4" />
             </button>
-            <div className="flex items-center gap-1">
+
+            <div className="flex items-center gap-2">
               {Array.from({ length: totalPages }).map((_, i) => {
                 const n = i + 1;
                 const active = n === page;
@@ -117,21 +162,20 @@ export default function PoliticianDetailMobile({
                   <button
                     key={n}
                     onClick={() => setPage(n)}
-                    className={`h-6 w-6 rounded-full text-[11px] ${
-                      active ? 'bg-black text-white' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    {n}
-                  </button>
+                    aria-label={`페이지 ${n}`}
+                    className={`h-2 w-2 rounded-full ${active ? 'bg-black' : 'bg-gray-300'}`}
+                  />
                 );
               })}
             </div>
+
             <button
               onClick={goNext}
-              className="rounded-md px-2 py-1 text-xs text-gray-600 hover:bg-gray-100 disabled:opacity-40"
+              className="rounded-md p-2 text-gray-600 hover:bg-gray-100 disabled:opacity-40"
               disabled={page === totalPages}
+              aria-label="다음 페이지"
             >
-              다음
+              <BiRightArrow className="h-4 w-4" />
             </button>
           </div>
         </>

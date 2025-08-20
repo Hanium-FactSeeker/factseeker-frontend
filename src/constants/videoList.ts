@@ -1,4 +1,6 @@
 export type VideoItem = {
+  date: any;
+  publishedAt: any;
   id: string;
   grade: 'true1' | 'true2' | 'true3' | 'true4' | 'true5';
   gradePercent: string;
