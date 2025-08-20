@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import LogoStar from '@/components/ui/logo/LogoStar';
 import type { LogoProps } from '../../../types/logo';
-import Link from 'next/link';
 
 const Logo = ({ type }: LogoProps) => {
   const textColor = type === 'main' ? 'text-white' : 'text-primary-normal';
