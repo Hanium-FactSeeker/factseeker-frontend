@@ -7,14 +7,31 @@ import { ValidityType } from '@/types/validity';
 interface Props { video: VideoItem }
 
 export default function VideoCard({ video }: Props) {
+  const dateText = video.publishedAt ?? (video as any).date ?? '';
+
   return (
     <a
       href={video.link}
       target="_blank"
       rel="noreferrer"
-      className="block rounded-2xl border border-gray-200 bg-white p-3"
+      className="group grid w-full grid-cols-[1fr_144px] items-center gap-3 border-b border-gray-200 py-4 hover:bg-gray-50"
     >
-      <div className="relative mb-3 h-40 w-full overflow-hidden rounded-xl">
+      <div className="min-w-0">
+        <p className="line-clamp-2 text-sm text-black-normal group-hover:underline">
+          {video.title}
+        </p>
+        <div className="mt-1 flex items-center gap-2 text-xs text-gray-500">
+          <span className="truncate">{video.channelName}</span>
+          {dateText && (
+            <>
+              <span>·</span>
+              <span>{dateText}</span>
+            </>
+          )}
+        </div>
+      </div>
+
+      <div className="relative h-20 w-36 justify-self-end overflow-hidden rounded-lg">
         <img
           src={video.thumbnail}
           alt={video.title}
@@ -25,19 +42,13 @@ export default function VideoCard({ video }: Props) {
             <FactBadge
               type={video.grade as ValidityType}
               percent={`${video.gradePercent ?? 0}`}
-              width={70}
-              height={60}
-              textSize="sm"
+              width={48}
+              height={56}
+              textSize="xs"
             />
           </div>
         )}
       </div>
-
-      <p className="line-clamp-2 text-sm text-black-normal">{video.title}</p>
-      <p className="mt-1 text-xs text-gray-500">
-        {video.channelName}
-        {video.publishedAt ? ` · ${video.publishedAt}` : ''}
-      </p>
     </a>
   );
 }
