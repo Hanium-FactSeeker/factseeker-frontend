@@ -1,10 +1,10 @@
 export interface SnsItem {
   name: string;
+  id?: string; 
   party: string;
   type: string;
   percentage: number;
   figureImg?: string; 
-  id?: string;
 }
 
 export const snsData: SnsItem[] = [
