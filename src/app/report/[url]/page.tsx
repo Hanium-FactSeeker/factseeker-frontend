@@ -1,23 +1,41 @@
+'use client';
+
+import { Suspense, useEffect, useRef } from 'react';
+import { useRouter, useParams } from 'next/navigation';
+
 import Footer from '@/components/footer';
 import DefaultHeader from '@/components/header/DefaultHeader';
-import ReportTitle from '@/components/report/molecules/ReportTitle';
-import ContentEvidence from '@/components/report/organisms/ContentEvidence';
-import ContentInfo from '@/components/report/organisms/ContentInfo';
+import SearchLoading from '../SearchLoading';
+import DataLoader from '@/components/report/organisms/DataLoader';
 
-interface ReportProps {
-  params: {
-    url: string;
+const Page = () => {
+  const router = useRouter();
+  const params = useParams<{ url: string }>();
+
+  const originalUrl = decodeURIComponent(String(params.url));
+
+  const abortRef = useRef(new AbortController());
+
+  const handleCancel = () => {
+    abortRef.current.abort();
+    if (typeof window !== 'undefined' && window.history.length > 1) {
+      router.back();
+    } else {
+      router.push('/');
+    }
   };
-}
-const Page = ({ params }: ReportProps) => {
-  const originalUrl = decodeURIComponent(params.url);
+
+  useEffect(() => {
+    return () => abortRef.current.abort();
+  }, []);
+
   return (
     <div>
       <DefaultHeader isLoggedIn={false} initialSearch={originalUrl} />
       <main className="bg-gray-light flex w-full flex-col items-center justify-center p-4">
-        <ReportTitle />
-        <ContentInfo />
-        <ContentEvidence />
+        <Suspense fallback={<SearchLoading onCancel={handleCancel} />}>
+          <DataLoader url={originalUrl} signal={abortRef.current.signal} />
+        </Suspense>
       </main>
       <Footer />
     </div>
