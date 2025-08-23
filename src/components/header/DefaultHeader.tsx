@@ -4,10 +4,9 @@ import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import NavBar from './moclue/NavBar';
 import Logo from '@/components/ui/logo';
-import ProfileButton from './atom/ProfileBtn';
-import AuthText from './atom/AuthBtn';
 import UrlModal from '@/components/common/UrlModal';
 import { getNavItems } from '@/constants/navItems';
+import HeaderAuthControls from './moclue/HeaderAuthControls';
 
 interface DefaultHeaderProps {
   isLoggedIn: boolean;
@@ -35,13 +34,12 @@ const DefaultHeader: React.FC<DefaultHeaderProps> = ({
   return (
     <>
       <header className="z-50 w-full bg-white/90 px-4 py-3 md:px-8 md:py-5">
-
         <div className="flex items-center justify-between">
           <div className="ml-10">
             <Logo />
           </div>
           <div className="mr-2 flex justify-end gap-4 text-sm font-medium md:text-lg">
-            {isLoggedIn ? <ProfileButton label="홍길동" /> : <AuthText textColor="black" />}
+            <HeaderAuthControls />
           </div>
         </div>
 
@@ -51,7 +49,8 @@ const DefaultHeader: React.FC<DefaultHeaderProps> = ({
             textColor="black"
             onOpenUrlModal={() => setOpen(true)}
             items={defaultItems}
-            className="ml-5"/>
+            className="ml-5"
+          />
         </div>
       </header>
 
