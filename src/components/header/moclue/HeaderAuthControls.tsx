@@ -11,7 +11,7 @@ export default function HeaderAuthControls() {
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
 
-  const displayName = user?.loginId || '';
+  const displayName = user?.fullname || '';
 
   const handleLogout = async () => {
     try {
