@@ -35,23 +35,18 @@ export const useAuthStore = create<AuthState>()(
       setUser: (user: MeResponse | null) => set({ user }),
 
       loginWithCredentials: async (loginId: string, password: string) => {
-        await loginUser({ loginId, password }); // 내부에서 setTokens
+        await loginUser({ loginId, password });
         const me = await fetchMeApi();
         set({ user: me, isLoggedIn: true });
       },
 
       logout: async () => {
         try {
-          await logoutApi(); // 서버 토큰 무효화
+          await logoutApi();
         } catch {
-          // 서버 에러는 무시하고 클라이언트 정리 진행
         } finally {
-          // 클라이언트 정리
           clearTokens();
           set({ isLoggedIn: false, user: null });
-
-          // (옵션) persist 저장소까지 비우고 싶다면:
-          // try { sessionStorage.removeItem('auth-storage'); } catch {}
         }
       },
 
