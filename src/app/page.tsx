@@ -16,7 +16,7 @@ import { videoList } from '@/constants/videoList';
 export default function Home() {
   return (
     <main className="bg-main-gradient-mobile md:bg-main-gradient-desktop flex min-h-screen w-full flex-col items-center justify-center gap-6 md:gap-12">
-      <MainHeader isLoggedIn={false} />
+      <MainHeader />
       <InfoBar />
       <SearchSection
         placeHolder={'검사를 진행할 유튜브나 기사의 url을 입력해 주세요'}
