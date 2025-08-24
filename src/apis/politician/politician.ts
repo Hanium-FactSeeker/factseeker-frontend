@@ -1,198 +1,361 @@
 import apiClient from "@/apis/apiClient";
+import type { PoliticianScoresResponse } from "@/types/politician";
 import type { ApiWrap } from "@/types/api";
-import type { Politician, PoliticianByNameRequest } from "@/types/politician";
-import type { TrustScore } from "@/types/trustScore";
-import type { Top12NamesResponse } from "@/types/politician";
+import type { PoliticianScoreDetail } from "@/types/trustScore";
+import type { TopScoresSummaryResponse, PoliticianScoreItem } from "@/types/politician";
+import type { PoliticianListResponse, PoliticianBasic } from "@/types/politician";
+import type { PoliticianDetail } from "@/types/politician";
 
-// 정치인 목록 조회
-export async function fetchPoliticians(): Promise<Politician[]> {
-  console.log("GET /api/politicians 요청 시작");
-  try {
-    const res = await apiClient.get("/api/politicians");
-    const data = res.data;
-    console.log("GET /api/politicians 응답 성공", data);
-
-    if (Array.isArray(data)) return data as Politician[];
-    if (data && typeof data === "object") return [data as Politician];
-    return [];
-  } catch (error) {
-    console.error("GET /api/politicians 에러", error);
-    throw error;
-  }
-}
-
-// ID로 정치인 조회
-export async function fetchPoliticianById(id: number | string): Promise<Politician> {
-  console.log(`GET /api/politicians/${id} 요청 시작`);
+// 모든 정치인의 최신 신뢰도 점수를 페이지별로 조회
+export async function fetchPoliticianScores(
+  page: number = 0,
+  size: number = 8,
+  sortType: "LATEST" | "TRUST_SCORE" = "TRUST_SCORE"
+): Promise<PoliticianScoresResponse> {
+  console.log("GET /api/politicians/scores 요청 시작", { page, size, sortType });
 
   try {
-    const res = await apiClient.get(`/api/politicians/${id}`);
-    console.log(`GET /api/politicians/${id} 응답 성공`, res.data);
-    return res.data as Politician;
+    const res = await apiClient.get("/api/politicians/scores", {
+      params: { page, size, sortType },
+    });
+    console.log("GET /api/politicians/scores 응답 성공", res.data);
+
+    return res.data as PoliticianScoresResponse;
   } catch (error: any) {
     const status = error?.response?.status;
+    const body = (error?.response?.data ?? {}) as ApiWrap;
 
-    if (status === 404) {
-      const body = (error.response?.data ?? {}) as ApiWrap;
-      const msg = body.message || "정치인을 찾을 수 없음";
-      console.warn(`GET /api/politicians/${id} 404`, body);
-      const notFound = new Error(msg);
-      (notFound as any).status = 404;
-      throw notFound;
-    }
-
-    console.error(`GET /api/politicians/${id} 에러`, error);
-    throw error;
-  }
-}
-// 정치인 분석 실행
-export async function analyzePolitician(id: number | string): Promise<ApiWrap> {
-  console.log(`POST /api/politicians/${id}/analyze 요청 시작`);
-  try {
-    const res = await apiClient.post(`/api/politicians/${id}/analyze`);
-    console.log(`POST /api/politicians/${id}/analyze 응답 성공`, res.data);
-    return res.data as ApiWrap;
-  } catch (error: any) {
-    const status = error?.response?.status;
-    const body = error?.response?.data as ApiWrap | undefined;
-    const msg = body?.message || (status === 404
-      ? "정치인을 찾을 수 없음"
-      : status === 500
-      ? "분석 실행 실패"
-      : "요청 처리 중 오류");
-
-    if (status === 404 || status === 500) {
-      console.warn(`POST /api/politicians/${id}/analyze ${status}`, body);
+    if (status === 400 || status === 404) {
+      const msg =
+        body.message || (status === 400 ? "잘못된 요청" : "정치인을 찾을 수 없음");
+      console.warn(`GET /api/politicians/scores ${status}`, body);
       const e = new Error(msg);
       (e as any).status = status;
       throw e;
     }
 
-    console.error(`POST /api/politicians/${id}/analyze 에러`, error);
+    console.error("GET /api/politicians/scores 에러", error);
     throw error;
   }
 }
 
-// 특정 정치인 신뢰도 점수 조회
-export async function fetchPoliticianTrustScore(id: number | string): Promise<TrustScore> {
-  console.log(`GET /api/politicians/${id}/trust-score 요청 시작`);
-  try {
-    const res = await apiClient.get(`/api/politicians/${id}/trust-score`);
-    console.log(`GET /api/politicians/${id}/trust-score 응답 성공`, res.data);
-    return res.data as TrustScore;
-  } catch (error: any) {
-    const status = error?.response?.status;
-    if (status === 404) {
-      const body = (error.response?.data ?? {}) as ApiWrap;
-      const msg = body?.message || "신뢰도 분석 결과를 찾을 수 없음";
-      console.warn(`GET /api/politicians/${id}/trust-score 404`, body);
-      const e = new Error(msg);
-      (e as any).status = 404;
-      throw e;
-    }
-    console.error(`GET /api/politicians/${id}/trust-score 에러`, error);
-    throw error;
-  }
-}
-
-// 이름으로 정치인 조회
-export async function fetchPoliticianByName(name: string): Promise<Politician> {
-  if (!name || !name.trim()) {
-    const e = new Error("이름은 비어 있을 수 없습니다.");
+// 특정 정치인의 최신 신뢰도 상세 조회
+export async function fetchPoliticianScoreDetail(
+  id: number | string
+): Promise<PoliticianScoreDetail> {
+  if (id === null || id === undefined || `${id}`.trim() === "") {
+    const e = new Error("유효한 정치인 ID가 필요합니다.");
     (e as any).status = 400;
     throw e;
   }
 
-  console.log("POST /api/politicians/by-name 요청 시작", { name });
+  const path = `/api/politicians/scores/${id}`;
+  console.log(`GET ${path} 요청 시작`);
+
   try {
-    const body: PoliticianByNameRequest = { name: name.trim() };
-    const res = await apiClient.post("/api/politicians/by-name", body);
-    console.log("POST /api/politicians/by-name 응답 성공", res.data);
-    return res.data as Politician;
+    const res = await apiClient.get(path);
+    console.log(`GET ${path} 응답 성공`, res.data);
+
+    const raw = res.data as PoliticianScoreDetail | ApiWrap<PoliticianScoreDetail> | unknown;
+
+    let payload: unknown = raw as any;
+    if (payload && typeof payload === "object" && "data" in (payload as any)) {
+      payload = (payload as any).data;
+    }
+
+    return payload as PoliticianScoreDetail;
   } catch (error: any) {
     const status = error?.response?.status;
-    const resp = (error?.response?.data ?? {}) as ApiWrap;
+    const body = (error?.response?.data ?? {}) as ApiWrap;
+
+    if (status === 404) {
+      const msg = body.message || "정치인 또는 분석 결과를 찾을 수 없음";
+      console.warn(`GET ${path} 404`, body);
+      const e = new Error(msg);
+      (e as any).status = 404;
+      throw e;
+    }
+
+    console.error(`GET ${path} 에러`, error);
+    throw error;
+  }
+}
+/**
+ * 이름 부분일치로 정치인의 최신 신뢰도 상세들을 조회
+ * GET /api/politicians/scores/search?name=...
+ */
+export async function searchPoliticianScoresByName(
+  name: string
+): Promise<PoliticianScoreDetail[]> {
+  const trimmed = (name ?? "").trim();
+
+  if (!trimmed) {
+    const e = new Error("name 파라미터는 비어 있을 수 없습니다.");
+    (e as any).status = 400;
+    throw e;
+  }
+
+  const path = "/api/politicians/scores/search";
+  console.log(`GET ${path} 요청 시작`, { name: trimmed });
+
+  try {
+    const res = await apiClient.get(path, { params: { name: trimmed } });
+    console.log(`GET ${path} 응답 성공`, res.data);
+
+    const raw = res.data as
+      | PoliticianScoreDetail[]
+      | ApiWrap<PoliticianScoreDetail[]>
+      | { success?: boolean; message?: string; data?: PoliticianScoreDetail[] }
+      | unknown;
+
+    if (raw && typeof raw === "object" && "data" in (raw as any)) {
+      const data = (raw as any).data;
+      if (Array.isArray(data)) return data as PoliticianScoreDetail[];
+      return [];
+    }
+
+    if (Array.isArray(raw)) {
+      return raw as PoliticianScoreDetail[];
+    }
+
+    return [];
+  } catch (error: any) {
+    const status = error?.response?.status;
+    const body = (error?.response?.data ?? {}) as ApiWrap;
+
+    if (status === 400) {
+      const msg = body?.message || "잘못된 요청";
+      console.warn(`GET ${path} 400`, body);
+      const e = new Error(msg);
+      (e as any).status = 400;
+      throw e;
+    }
+
+    if (status === 404) {
+      const msg = body?.message || "정치인 또는 분석 결과를 찾을 수 없음";
+      console.warn(`GET ${path} 404`, body);
+      const e = new Error(msg);
+      (e as any).status = 404;
+      throw e;
+    }
+
+    console.error(`GET ${path} 에러`, error);
+    throw error;
+  }
+}
+
+
+
+/**
+ * 상위 12명 신뢰도 점수 요약 조회
+ * GET /api/politicians/scores/top-summary
+ */
+export async function fetchTopScoresSummary(): Promise<PoliticianScoreItem[]> {
+  const path = "/api/politicians/scores/top-summary";
+  console.log(`GET ${path} 요청 시작`);
+
+  try {
+    const res = await apiClient.get(path);
+    console.log(`GET ${path} 응답 성공`, res.data);
+
+    const raw = res.data as
+      | TopScoresSummaryResponse
+      | ApiWrap<TopScoresSummaryResponse | PoliticianScoreItem[]>
+      | PoliticianScoreItem[]
+      | unknown;
+
+    if (raw && typeof raw === "object" && "data" in (raw as any)) {
+      const data = (raw as any).data;
+      if (Array.isArray(data)) return data as PoliticianScoreItem[];
+      if (data && typeof data === "object" && Array.isArray((data as any).politicians)) {
+        return (data as TopScoresSummaryResponse).politicians;
+      }
+      return [];
+    }
+
+    if (raw && typeof raw === "object" && "politicians" in (raw as any)) {
+      return (raw as TopScoresSummaryResponse).politicians ?? [];
+    }
+
+    if (Array.isArray(raw)) return raw as PoliticianScoreItem[];
+
+    return [];
+  } catch (error: any) {
+    const status = error?.response?.status;
+    const body = (error?.response?.data ?? {}) as ApiWrap;
 
     if (status === 400 || status === 404) {
       const msg =
-        resp?.message ||
-        (status === 400 ? "잘못된 요청" : "정치인을 찾을 수 없음");
-      console.warn(`POST /api/politicians/by-name ${status}`, resp);
+        body?.message || (status === 400 ? "잘못된 요청" : "정치인을 찾을 수 없음");
+      console.warn(`GET ${path} ${status}`, body);
       const e = new Error(msg);
       (e as any).status = status;
       throw e;
     }
 
-    console.error("POST /api/politicians/by-name 에러", error);
+    console.error(`GET ${path} 에러`, error);
     throw error;
   }
 }
-// 전체 정치인 신뢰도 분석 실행
-export async function executeAllTrustAnalysis(): Promise<ApiWrap> {
-  console.log("POST /api/politicians/analysis/execute 요청 시작");
+
+
+/**
+ * 모든 정치인의 기본 정보를 페이지별로 조회 (이름순)
+ * GET /api/politicians?page=0&size=10
+ */
+export async function fetchPoliticiansPage(
+  page: number = 0,
+  size: number = 10
+): Promise<PoliticianListResponse> {
+  const path = "/api/politicians";
+  console.log(`GET ${path} 요청 시작`, { page, size });
+
   try {
-    const res = await apiClient.post("/api/politicians/analysis/execute");
-    console.log("POST /api/politicians/analysis/execute 응답 성공", res.data);
-    return res.data as ApiWrap;
+    const res = await apiClient.get(path, { params: { page, size } });
+    console.log(`GET ${path} 응답 성공`, res.data);
+
+    const raw = res.data as
+      | PoliticianListResponse
+      | ApiWrap<PoliticianListResponse | PoliticianBasic[]>
+      | unknown;
+
+    if (raw && typeof raw === "object" && "data" in (raw as any)) {
+      const data = (raw as any).data;
+
+      if (Array.isArray(data)) {
+        return {
+          politicians: data as PoliticianBasic[],
+          currentPage: page,
+          pageSize: size,
+          totalElements: (data as any).length ?? 0,
+          totalPages: 1,
+          isFirst: page === 0,
+          isLast: true,
+        };
+      }
+      return data as PoliticianListResponse;
+    }
+
+    if (raw && typeof raw === "object" && "politicians" in (raw as any)) {
+      return raw as PoliticianListResponse;
+    }
+
+    if (Array.isArray(raw)) {
+      return {
+        politicians: raw as PoliticianBasic[],
+        currentPage: page,
+        pageSize: size,
+        totalElements: (raw as any).length ?? 0,
+        totalPages: 1,
+        isFirst: page === 0,
+        isLast: true,
+      };
+    }
+
+    return {
+      politicians: [],
+      currentPage: page,
+      pageSize: size,
+      totalElements: 0,
+      totalPages: 0,
+      isFirst: page === 0,
+      isLast: true,
+    };
   } catch (error: any) {
     const status = error?.response?.status;
-    const body = error?.response?.data as ApiWrap | undefined;
-    const msg =
-      body?.message ||
-      (status === 500 ? "분석 실행 실패" : "요청 처리 중 오류");
+    const body = (error?.response?.data ?? {}) as ApiWrap;
 
-    if (status === 500) {
-      console.warn("POST /api/politicians/analysis/execute 500", body);
+    if (status === 400 || status === 404) {
+      const msg =
+        body?.message || (status === 400 ? "잘못된 요청" : "정치인을 찾을 수 없음");
+      console.warn(`GET ${path} ${status}`, body);
       const e = new Error(msg);
-      (e as any).status = 500;
+      (e as any).status = status;
       throw e;
     }
 
-    console.error("POST /api/politicians/analysis/execute 에러", error);
+    console.error(`GET ${path} 에러`, error);
     throw error;
   }
 }
-// 상위 12개 정치인 이름 조회
-export async function fetchTop12Names(): Promise<string[]> {
-  console.log("GET /api/politicians/top12-names 요청 시작");
+
+/**
+ * ID로 정치인 상세 조회
+ * GET /api/politicians/{id}
+ */
+export async function fetchPoliticianDetail(
+  id: number | string
+): Promise<PoliticianDetail> {
+  const idStr = `${id ?? ""}`.trim();
+  if (!idStr) {
+    const e = new Error("유효한 정치인 ID가 필요합니다.");
+    (e as any).status = 400;
+    throw e;
+  }
+
+  const path = `/api/politicians/${idStr}`;
+  console.log(`GET ${path} 요청 시작`);
+
   try {
-    const res = await apiClient.get("/api/politicians/top12-names");
-    console.log("GET /api/politicians/top12-names 응답 성공", res.data);
+    const res = await apiClient.get(path);
+    console.log(`GET ${path} 응답 성공`, res.data);
 
-    const data = res.data as Top12NamesResponse | string[] | unknown;
+    const raw = res.data as PoliticianDetail | ApiWrap<PoliticianDetail> | unknown;
 
-    if (Array.isArray(data)) return data as string[];
-    if (data && typeof data === "object" && Array.isArray((data as any).names)) {
-      return (data as Top12NamesResponse).names;
+    if (raw && typeof raw === "object" && "data" in (raw as any)) {
+      return (raw as any).data as PoliticianDetail;
     }
-    return [];
-  } catch (error) {
-    console.error("GET /api/politicians/top12-names 에러", error);
-    throw error;
-  }
-}
+    return raw as PoliticianDetail;
+  } catch (error: any) {
+    const status = error?.response?.status;
+    const body = (error?.response?.data ?? {}) as ApiWrap;
 
-// 정치인 신뢰도 점수 조회 (선택적 날짜)
-export async function fetchTrustScores(analysisDate?: string): Promise<TrustScore[]> {
-  const q = analysisDate ? `?analysisDate=${analysisDate}` : "";
-  console.log(`GET /api/politicians/trust-scores${q} 요청 시작`);
-
-  try {
-    if (analysisDate && !/^\d{4}-\d{2}-\d{2}$/.test(analysisDate)) {
-      const e = new Error("analysisDate는 YYYY-MM-DD 형식이어야 합니다.");
+    if (status === 400) {
+      const msg = body?.message || "잘못된 요청";
+      console.warn(`GET ${path} 400`, body);
+      const e = new Error(msg);
       (e as any).status = 400;
       throw e;
     }
 
-    const res = await apiClient.get("/api/politicians/trust-scores", {
-      params: analysisDate ? { analysisDate } : undefined,
-    });
-    console.log("GET /api/politicians/trust-scores 응답 성공", res.data);
+    if (status === 404) {
+      const msg = body?.message || "정치인을 찾을 수 없음";
+      console.warn(`GET ${path} 404`, body);
+      const e = new Error(msg);
+      (e as any).status = 404;
+      throw e;
+    }
+
+    console.error(`GET ${path} 에러`, error);
+    throw error;
+  }
+}
+
+/**
+ * 7) 이름으로 정치인 검색
+ * GET /api/politicians/search?name=...
+ */
+export async function fetchPoliticiansByName(
+  name: string
+): Promise<PoliticianBasic[]> {
+  const q = (name ?? "").trim();
+  if (!q) {
+    const e = new Error("name 파라미터는 비어 있을 수 없습니다.");
+    (e as any).status = 400;
+    throw e;
+  }
+
+  const path = "/api/politicians/search";
+  console.log(`GET ${path} 요청 시작`, { name: q });
+
+  try {
+    const res = await apiClient.get(path, { params: { name: q } });
+    console.log(`GET ${path} 응답 성공`, res.data);
 
     const raw = res.data as
-      | TrustScore[]
-      | TrustScore
-      | ApiWrap<TrustScore[] | TrustScore>
+      | PoliticianBasic[]
+      | PoliticianBasic
+      | ApiWrap<PoliticianBasic[] | PoliticianBasic>
       | unknown;
 
     let payload: unknown = raw as any;
@@ -200,11 +363,30 @@ export async function fetchTrustScores(analysisDate?: string): Promise<TrustScor
       payload = (payload as any).data;
     }
 
-    if (Array.isArray(payload)) return payload as TrustScore[];
-    if (payload && typeof payload === "object") return [payload as TrustScore];
+    if (Array.isArray(payload)) return payload as PoliticianBasic[];
+    if (payload && typeof payload === "object") return [payload as PoliticianBasic];
     return [];
-  } catch (error) {
-    console.error("GET /api/politicians/trust-scores 에러", error);
+  } catch (error: any) {
+    const status = error?.response?.status;
+    const body = (error?.response?.data ?? {}) as ApiWrap;
+
+    if (status === 400) {
+      const msg = body?.message || "잘못된 요청";
+      console.warn(`GET ${path} 400`, body);
+      const e = new Error(msg);
+      (e as any).status = 400;
+      throw e;
+    }
+
+    if (status === 404) {
+      const msg = body?.message || "정치인을 찾을 수 없음";
+      console.warn(`GET ${path} 404`, body);
+      const e = new Error(msg);
+      (e as any).status = 404;
+      throw e;
+    }
+
+    console.error(`GET ${path} 에러`, error);
     throw error;
   }
 }

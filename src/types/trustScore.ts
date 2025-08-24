@@ -1,26 +1,36 @@
-export interface TrustScore {
+// 이미 2번에서 선언한 타입 재사용
+export type AnalysisStatus = 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED';
+
+export interface PoliticianScoreDetail {
   id: number;
   politicianId: number;
   politicianName: string;
-  analysisDate: string;          // e.g. "2025-08-23"
-  analysisPeriod: string;
+  politicianParty: string;
+  analysisDate: string;      // 'YYYY-MM-DD'
+  analysisPeriod: string;    // 예: 'DAILY' | 'WEEKLY' 등
+
   overallScore: number;
   integrityScore: number;
   transparencyScore: number;
   consistencyScore: number;
   accountabilityScore: number;
+
   gptScore: number;
   geminiScore: number;
+
   gptIntegrityReason: string;
   gptTransparencyReason: string;
   gptConsistencyReason: string;
   gptAccountabilityReason: string;
+
   geminiIntegrityReason: string;
   geminiTransparencyReason: string;
   geminiConsistencyReason: string;
   geminiAccountabilityReason: string;
-  analysisStatus: string;        // e.g. "PENDING"
-  errorMessage: string;
+
+  analysisStatus: AnalysisStatus;
+  errorMessage?: string | null;
+
   retryCount: number;
-  lastUpdated: string;           // ISO string
+  lastUpdated: string;       // ISO
 }
