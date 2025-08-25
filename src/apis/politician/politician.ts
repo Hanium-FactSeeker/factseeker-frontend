@@ -6,7 +6,7 @@ import type { TopScoresSummaryResponse, PoliticianScoreItem } from "@/types/poli
 import type { PoliticianListResponse, PoliticianBasic } from "@/types/politician";
 import type { PoliticianDetail } from "@/types/politician";
 
-// 모든 정치인의 최신 신뢰도 점수를 페이지별로 조회
+//1. 모든 정치인의 최신 신뢰도 점수를 페이지별로 조회
 export async function fetchPoliticianScores(
   page: number = 0,
   size: number = 8,
@@ -39,7 +39,7 @@ export async function fetchPoliticianScores(
   }
 }
 
-// 특정 정치인의 최신 신뢰도 상세 조회
+//2. 특정 정치인의 최신 신뢰도 상세 조회
 export async function fetchPoliticianScoreDetail(
   id: number | string
 ): Promise<PoliticianScoreDetail> {
@@ -80,10 +80,8 @@ export async function fetchPoliticianScoreDetail(
     throw error;
   }
 }
-/**
- * 이름 부분일치로 정치인의 최신 신뢰도 상세들을 조회
- * GET /api/politicians/scores/search?name=...
- */
+
+//3. 이름 부분일치로 정치인의 최신 신뢰도 상세들을 조회
 export async function searchPoliticianScoresByName(
   name: string
 ): Promise<PoliticianScoreDetail[]> {
@@ -146,10 +144,8 @@ export async function searchPoliticianScoresByName(
 
 
 
-/**
- * 상위 12명 신뢰도 점수 요약 조회
- * GET /api/politicians/scores/top-summary
- */
+
+//상위 12명 신뢰도 점수 요약 조회
 export async function fetchTopScoresSummary(): Promise<PoliticianScoreItem[]> {
   const path = "/api/politicians/scores/top-summary";
   console.log(`GET ${path} 요청 시작`);
@@ -199,10 +195,8 @@ export async function fetchTopScoresSummary(): Promise<PoliticianScoreItem[]> {
 }
 
 
-/**
- * 모든 정치인의 기본 정보를 페이지별로 조회 (이름순)
- * GET /api/politicians?page=0&size=10
- */
+
+ //모든 정치인의 기본 정보를 페이지별로 조회 (이름순)
 export async function fetchPoliticiansPage(
   page: number = 0,
   size: number = 10
@@ -279,10 +273,8 @@ export async function fetchPoliticiansPage(
   }
 }
 
-/**
- * ID로 정치인 상세 조회
- * GET /api/politicians/{id}
- */
+
+//ID로 정치인 상세 조회
 export async function fetchPoliticianDetail(
   id: number | string
 ): Promise<PoliticianDetail> {
@@ -331,10 +323,7 @@ export async function fetchPoliticianDetail(
   }
 }
 
-/**
- * 7) 이름으로 정치인 검색
- * GET /api/politicians/search?name=...
- */
+//이름으로 정치인 검색
 export async function fetchPoliticiansByName(
   name: string
 ): Promise<PoliticianBasic[]> {

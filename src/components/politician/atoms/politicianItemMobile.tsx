@@ -18,7 +18,7 @@ export default function PoliticianItemMobile({ item }: Props) {
     <Link
       href={`/politician/${encodeURIComponent(item.name)}`}
       className="flex w-full items-center justify-between rounded-[12px] bg-white p-3 shadow-[0_1px_6px_rgba(0,0,0,0.06)]"
-      style={{ border: '1px solid #ECEEF1' }} 
+      style={{ border: '1px solid #ECEEF1' }}
     >
       <div className="flex min-w-0 items-center gap-6">
         <div className="relative h-11 w-11 flex-shrink-0 overflow-hidden rounded-full [&_img]:h-full [&_img]:w-full [&_img]:object-cover">
@@ -26,12 +26,8 @@ export default function PoliticianItemMobile({ item }: Props) {
         </div>
 
         <div className="min-w-0 gap-4">
-          <p className="truncate text-Black_normal text-[14px] font-bold">
-            {item.name}
-          </p>
-          <span className="mt-2 inline-block text-[10px] text-Black_alternative">
-            자세히 보기 &gt;
-          </span>
+          <p className="truncate text-Black_normal text-[14px] font-bold">{item.name}</p>
+          <span className="mt-2 inline-block text-[10px] text-Black_alternative">자세히 보기 &gt;</span>
         </div>
       </div>
 
@@ -46,7 +42,7 @@ export default function PoliticianItemMobile({ item }: Props) {
         </p>
         <p className="mt-2 flex items-center justify-baseline gap-1 text-[10px] font-light text-Black_alternative">
           <TbSunFilled className="h-3 w-3 text-red-400" />
-          <span className="shrink-0">Claude 기준 신뢰도 {item.stats.claude}%</span>
+          <span className="shrink-0">Gemini 기준 신뢰도 {item.stats.claude}%</span>
         </p>
       </div>
     </Link>

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Input from '@/components/ui/button/SearchInput';
 import PoliticianBoard from '../molecules/politicianBoardDesktop';
+import ClientTime from '@/components/common/ClientTime';
 
 const Magnifier = () => (
   <svg width="25" height="25" viewBox="0 0 24 24" aria-hidden>
@@ -16,7 +17,7 @@ export default function PoliticianDesktop() {
 
   return (
     <section className="flex w-full flex-col items-center">
-      <div className="mt-14 w-full max-w-[1000px] px-4">
+      <div className="mt-14 w-full max-w-[1200px] px-4">
         <h2 className="text-Black_normal text-[22px] font-bold leading-7 text-center">
           오늘의 인기 정치인 TOP 10
         </h2>
@@ -25,7 +26,7 @@ export default function PoliticianDesktop() {
         </p>
       </div>
 
-      <div className="mt-6 w-full max-w-[1000px] px-4">
+      <div className="mt-6 w-full max-w-[1200px] px-4">
         <div className="flex w-full items-center gap-3">
           <Input
             value={query}
@@ -35,19 +36,16 @@ export default function PoliticianDesktop() {
             iconRight={<Magnifier />}
             className="h-14 w-full rounded-[20px] border-[#D9DBDC]"
           />
-          <p className="whitespace-nowrap text-gray-strong text-[12px] font-medium mt-4">
-            2000년 00월 00일 기준 00:00
-          </p>
+          <ClientTime className="mt-4 whitespace-nowrap text-gray-strong text-[12px] font-medium" />
         </div>
       </div>
 
-      <div className="mt-6 w-full max-w-[1000px] px-4">
+      <div className="mt-6 w-full max-w-[1200px] px-4">
         <div
           className="mx-auto w-full rounded-[10px] bg-white shadow-[0_4px_4px_rgba(0,0,0,0.08)]"
           style={{ border: '1px solid var(--gray-normal)' }}
         >
           <div className="px-6 py-6">
-            {/* ⬇️ query를 보드로 전달 */}
             <PoliticianBoard query={query} />
           </div>
         </div>
