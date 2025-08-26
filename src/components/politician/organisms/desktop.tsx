@@ -19,7 +19,7 @@ export default function PoliticianDesktop() {
     <section className="flex w-full flex-col items-center">
       <div className="mt-14 w-full max-w-[1200px] px-4">
         <h2 className="text-Black_normal text-[22px] font-bold leading-7 text-center">
-          오늘의 인기 정치인 TOP 10
+          오늘의 인기 정치인 TOP 12
         </h2>
         <p className="mt-3 text-Black_alternative text-[14px] font-medium text-center">
           인물을 선택하면 최신 기사 및 유튜브를 조회할 수 있습니다

@@ -60,19 +60,15 @@ export default function PoliticianItemDesktop({ item }: Props) {
       </div>
 
       <div className="mt-3 flex items-start gap-2">
-        <span className="bg-primary-normal mt-[2px] h-[56px] w-[2px] rounded" />
+        <span className="bg-primary-normal w-[2px] self-stretch my-[2px] rounded" aria-hidden />
         <div className="space-y-2">
-          <p className="text-Black_alternative flex items-center gap-1 text-[11px] font-light">
-            <FaStar className="h-3 w-3 text-yellow-400" />
-            팩씨 기준 신뢰도 {stats.fact}%
-          </p>
           <p className="text-Black_alternative flex items-center gap-1 text-[11px] font-light">
             <SiOpenai className="h-3 w-3 text-black" />
             GPT 기준 신뢰도 {stats.gpt}%
           </p>
           <p className="text-Black_alternative flex items-center gap-1 text-[11px] font-light">
             <TbSunFilled className="h-3 w-3 text-red-400" />
-            Claude 기준 신뢰도 {stats.claude}%
+            gemini 기준 신뢰도 {stats.claude}%
           </p>
         </div>
       </div>

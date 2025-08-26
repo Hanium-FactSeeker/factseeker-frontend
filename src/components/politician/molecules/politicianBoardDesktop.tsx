@@ -97,14 +97,13 @@ export default function PoliticianBoardDesktop({ query }: Props) {
         });
         setBasicsMap(bm);
 
-        // 2) TOP12 (초기 표시)
         const top12 = await fetchTopScoresSummary();
         if (!alive) return;
         const mappedTop: PoliticianTopItem[] = (top12 ?? []).slice(0, 12).map(s => ({
           id: bm[s.name]?.id ?? s.id,
           name: s.name,
-          party: s.party || bm[s.name]?.party || '', // always string
-          profileImageUrl: bm[s.name]?.profileImageUrl || imgOf((s as any).profileImageUrl), // 🔧 imgOf
+          party: s.party || bm[s.name]?.party || '', 
+          profileImageUrl: bm[s.name]?.profileImageUrl || imgOf((s as any).profileImageUrl), 
           overallScore: Math.round(s.overallScore ?? s.trustScore ?? s.totalScore ?? 0),
           gptScore: Math.round(s.gptScore ?? 0),
           geminiScore: Math.round(s.geminiScore ?? 0),
@@ -147,8 +146,8 @@ export default function PoliticianBoardDesktop({ query }: Props) {
           return {
             id: base.id ?? row.politicianId ?? row.id,
             name,
-            party: row.politicianParty || row.party || base.party || '', // always string
-            profileImageUrl: base.profileImageUrl ?? imgOf((row as any).profileImageUrl), // 🔧 imgOf
+            party: row.politicianParty || row.party || base.party || '', 
+            profileImageUrl: base.profileImageUrl ?? imgOf((row as any).profileImageUrl),
             overallScore: scores.overall,
             gptScore: scores.gpt,
             geminiScore: scores.gemini,

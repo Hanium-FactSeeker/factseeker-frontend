@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import PoliticianImage from '@/components/ui/profile/PoliticianImage';
-import { FaStar } from 'react-icons/fa';
 import { SiOpenai } from 'react-icons/si';
 import { TbSunFilled } from 'react-icons/tb';
 
@@ -36,10 +35,6 @@ export default function PoliticianItemMobile({ item }: Props) {
       </div>
 
       <div className="ml-3 flex w-[48%] flex-col gap-1">
-        <p className="text-Black_alternative flex items-center justify-baseline gap-1 text-[10px] font-light">
-          <FaStar className="h-3 w-3 text-yellow-400" />
-          <span className="shrink-0">팩씨 기준 신뢰도 {item.stats.fact}%</span>
-        </p>
         <p className="text-Black_alternative mt-2 flex items-center justify-baseline gap-1 text-[10px] font-light">
           <SiOpenai className="h-3 w-3 text-black" />
           <span className="shrink-0">GPT 기준 신뢰도 {item.stats.gpt}%</span>
