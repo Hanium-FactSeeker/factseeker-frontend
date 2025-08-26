@@ -1,38 +1,42 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { useRotatingList } from '@/hooks/useRotatingList';
-import { KEYWORDS } from '@/constants/hotKeywords';
+import { getLatestTrends } from '@/apis/trend/getHotKeywords';
 
-/**
- * InfoBar 컴포넌트
- *
- * 메인페이지에서 상단 정보를 표시하는 컴포넌트입니다.
- * - 좌측에는 업데이트 시간을 표시
- * - 우측에는 "실시간 검색어" 제목과 현재 순위/키워드 목록을 표시
- *
- * 1. **업데이트 시간 영역**
- *    - `업데이트 시간` 라벨과 시간 값(`00:00:00 `)형식으로 표시
- *    - 백엔드 api 연결 시 변경 예정
- *
- *
- * 2. **실시간 검색어 박스**
- * - `KEYWORDS` 배열(상위 5개 검색어)을 받아 2.5초마다 순서대로 전환함
- **/
 const InfoBar = () => {
-  const { transform, rowHeight } = useRotatingList(KEYWORDS, {
+  const [keywords, setKeywords] = useState<string[]>([]);
+  const fetchedRef = useRef(false);
+
+  useEffect(() => {
+    if (fetchedRef.current) return;
+    fetchedRef.current = true;
+
+    (async () => {
+      try {
+        const ks = await getLatestTrends(5);
+        setKeywords(ks);
+      } catch (e) {
+        console.error('[InfoBar] latest-trends error:', e);
+      }
+    })();
+  }, []);
+
+  const { transform, rowHeight } = useRotatingList(keywords, {
     intervalMs: 2500,
     rowHeight: 24,
   });
+
   return (
     <div className="flex w-full items-center justify-between px-4 md:px-10">
       <div className="text-primary-navy flex gap-2 text-[10px] font-medium md:text-sm">
-        <span>업데이트 시간</span>
-        <span>20:00:00</span>
+        {/* <span>업데이트 시간</span>
+        <span>{updatedAt || '--:--:--'}</span> */}
       </div>
 
       <div className="flex w-50 items-center rounded-xl border-1 border-gray-200 bg-white p-2 md:w-80 md:gap-4 md:p-4">
-        <span className="mr-2 text-[10px] font-semibold md:text-sm">
-          실시간 검색어
+        <span className="w-full text-[10px] font-semibold md:w-1/2 md:text-sm">
+          실시간 정치 트렌드
         </span>
 
         <div
@@ -44,10 +48,10 @@ const InfoBar = () => {
             className="transition-transform duration-500 ease-out will-change-transform"
             style={transform}
           >
-            {KEYWORDS.map((kw, i) => (
+            {keywords.map((kw, i) => (
               <div
-                key={kw}
-                className="flex h-6 w-28 items-center justify-between text-xs md:w-full md:text-sm"
+                key={`${kw}-${i}`}
+                className="flex h-6 items-center gap-4 text-xs md:w-full md:text-sm"
                 style={{ height: rowHeight }}
               >
                 <span className="font-bold tabular-nums">{i + 1}</span>
