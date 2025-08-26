@@ -25,19 +25,21 @@ type Politician = {
 interface Props {
   politician: Politician;
   videos: VideoItem[];
+  news: VideoItem[];          // ✅ 뉴스 데이터
   updatedAt?: string;
 }
 
 export default function PoliticianDetailDesktop({
   politician,
   videos,
+  news,
   updatedAt,
 }: Props) {
   const imgSrc = politician.img ?? politician.figureImg ?? '';
   const [tab, setTab] = useState<'news' | 'youtube'>('youtube');
 
   const pageSize = 5;
-  const list = tab === 'youtube' ? videos : [];
+  const list = tab === 'youtube' ? videos : news;
 
   const slides: VideoItem[][] = useMemo(() => {
     const chunks: VideoItem[][] = [];
@@ -99,61 +101,56 @@ export default function PoliticianDetailDesktop({
             {updatedAt && <p className="text-xs text-gray-500">{updatedAt}</p>}
           </div>
 
-          {tab === 'youtube' ? (
-            list.length ? (
-              <div className="pt-2">
-                <Swiper
-                  className="desktop-video-swiper"
-                  modules={[Navigation, Pagination]}
-                  navigation
-                  pagination={{ clickable: true }}
-                  slidesPerView={1}
-                  spaceBetween={8}
-                >
-                  {slides.map((chunk, i) => (
-                    <SwiperSlide key={i}>
-                      <div className="px-4">
-                        {chunk.map((v) => (
-                          <VideoRow key={v.id} video={v} />
-                        ))}
-                      </div>
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
+          {/* ✅ 두 탭 모두 Swiper로 통일 (스타일 그대로) */}
+          {list.length ? (
+            <div className="pt-2">
+              <Swiper
+                className="desktop-video-swiper"
+                modules={[Navigation, Pagination]}
+                navigation
+                pagination={{ clickable: true }}
+                slidesPerView={1}
+                spaceBetween={8}
+              >
+                {slides.map((chunk, i) => (
+                  <SwiperSlide key={i}>
+                    <div className="px-4">
+                      {chunk.map((v) => (
+                        <VideoRow key={v.id} video={v} />
+                      ))}
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
 
-                <style jsx global>{`
-                  .desktop-video-swiper { padding-bottom: 20px; }
-                  .desktop-video-swiper .swiper-pagination {
-                    position: static !important;
-                    margin-top: 8px;
-                  }
-                  .desktop-video-swiper .swiper-pagination-bullet {
-                    width: 7px; height: 7px; background: #d1d5db; opacity: 1;
-                  }
-                  .desktop-video-swiper .swiper-pagination-bullet-active {
-                    background: #111827;
-                  }
-                  .desktop-video-swiper .swiper-button-prev,
-                  .desktop-video-swiper .swiper-button-next {
-                    color: #374151;
-                    width: 28px; height: 28px;
-                    top: auto; bottom: 0;          /* ← 하단에 배치 */
-                  }
-                  .desktop-video-swiper .swiper-button-prev { left: 14px; }
-                  .desktop-video-swiper .swiper-button-next { right: 14px; }
-                  .desktop-video-swiper .swiper-button-prev:after,
-                  .desktop-video-swiper .swiper-button-next:after { font-size: 18px; }
-                  .desktop-video-swiper .swiper-button-disabled { opacity: .35; }
-                `}</style>
-              </div>
-            ) : (
-              <div className="flex h-[320px] items-center justify-center text-sm text-gray-500">
-                영상 데이터가 없습니다.
-              </div>
-            )
+              <style jsx global>{`
+                .desktop-video-swiper { padding-bottom: 20px; }
+                .desktop-video-swiper .swiper-pagination {
+                  position: static !important;
+                  margin-top: 8px;
+                }
+                .desktop-video-swiper .swiper-pagination-bullet {
+                  width: 7px; height: 7px; background: #d1d5db; opacity: 1;
+                }
+                .desktop-video-swiper .swiper-pagination-bullet-active {
+                  background: #111827;
+                }
+                .desktop-video-swiper .swiper-button-prev,
+                .desktop-video-swiper .swiper-button-next {
+                  color: #374151;
+                  width: 28px; height: 28px;
+                  top: auto; bottom: 0;          /* ← 하단에 배치 */
+                }
+                .desktop-video-swiper .swiper-button-prev { left: 14px; }
+                .desktop-video-swiper .swiper-button-next { right: 14px; }
+                .desktop-video-swiper .swiper-button-prev:after,
+                .desktop-video-swiper .swiper-button-next:after { font-size: 18px; }
+                .desktop-video-swiper .swiper-button-disabled { opacity: .35; }
+              `}</style>
+            </div>
           ) : (
             <div className="flex h-[320px] items-center justify-center text-sm text-gray-500">
-              뉴스 데이터 준비 중입니다.
+              {tab === 'youtube' ? '영상 데이터가 없습니다.' : '뉴스 데이터가 없습니다.'}
             </div>
           )}
         </section>
