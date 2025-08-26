@@ -19,7 +19,7 @@ export default function Home() {
       <MainHeader />
       <InfoBar />
       <SearchSection
-        placeHolder={'검사를 진행할 유튜브나 기사의 url을 입력해 주세요'}
+        placeHolder={'분석을 진행할 유튜브의 url을 입력해 주세요'}
       />
       <PoliticianSection />
       <HotVideosSection videos={videoList} />

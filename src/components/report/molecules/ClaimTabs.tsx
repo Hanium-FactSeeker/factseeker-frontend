@@ -1,73 +1,92 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 
-export const ClaimTabs = () => {
-  const claims = Array.from({ length: 10 }, (_, i) => `주장 ${i + 1}`);
-  const [activeIndex, setActiveIndex] = useState(0);
+type ClaimTabsProps = {
+  count: number;
+  activeIdx: number;
+  onChange: (index: number) => void;
+};
 
-  const firstRow = useMemo(() => claims.slice(0, 5), [claims]); // 1~5
-  const secondRow = useMemo(() => claims.slice(5, 10), [claims]); // 6~10
+const MAX_PER_ROW_MOBILE = 5;
+
+/**
+ * 주장의 개수에 따라 표시하는 탭의 개수가 결정됩니다
+ * - 모바일: 주장 리스트를 2줄(최대 5개 + 나머지)에 걸쳐 보여줍니다
+ * - 데스크톱: 주장 리스트를 한 줄에 모두 보여줍니다
+ */
+export const ClaimTabs = ({ count, activeIdx, onChange }: ClaimTabsProps) => {
+  const labels = useMemo(
+    () => Array.from({ length: Math.max(0, count) }, (_, i) => `주장 ${i + 1}`),
+    [count],
+  );
+
+  const firstRow = useMemo(() => labels.slice(0, MAX_PER_ROW_MOBILE), [labels]);
+  const secondRow = useMemo(() => labels.slice(MAX_PER_ROW_MOBILE), [labels]);
 
   const btnClass = (isActive: boolean) =>
     `px-2 text-xs font-medium transition md:px-4 md:text-base ${
       isActive
         ? 'bg-primary-light h-7 rounded-t-lg text-white md:h-14'
-        : 'h-5 bg-transparent text-gray-800 hover:text-purple-500 h-10'
+        : 'bg-transparent text-gray-800 hover:text-purple-500 h-7 md:h-10'
     }`;
+
+  if (count <= 0) return null;
 
   return (
     <div className="flex w-full flex-col items-center">
-      {/* 모바일 레이아웃 */}
+      {/* 모바일: 두 줄 */}
       <div className="w-[90%] rounded-t-xl bg-white px-2 md:hidden">
         <div className="flex flex-col items-center gap-1">
-          {/* 1~5 */}
-          <div className="flex h-8 items-end gap-2">
-            {firstRow.map((claim, idx) => {
-              const index = idx;
-              const isActive = activeIndex === index;
-              return (
-                <button
-                  key={index}
-                  onClick={() => setActiveIndex(index)}
-                  className={btnClass(isActive)}
-                >
-                  {claim}
-                </button>
-              );
-            })}
-          </div>
+          {firstRow.length > 0 && (
+            <div className="flex h-8 items-end gap-2">
+              {firstRow.map((label, idx) => {
+                const index = idx;
+                const isActive = activeIdx === index;
+                return (
+                  <button
+                    key={index}
+                    onClick={() => onChange(index)}
+                    className={btnClass(isActive)}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+          )}
 
-          {/* 6~10 */}
-          <div className="flex h-8 items-end gap-2">
-            {secondRow.map((claim, idx) => {
-              const index = idx + 5;
-              const isActive = activeIndex === index;
-              return (
-                <button
-                  key={index}
-                  onClick={() => setActiveIndex(index)}
-                  className={btnClass(isActive)}
-                >
-                  {claim}
-                </button>
-              );
-            })}
-          </div>
+          {secondRow.length > 0 && (
+            <div className="flex h-8 items-end gap-2 self-start px-4">
+              {secondRow.map((label, idx) => {
+                const index = idx + MAX_PER_ROW_MOBILE;
+                const isActive = activeIdx === index;
+                return (
+                  <button
+                    key={index}
+                    onClick={() => onChange(index)}
+                    className={btnClass(isActive)}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* PC 레이아웃 */}
+      {/* PC: 한 줄 */}
       <div className="hidden h-10 w-[70%] items-end gap-3 rounded-t-xl bg-white px-2 md:flex">
-        {claims.map((claim, index) => {
-          const isActive = activeIndex === index;
+        {labels.map((label, index) => {
+          const isActive = activeIdx === index;
           return (
             <button
               key={index}
-              onClick={() => setActiveIndex(index)}
+              onClick={() => onChange(index)}
               className={btnClass(isActive)}
             >
-              {claim}
+              {label}
             </button>
           );
         })}
