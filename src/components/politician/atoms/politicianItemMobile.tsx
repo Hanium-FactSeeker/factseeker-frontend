@@ -26,23 +26,29 @@ export default function PoliticianItemMobile({ item }: Props) {
         </div>
 
         <div className="min-w-0 gap-4">
-          <p className="truncate text-Black_normal text-[14px] font-bold">{item.name}</p>
-          <span className="mt-2 inline-block text-[10px] text-Black_alternative">자세히 보기 &gt;</span>
+          <p className="text-Black_normal truncate text-[14px] font-bold">
+            {item.name}
+          </p>
+          <span className="text-Black_alternative mt-2 inline-block text-[10px]">
+            자세히 보기 &gt;
+          </span>
         </div>
       </div>
 
       <div className="ml-3 flex w-[48%] flex-col gap-1">
-        <p className="flex items-center justify-baseline gap-1 text-[10px] font-light text-Black_alternative">
+        <p className="text-Black_alternative flex items-center justify-baseline gap-1 text-[10px] font-light">
           <FaStar className="h-3 w-3 text-yellow-400" />
           <span className="shrink-0">팩씨 기준 신뢰도 {item.stats.fact}%</span>
         </p>
-        <p className="mt-2 flex items-center justify-baseline gap-1 text-[10px] font-light text-Black_alternative">
+        <p className="text-Black_alternative mt-2 flex items-center justify-baseline gap-1 text-[10px] font-light">
           <SiOpenai className="h-3 w-3 text-black" />
           <span className="shrink-0">GPT 기준 신뢰도 {item.stats.gpt}%</span>
         </p>
-        <p className="mt-2 flex items-center justify-baseline gap-1 text-[10px] font-light text-Black_alternative">
+        <p className="text-Black_alternative mt-2 flex items-center justify-baseline gap-1 text-[10px] font-light">
           <TbSunFilled className="h-3 w-3 text-red-400" />
-          <span className="shrink-0">Gemini 기준 신뢰도 {item.stats.claude}%</span>
+          <span className="shrink-0">
+            Gemini 기준 신뢰도 {item.stats.claude}%
+          </span>
         </p>
       </div>
     </Link>
