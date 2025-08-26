@@ -14,6 +14,11 @@ interface EvidenceToggleProps {
   };
 }
 
+/**
+ * 근거 아이템을 접힘/펼침 상태로 보여줍니다
+ * - 상단에 출처 제목과 원문 링크, 관련성, 간단 설명을 표시합니다
+ * - "자세히 >" 클릭 시 상세 전문을 보여줍니다
+ */
 const EvidenceToggle = ({ isOpen, setIsOpen, data }: EvidenceToggleProps) => {
   return (
     <>
@@ -37,7 +42,7 @@ const EvidenceToggle = ({ isOpen, setIsOpen, data }: EvidenceToggleProps) => {
           </p>
           <p className="text-sm font-medium md:text-base">
             <span className="pr-2 font-semibold">간단한 설명:</span>
-            <span className="leading-4">
+            <span className="leading-6 md:leading-4">
               {data.detail}
               <button
                 className="text-primary-normal pt-1 pl-1 md:pl-2 md:text-sm"
