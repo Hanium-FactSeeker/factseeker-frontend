@@ -1,6 +1,9 @@
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 import FactBadge from '@/components/ui/factBadge';
-import { ValidityType } from '@/types/validity';
 import { VideoItem } from '@/types/videos';
+import { percentToValidity } from '@/utils/calculateValidity';
+import { useEffect } from 'react';
 
 interface videoListProps {
   idx: number;
@@ -8,8 +11,25 @@ interface videoListProps {
 }
 
 const MainVideoItemMobile = ({ idx, video }: videoListProps) => {
+  const router = useRouter();
+
+  const badgePercent =
+    video?.gradeStatus === 'COMPLETED' &&
+    typeof video?.gradePercent === 'number'
+      ? video.gradePercent
+      : 0;
+
+  const handleGoReport = () => {
+    const url = encodeURIComponent(video?.link ?? '');
+    router.push(`/report/${url}`);
+  };
+
+  useEffect(() => {
+    console.log(video);
+  }, [video]);
+
   return (
-    <div className="flex h-52 w-36 flex-col gap-2">
+    <div className="flex h-64 w-40 flex-col gap-2">
       <p className="text-md font-bold">Top {idx + 1}</p>
       <div className="relative h-auto w-36" rel="noopener noreferrer">
         <img
@@ -19,17 +39,33 @@ const MainVideoItemMobile = ({ idx, video }: videoListProps) => {
         />
         <div className="absolute top-0 left-0 z-10">
           <FactBadge
-            percent={video?.gradePercent}
+            percent={badgePercent}
             width={70}
-            height={60}
-            type={video?.grade as ValidityType}
-            textSize="xs"
+            height={90}
+            type={percentToValidity(badgePercent)}
           />
         </div>
       </div>
-      <a href={video?.link} className="w-36 text-sm font-semibold">
+      <p className="line-clamp-2 w-36 overflow-hidden text-sm font-semibold">
         {video?.title}
-      </a>
+      </p>
+      <div className="flex gap-2">
+        <a href={video?.link} target="_blank" rel="noopener noreferrer">
+          <Button variant="filled" color="gray" size="xs" className="mt-2 w-18">
+            원문 보기
+          </Button>
+        </a>
+
+        <Button
+          variant="filled"
+          color="purple"
+          size="xs"
+          className="mt-2 w-22"
+          onClick={handleGoReport}
+        >
+          리포트 분석
+        </Button>
+      </div>
     </div>
   );
 };

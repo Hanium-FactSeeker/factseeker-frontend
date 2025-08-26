@@ -3,7 +3,7 @@ import { ValidityType } from '@/types/validity';
 
 interface FactBadgeProps {
   type: ValidityType;
-  percent: string;
+  percent: number;
   width?: number;
   height?: number;
   className?: string;
@@ -16,6 +16,7 @@ const SVG_MAP: Record<ValidityType, string> = {
   true3: '/badge/true3.svg',
   true4: '/badge/true4.svg',
   true5: '/badge/true5.svg',
+  false: '/badge/true0.svg',
 };
 
 const sizeMap = {

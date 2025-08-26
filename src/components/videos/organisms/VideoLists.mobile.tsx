@@ -5,7 +5,7 @@ import VideoItemMobile from '../molecules/VideoItem.mobile';
 const VideoListsMobile = ({ videos }: HotVideosProps) => {
   return (
     <div className="flex flex-col gap-4">
-      {videos?.slice(0, 20).map((video, idx) => (
+      {videos?.slice(0, 10).map((video, idx) => (
         <VideoItemMobile idx={idx} video={video} key={idx} {...video} />
       ))}
     </div>
