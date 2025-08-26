@@ -1,5 +1,5 @@
 export type LogoType = 'main' | 'hero';
-export type ReliabilityName = '팩씨' | 'GPT' | 'Claude';
+export type ReliabilityName = 'GPT' | 'Gemini' | '전체';
 export type SnsType = 'facebook' | 'x' | 'youtube';
 
 export interface LogoProps {

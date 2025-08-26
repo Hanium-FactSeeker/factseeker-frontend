@@ -6,12 +6,12 @@ import { IconProps } from '@/types/logo';
 
 const Icon = ({ name, className = '' }: IconProps) => {
   switch (name) {
-    case '팩씨':
-      return <LogoStar className={className} />;
     case 'GPT':
       return <GptIcon className={className} />;
-    case 'Claude':
+    case 'Gemini':
       return <ClaudeIcon className={className} />;
+    case '전체':
+      return <LogoStar className={className} />;
     default:
       return null;
   }

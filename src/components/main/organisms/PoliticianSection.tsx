@@ -5,9 +5,10 @@ import PoliticianCard, {
   Politician,
 } from '@/components/main/molecules/PoliticianItem';
 import VerticalSlider from '@/components/ui/slider/VerticalSlider';
-import { POLITICIANS } from '@/constants/politicians';
-import { MAX_ITEMS, SLIDE_SIZE } from '@/constants/main';
+import { SLIDE_SIZE } from '@/constants/main';
 import { Grouping } from '@/utils/grouping';
+import { useEffect, useRef, useState } from 'react';
+import { getTopPoliticians } from '@/apis/mainTemp/getTopPolitician';
 
 /**
  * 메인페이지 내 인물 분석 컴포넌트
@@ -18,10 +19,36 @@ import { Grouping } from '@/utils/grouping';
  *
  */
 const PoliticianSection = () => {
-  const top10 = POLITICIANS.slice(0, MAX_ITEMS);
+  const [items, setItems] = useState<Politician[]>([]);
+  const fetchedRef = useRef(false);
 
-  const slidesMobile = Grouping(top10, SLIDE_SIZE.mobile);
-  const slidesDesktop = Grouping(top10, SLIDE_SIZE.desktop);
+  useEffect(() => {
+    if (fetchedRef.current) return;
+    fetchedRef.current = true;
+
+    (async () => {
+      try {
+        const top = await getTopPoliticians();
+        const mapped: Politician[] = top.map((p) => ({
+          name: p.name,
+          party: p.party,
+          img: p.imageUrl ?? '',
+          stats: {
+            gpt: p.gptScore ?? 0,
+            gemini: p.geminiScore ?? 0,
+            overall: p.overallScore ?? 0,
+          },
+        }));
+        setItems(mapped);
+      } catch (e) {
+        console.error('[PoliticianSection] fetch error:', e);
+        setItems([]);
+      }
+    })();
+  }, []);
+
+  const slidesMobile = Grouping(items, SLIDE_SIZE.mobile);
+  const slidesDesktop = Grouping(items, SLIDE_SIZE.desktop);
 
   return (
     <div className="flex w-[90%] flex-col items-center md:w-[1000px]">

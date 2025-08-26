@@ -13,7 +13,7 @@ export default function PoliticianImage({
   className,
 }: PoliticianImageProps) {
   return (
-    <div className={className}>
+    <div className={`relative ${className}`}>
       <Image
         src={src || defaultImg}
         alt={alt}
