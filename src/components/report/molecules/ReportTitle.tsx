@@ -1,24 +1,29 @@
 import FactBadge from '@/components/ui/factBadge';
+import { percentToValidity } from '@/utils/calculateValidity';
 
-const ReportTitle = () => {
+interface ReportTitleProps {
+  totalScore: number;
+}
+
+const ReportTitle = ({ totalScore }: ReportTitleProps) => {
   return (
     <div className="flex h-40 w-[80%] flex-col justify-center md:w-[70%]">
       <div className="grid w-full grid-cols-[auto_1fr_auto] items-center">
         {/* 실제 배지: 왼쪽 */}
         <div className="-translate-y-2 md:-translate-y-3">
           <FactBadge
-            type="true1"
-            percent="90%"
+            percent={totalScore}
             width={70}
             className="block md:hidden"
             textSize="xs"
+            type={percentToValidity(totalScore)}
           />
           <FactBadge
-            type="true1"
-            percent="90%"
+            percent={totalScore}
             width={140}
             textSize="lg"
             className="hidden md:block"
+            type={percentToValidity(totalScore)}
           />
         </div>
 
@@ -39,13 +44,13 @@ const ReportTitle = () => {
         >
           <FactBadge
             type="true1"
-            percent="90"
+            percent={90}
             width={70}
             className="block md:hidden"
           />
           <FactBadge
             type="true1"
-            percent="90"
+            percent={90}
             width={140}
             className="hidden md:block"
           />
