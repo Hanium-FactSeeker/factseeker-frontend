@@ -14,7 +14,9 @@ const ContentInfo = ({ info }: ContentInfoProps) => {
         />
         <p className="border-primary-normal w-full rounded-xl border-1 py-2 text-center text-xs font-semibold md:w-[80%] md:border-2 md:text-sm">
           해당 자료는
-          <span className="text-primary-normal">{info.channelType}&nbsp;</span>
+          <span className="text-primary-normal">
+            &nbsp;{info.channelType}&nbsp;
+          </span>
           자료입니다.
         </p>
         <p className="mb-4 w-[80%] text-[11px] font-medium text-black md:mb-0 md:text-xs">
