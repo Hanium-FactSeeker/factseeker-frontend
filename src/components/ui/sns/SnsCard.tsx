@@ -18,6 +18,9 @@ interface SnsCardProps {
   percentage: number;
   figureImg: string;
   className?: string;
+  post?: string;
+  postedAt?: string;
+  url?: string; 
 }
 
 const SnsCard = ({
@@ -27,8 +30,16 @@ const SnsCard = ({
   percentage,
   figureImg,
   className,
+  post,
+  postedAt, 
+  url,
 }: SnsCardProps) => {
   const SnsLogo = SNS_MAP[type] ?? X;
+
+  const handleOpen = () => {
+    if (!url || !url.trim()) return; // url 없으면 아무 동작 안 함
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
 
   return (
     <div
@@ -62,13 +73,14 @@ const SnsCard = ({
 
       <div className="border-gray-normal w-11 border-b-1" />
       <p className="line-clamp-3 w-34 text-center text-xs break-all md:w-46 md:text-xs md:leading-6">
-        글자수제한에따른 텍스트잘림 처리까지 해뒀습니다. 냐옹야옹야옹야옹. 사실
-        저는 강아지가 더 좋습니다. 이건 첫 번째 레슨 좋은 건 나눠
-        갖기ㅋㅋㅋㅋㅋㅋㅋㅋ
+        {post ?? ''}
       </p>
       <p
         className="text-primary-normal text-xs font-normal hover:cursor-pointer md:text-sm"
-        onClick={() => window.open('https://www.google.com')}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleOpen();
+        }}
       >
         해당 SNS 게시물로 이동 &gt;
       </p>

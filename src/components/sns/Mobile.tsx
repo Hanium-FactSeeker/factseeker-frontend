@@ -10,8 +10,23 @@ const PAGE_SIZE = 1;
 
 const Magnifier = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden>
-    <circle cx="11" cy="11" r="6" fill="none" stroke="#979999" strokeWidth="2" />
-    <line x1="16" y1="16" x2="21" y2="21" stroke="#979999" strokeWidth="2" strokeLinecap="round" />
+    <circle
+      cx="11"
+      cy="11"
+      r="6"
+      fill="none"
+      stroke="#979999"
+      strokeWidth="2"
+    />
+    <line
+      x1="16"
+      y1="16"
+      x2="21"
+      y2="21"
+      stroke="#979999"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
   </svg>
 );
 
@@ -24,7 +39,8 @@ export default function Mobile() {
     const q = query.trim();
     let list = snsData;
     if (q) list = list.filter((p) => p.name.includes(q));
-    if (sortKey === 'trust') list = [...list].sort((a, b) => b.percentage - a.percentage);
+    if (sortKey === 'trust')
+      list = [...list].sort((a, b) => b.percentage - a.percentage);
     else list = [...list].reverse();
     return list;
   }, [query, sortKey]);
@@ -49,7 +65,7 @@ export default function Mobile() {
             inputSize="sm"
             fullWidth
             iconLeft={<Magnifier />}
-            className="min-w-0 border-gray-normal text-black-normal"
+            className="border-gray-normal text-black-normal min-w-0"
           />
 
           <SwitchButton
@@ -70,7 +86,7 @@ export default function Mobile() {
           <button
             aria-label="prev"
             onClick={goPrev}
-            className="mr-3 h-9 w-9 rounded-full border border-gray-normal text-black-normal"
+            className="border-gray-normal text-black-normal mr-3 h-9 w-9 rounded-full border"
           >
             ‹
           </button>
@@ -85,6 +101,9 @@ export default function Mobile() {
                 percentage={p.percentage}
                 figureImg={p.figureImg ?? ''}
                 className="mx-auto h-80 w-52 md:h-84 md:w-56"
+                post={p.post}
+                postedAt={p.postedAt}
+                url={p.url}
               />
             ))}
           </div>
@@ -92,7 +111,7 @@ export default function Mobile() {
           <button
             aria-label="next"
             onClick={goNext}
-            className="ml-3 h-9 w-9 rounded-full border border-gray-normal text-black-normal"
+            className="border-gray-normal text-black-normal ml-3 h-9 w-9 rounded-full border"
           >
             ›
           </button>
@@ -105,7 +124,11 @@ export default function Mobile() {
             return (
               <span
                 key={n}
-                className={active ? 'h-2 w-2 rounded-full bg-primary-normal' : 'h-2 w-2 rounded-full bg-gray-normal'}
+                className={
+                  active
+                    ? 'bg-primary-normal h-2 w-2 rounded-full'
+                    : 'bg-gray-normal h-2 w-2 rounded-full'
+                }
               />
             );
           })}
