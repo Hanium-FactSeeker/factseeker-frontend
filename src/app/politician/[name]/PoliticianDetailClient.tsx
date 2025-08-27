@@ -87,7 +87,7 @@ async function enrichNewsThumbnails(items: VideoItem[], signal?: AbortSignal) {
         } catch {}
       }
     }
-     enriched.push({ ...it, thumbnail: thumb, thumbnailUrl: thumb } as any); // ✅
+     enriched.push({ ...it, thumbnail: thumb, thumbnailUrl: thumb } as any);
   }
   return enriched;
 }

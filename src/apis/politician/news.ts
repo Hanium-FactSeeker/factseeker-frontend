@@ -25,8 +25,6 @@ export interface NewsApiError {
 }
 export type NewsApiResponse = NewsApiSuccess | NewsApiError;
 
-// ✅ 백엔드 BASE URL (반드시 설정)
-// 예: NEXT_PUBLIC_API_BASE_URL=http://localhost:8080  또는 https://api.fact-seeker.co
 const API_BASE =
   process.env.NEXT_PUBLIC_API_BASE_URL ??
   process.env.API_BASE_URL ??
@@ -66,7 +64,6 @@ export async function searchNewsByKeyword(
     sort,
   });
 
-  // ✅ 절대경로로 백엔드 호출
   if (!API_BASE) {
     throw new Error('NEWS_API_BASE_URL_MISSING: set NEXT_PUBLIC_API_BASE_URL');
   }

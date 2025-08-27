@@ -28,7 +28,7 @@ export default function PoliticianImage({
     `relative overflow-hidden rounded-full ${className ?? sizeMap[fallbackSize]}`;
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={wrapperClass}>
       <Image
         src={finalSrc}
         alt={alt}
