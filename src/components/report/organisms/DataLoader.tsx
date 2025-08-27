@@ -141,7 +141,7 @@ function DataLoader({ url, onCancel }: { url: string; onCancel?: () => void }) {
   if (isLoading && !loaded && !error) {
     return (
       <>
-        <ReportTitle />
+        <ReportTitle totalScore={totalScore} />
         <SearchLoading onCancel={handleExternalCancel} />
       </>
     );
@@ -150,7 +150,7 @@ function DataLoader({ url, onCancel }: { url: string; onCancel?: () => void }) {
   if (error) {
     return (
       <>
-        <ReportTitle />
+        <ReportTitle totalScore={totalScore} />
         <SearchError error={error} reset={handleReset} />
       </>
     );
@@ -158,7 +158,7 @@ function DataLoader({ url, onCancel }: { url: string; onCancel?: () => void }) {
 
   return (
     <>
-      <ReportTitle />
+      <ReportTitle totalScore={totalScore} />
       {data?.info && <ContentInfo info={data.info} />}
       {data?.claims && (
         <ContentEvidence claims={data.claims} totalScore={totalScore} />
