@@ -64,6 +64,9 @@ export default function Desktop() {
               party={p.party}
               percentage={p.percentage}
               figureImg={p.figureImg ?? ''}
+              post={p.post}            
+              postedAt={p.postedAt}
+              url={p.url} 
             />
           ))}
         </div>

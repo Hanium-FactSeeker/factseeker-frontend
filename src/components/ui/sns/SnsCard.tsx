@@ -20,6 +20,7 @@ interface SnsCardProps {
   className?: string;
   post?: string;
   postedAt?: string;
+  url?: string; 
 }
 
 const SnsCard = ({
@@ -30,9 +31,15 @@ const SnsCard = ({
   figureImg,
   className,
   post,
-  postedAt,
+  postedAt, 
+  url,
 }: SnsCardProps) => {
   const SnsLogo = SNS_MAP[type] ?? X;
+
+  const handleOpen = () => {
+    if (!url || !url.trim()) return; // url 없으면 아무 동작 안 함
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
 
   return (
     <div
@@ -70,7 +77,10 @@ const SnsCard = ({
       </p>
       <p
         className="text-primary-normal text-xs font-normal hover:cursor-pointer md:text-sm"
-        onClick={() => window.open('https://www.google.com')}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleOpen();
+        }}
       >
         해당 SNS 게시물로 이동 &gt;
       </p>
