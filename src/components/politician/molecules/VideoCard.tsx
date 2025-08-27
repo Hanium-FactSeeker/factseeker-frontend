@@ -1,54 +1,60 @@
 'use client';
 
+import Link from 'next/link';
+import Image, { type ImageLoader } from 'next/image';
 import type { VideoItem } from '@/constants/videoList';
-import FactBadge from '@/components/ui/factBadge';
-import { ValidityType } from '@/types/validity';
 
-interface Props { video: VideoItem }
+function cx(...args: Array<string | false | null | undefined>) {
+  return args.filter(Boolean).join(' ');
+}
 
-export default function VideoCard({ video }: Props) {
-  const dateText = video.publishedAt ?? (video as any).date ?? '';
+const passthroughLoader: ImageLoader = ({ src }) => src;
+
+type Props = {
+  video: VideoItem;
+  compact?: boolean;
+};
+
+export default function VideoCard({ video, compact = false }: Props) {
+  const { title, link, thumbnail, thumbnailUrl, channelName, publishedAt } = video as any;
+  const thumb = thumbnail || thumbnailUrl || '';
 
   return (
-    <a
-      href={video.link}
+    <Link
+      href={link || '#'}
       target="_blank"
-      rel="noreferrer"
-      className="group grid w-full grid-cols-[1fr_144px] items-center gap-3 border-b border-gray-200 py-4 hover:bg-gray-50"
+      rel="noopener noreferrer"
+      className={cx(
+        'flex w-full items-center justify-between border-b border-gray-200',
+        compact ? 'p-3 gap-3' : 'p-4 gap-4'
+      )}
     >
       <div className="min-w-0">
-        <p className="line-clamp-2 text-sm text-black-normal group-hover:underline">
-          {video.title}
+        <p className={cx('truncate text-black-normal', compact ? 'text-sm font-medium' : 'text-base font-semibold')}>
+          {title}
         </p>
-        <div className="mt-1 flex items-center gap-2 text-xs text-gray-500">
-          <span className="truncate">{video.channelName}</span>
-          {dateText && (
-            <>
-              <span>·</span>
-              <span>{dateText}</span>
-            </>
-          )}
+        <div className={cx('mt-1 flex items-center gap-2 text-gray-500', compact ? 'text-[11px]' : 'text-xs')}>
+          {channelName && <span className="truncate">{channelName}</span>}
+          {channelName && <span>·</span>}
+          {publishedAt && <span className="truncate">{publishedAt}</span>}
         </div>
       </div>
 
-      <div className="relative h-20 w-36 justify-self-end overflow-hidden rounded-lg">
-        <img
-          src={video.thumbnail}
-          alt={video.title}
-          className="h-full w-full object-cover"
-        />
-        {video.grade && (
-          <div className="absolute left-0 top-0 z-10">
-            <FactBadge
-              type={video.grade as ValidityType}
-              percent={`${video.gradePercent ?? 0}`}
-              width={48}
-              height={56}
-              textSize="xs"
-            />
-          </div>
-        )}
+      <div className={cx('relative shrink-0 overflow-hidden rounded-md bg-gray-100',
+        compact ? 'w-28 h-16' : 'w-32 h-20'
+      )}>
+        {thumb ? (
+          <Image
+            loader={passthroughLoader}  
+            unoptimized                 
+            src={thumb}
+            alt=""
+            fill
+            className="object-cover"
+            sizes="128px"
+          />
+        ) : null}
       </div>
-    </a>
+    </Link>
   );
 }
