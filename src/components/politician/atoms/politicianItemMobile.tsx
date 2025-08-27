@@ -4,6 +4,7 @@ import Link from 'next/link';
 import PoliticianImage from '@/components/ui/profile/PoliticianImage';
 import { SiOpenai } from 'react-icons/si';
 import { TbSunFilled } from 'react-icons/tb';
+import { maskTail } from '@/utils/maskTail';
 
 type Stat = { fact: number; gpt: number; claude: number };
 type Item = { name: string; party: string; img: string; stats: Stat };
@@ -26,7 +27,7 @@ export default function PoliticianItemMobile({ item }: Props) {
 
         <div className="min-w-0 gap-4">
           <p className="text-Black_normal truncate text-[14px] font-bold">
-            {item.name}
+            {maskTail(item.name, 1)}
           </p>
           <span className="text-Black_alternative mt-2 inline-block text-[10px]">
             자세히 보기 &gt;

@@ -2,9 +2,9 @@
 
 import Link from 'next/link';
 import PoliticianImage from '@/components/ui/profile/PoliticianImage';
-import { FaStar } from 'react-icons/fa';
 import { SiOpenai } from 'react-icons/si';
 import { TbSunFilled } from 'react-icons/tb';
+import { maskTail } from '@/utils/maskTail';
 
 export type PoliticianTopItem = {
   id?: number;
@@ -52,7 +52,9 @@ export default function PoliticianItemDesktop({ item }: Props) {
           <PoliticianImage src={safeImg} alt={`${item.name} 이미지`} />
         </div>
         <div className="leading-none">
-          <p className="text-Black_normal text-[15px] font-bold">{item.name}</p>
+          <p className="text-Black_normal text-[15px] font-bold">
+            {maskTail(item.name, 1)}
+          </p>
           <p className="text-Black_alternative mt-1 text-[11px]">
             {item.party}
           </p>
@@ -60,7 +62,10 @@ export default function PoliticianItemDesktop({ item }: Props) {
       </div>
 
       <div className="mt-3 flex items-start gap-2">
-        <span className="bg-primary-normal w-[2px] self-stretch my-[2px] rounded" aria-hidden />
+        <span
+          className="bg-primary-normal my-[2px] w-[2px] self-stretch rounded"
+          aria-hidden
+        />
         <div className="space-y-2">
           <p className="text-Black_alternative flex items-center gap-1 text-[11px] font-light">
             <SiOpenai className="h-3 w-3 text-black" />

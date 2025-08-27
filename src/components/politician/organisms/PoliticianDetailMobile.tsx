@@ -5,7 +5,7 @@ import PoliticianImage from '@/components/ui/profile/PoliticianImage';
 import SwitchButton from '@/components/ui/button/SwitchButton';
 import VideoCard from '@/components/politician/molecules/VideoCard';
 import type { VideoItem } from '@/constants/videoList';
-
+import { maskTail } from '@/utils/maskTail';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -24,7 +24,7 @@ type Politician = {
 interface Props {
   politician: Politician;
   videos: VideoItem[];
-  news?: VideoItem[];          // ⬅️ 모바일도 뉴스 받기
+  news?: VideoItem[];
   updatedAt?: string;
 }
 
@@ -52,27 +52,31 @@ export default function PoliticianDetailMobile({
 
   return (
     <section className="w-full rounded-2xl border border-gray-200 bg-white p-4">
-      {/* 상단 인물 요약 */}
       <div className="mb-4 rounded-2xl border border-gray-200 p-4">
-        <p className="mb-3 text-center text-lg font-extrabold text-black-normal">선택 인물</p>
+        <p className="text-black-normal mb-3 text-center text-lg font-extrabold">
+          선택 인물
+        </p>
 
         <div className="mb-4 flex items-center justify-center gap-3">
           <div className="relative h-16 w-16 shrink-0">
             <PoliticianImage src={imgSrc} alt={`${politician.name} 이미지`} />
           </div>
           <div className="min-w-0">
-            <p className="truncate text-base font-bold text-black-normal">{politician.name}</p>
-            <p className="mt-0.5 truncate text-xs text-black-normal">{politician.party}</p>
+            <p className="text-black-normal truncate text-base font-bold">
+              {maskTail(politician.name, 1)}
+            </p>
+            <p className="text-black-normal mt-0.5 truncate text-xs">
+              {politician.party}
+            </p>
           </div>
         </div>
 
-        <div className="py-2 text-center text-xs text-black-normal">
+        <div className="text-black-normal py-2 text-center text-xs">
           <span className="font-medium">누적 신뢰도: </span>
           <span className="font-bold">{cumulative}</span>
         </div>
       </div>
 
-      {/* 탭 */}
       <div className="mb-3">
         <SwitchButton
           value={tab}
@@ -85,12 +89,10 @@ export default function PoliticianDetailMobile({
         />
       </div>
 
-      {/* 업데이트 시간 */}
       <div className="flex items-center justify-end border-b border-gray-200 px-2 py-3">
         {updatedAt && <p className="text-[11px] text-gray-500">{updatedAt}</p>}
       </div>
 
-      {/* 리스트: 두 탭 모두 스와이퍼 사용 */}
       {list.length ? (
         <div className="pt-2">
           <Swiper
@@ -105,7 +107,6 @@ export default function PoliticianDetailMobile({
               <SwiperSlide key={i}>
                 <div className="px-2">
                   {chunk.map((v) => (
-                    // ⬇️ 모바일은 카드가 커 보였으므로 compact 옵션으로 살짝 축소
                     <VideoCard key={v.id} video={v} compact />
                   ))}
                 </div>
@@ -114,13 +115,18 @@ export default function PoliticianDetailMobile({
           </Swiper>
 
           <style jsx global>{`
-            .mobile-video-swiper { padding-bottom: 16px; }
+            .mobile-video-swiper {
+              padding-bottom: 16px;
+            }
             .mobile-video-swiper .swiper-pagination {
               position: static !important;
               margin-top: 6px;
             }
             .mobile-video-swiper .swiper-pagination-bullet {
-              width: 6px; height: 6px; background: #d1d5db; opacity: 1;
+              width: 6px;
+              height: 6px;
+              background: #d1d5db;
+              opacity: 1;
             }
             .mobile-video-swiper .swiper-pagination-bullet-active {
               background: #111827;
@@ -128,19 +134,31 @@ export default function PoliticianDetailMobile({
             .mobile-video-swiper .swiper-button-prev,
             .mobile-video-swiper .swiper-button-next {
               color: #374151;
-              width: 26px; height: 26px;
-              top: auto; bottom: 0;
+              width: 26px;
+              height: 26px;
+              top: auto;
+              bottom: 0;
             }
-            .mobile-video-swiper .swiper-button-prev { left: 12px; }
-            .mobile-video-swiper .swiper-button-next { right: 12px; }
+            .mobile-video-swiper .swiper-button-prev {
+              left: 12px;
+            }
+            .mobile-video-swiper .swiper-button-next {
+              right: 12px;
+            }
             .mobile-video-swiper .swiper-button-prev:after,
-            .mobile-video-swiper .swiper-button-next:after { font-size: 16px; }
-            .mobile-video-swiper .swiper-button-disabled { opacity: .35; }
+            .mobile-video-swiper .swiper-button-next:after {
+              font-size: 16px;
+            }
+            .mobile-video-swiper .swiper-button-disabled {
+              opacity: 0.35;
+            }
           `}</style>
         </div>
       ) : (
         <div className="flex h-[260px] items-center justify-center text-xs text-gray-500">
-          {tab === 'youtube' ? '영상 데이터가 없습니다.' : '뉴스 데이터가 없습니다.'}
+          {tab === 'youtube'
+            ? '영상 데이터가 없습니다.'
+            : '뉴스 데이터가 없습니다.'}
         </div>
       )}
     </section>
