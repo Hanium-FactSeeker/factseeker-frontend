@@ -2,9 +2,9 @@
 
 import { Button } from '@/components/ui/button';
 import FactMark from '@/components/ui/factMark';
-import { ValidityType } from '@/types/validity';
 import { VideoItem } from '@/types/videos';
 import { useRouter } from 'next/navigation';
+import { percentToValidity } from '@/utils/calculateValidity';
 
 interface VideoItemProps {
   idx: number;
@@ -13,10 +13,19 @@ interface VideoItemProps {
 
 const VideoItemMobile = ({ idx, video }: VideoItemProps) => {
   const router = useRouter();
+
+  const goRelated = () => {
+    const params = new URLSearchParams({
+      title: video.title ?? '',
+      thumb: video.thumbnail ?? '',
+    });
+    router.push(`/videos/related/${video.id}?${params.toString()}`);
+  };
+
   return (
-    <div className="flex w-full gap-2">
+    <div className="border-gray-normal flex h-46 w-full gap-2 border-b">
       <div>
-        <p className="text-black-normal mb-2 text-lg font-bold">
+        <p className="text-black-normal mb-6 text-lg font-bold">
           Top {idx + 1}
         </p>
         <a
@@ -25,33 +34,33 @@ const VideoItemMobile = ({ idx, video }: VideoItemProps) => {
           className="relative flex h-24 w-36 items-center justify-center"
         >
           <img
-            className="mb-4 h-30 w-44 rounded-xl"
-            src="https://placehold.co/176x104"
+            className="relative mb-2 h-32 w-34 rounded-xl"
+            src={video?.thumbnail}
           />
-          <div className="absolute right-0 bottom-4 z-10">
+          <div className="absolute -top-5 left-2 z-10">
             <FactMark
-              width={50}
-              height={50}
-              type={video?.grade as ValidityType}
+              width={60}
+              height={60}
+              type={percentToValidity(video?.gradePercent ?? 0)}
             />
           </div>
         </a>
       </div>
       <div className="mt-8 flex h-full w-32 flex-col gap-1">
-        <p className="text-Black_normal text-xs font-bold">{video.title}</p>
+        <p className="text-Black_normal line-clamp-3 h-12 w-full overflow-hidden text-xs leading-4 font-bold">
+          {video.title}
+        </p>
         <div className="text-Black_normal justify-center text-[10px] font-medium">
           {video?.channelName}
         </div>
-        <Button
-          fullWidth={false}
-          variant="outline"
-          color="gray"
-          size="xxs"
-          className="w-[80%]"
-          onClick={() => router.push(`/videos/related/${video.id}`)}
-        >
-          연관 분석하기
-        </Button>
+        <div className="flex w-26 flex-col gap-2">
+          <Button variant="outline" color="gray" size="xxs" onClick={goRelated}>
+            연관 분석
+          </Button>
+          <Button variant="filled" color="purple" size="xxs">
+            리포트 분석
+          </Button>
+        </div>
       </div>
     </div>
   );
