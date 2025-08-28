@@ -3,19 +3,17 @@ import DefaultHeader from '@/components/header/DefaultHeader';
 import Footer from '@/components/footer';
 import PoliticianDetailClient from './PoliticianDetailClient';
 
-type PageProps =
-  | { params: { name: string } }
-  | { params: Promise<{ name: string }> };
+type PageProps = {
+  params: Promise<{ name: string }>;
+};
 
-export default async function PoliticianDetailPage(props: PageProps) {
-  const p: any = (props as any).params;
-  const resolved = typeof p?.then === 'function' ? await p : p;
-  const name = decodeURIComponent(resolved?.name ?? '');
+export default async function PoliticianDetailPage({ params }: PageProps) {
+  const { name } = await params;
 
   return (
     <main className="flex w-full flex-col items-center">
       <DefaultHeader isLoggedIn={false} />
-      <PoliticianDetailClient name={name} />
+      <PoliticianDetailClient name={decodeURIComponent(name)} />
       <Footer />
     </main>
   );
