@@ -1,5 +1,5 @@
 const History = () => {
-  return <div>히스토리 페이지</div>;
+  return <div>마이 히스토리 페이지</div>;
 };
 
 export default History;

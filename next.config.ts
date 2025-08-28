@@ -9,8 +9,17 @@ const nextConfig: NextConfig = {
       test: /\.svg$/,
       use: ['@svgr/webpack'],
     });
-
     return config;
+  },
+
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        // 실제 백엔드 주소 환경변수로 주입
+        destination: `${process.env.API_BASE_URL}/:path*`,
+      },
+    ];
   },
 };
 

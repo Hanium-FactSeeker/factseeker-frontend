@@ -1,21 +1,22 @@
-// /api/youtube/search  키워드 유튜브 검색
 export interface YoutubeRawItem {
   url: string;
   videoTitle: string;
   thumbnailUrl: string;
   updatedAt: string;
 }
+
 type Wrapped<T> = { success?: boolean; message?: string; data?: T };
 
-// ✅ 백엔드 BASE URL
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? process.env.API_BASE_URL ?? '';
+const API_PATH = '/api/youtube/search';
 
-function normalizeResponse(json: any): YoutubeRawItem[] {
-  const payload = (json?.data ?? json) as any;
+function normalizeResponse(json: unknown): YoutubeRawItem[] {
+  const payload =
+    (json as Wrapped<YoutubeRawItem | YoutubeRawItem[]>)?.data ?? json;
+
   if (!payload) return [];
   if (Array.isArray(payload)) return payload as YoutubeRawItem[];
-  if (payload.url && payload.videoTitle) return [payload as YoutubeRawItem];
+  const it = payload as YoutubeRawItem;
+  if (it?.url && it?.videoTitle) return [it];
   return [];
 }
 
@@ -32,13 +33,8 @@ export async function searchYoutubeByKeyword(
 }> {
   if (!keyword?.trim()) return { items: [] };
 
-  if (!API_BASE) {
-    throw new Error(
-      'YOUTUBE_API_BASE_URL_MISSING: set NEXT_PUBLIC_API_BASE_URL',
-    );
-  }
   const qs = new URLSearchParams({ keyword: keyword.trim() }).toString();
-  const url = `${API_BASE}/api/youtube/search?${qs}`;
+  const url = `${API_PATH}?${qs}`;
 
   const res = await fetch(url, {
     method: 'GET',
@@ -51,17 +47,21 @@ export async function searchYoutubeByKeyword(
     let msg = `YOUTUBE_API_HTTP_${res.status}`;
     try {
       const errJson = await res.json();
-      msg = errJson?.message || msg;
-    } catch {}
+      if (typeof errJson?.message === 'string') msg = errJson.message;
+    } catch {
+      /* ignore parse error */
+    }
     throw new Error(msg);
   }
 
-  const json:
-    | Wrapped<YoutubeRawItem | YoutubeRawItem[]>
-    | YoutubeRawItem
-    | YoutubeRawItem[] = await res.json();
-  const rawList = normalizeResponse(json);
+  const json = await res.json();
+  // Wrapped 형태에서 success=false면 메시지 보여주기
+  if (typeof json === 'object' && json && 'success' in (json as any)) {
+    const w = json as Wrapped<unknown>;
+    if (w.success === false) throw new Error(w.message || 'YOUTUBE_API_FAILED');
+  }
 
+  const rawList = normalizeResponse(json);
   const items = rawList.map((r) => ({
     url: r.url,
     title: r.videoTitle,

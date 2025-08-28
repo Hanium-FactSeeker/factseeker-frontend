@@ -9,35 +9,31 @@ import {
   setTokens,
 } from '../lib/auth/tokens';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-if (!BASE_URL) {
-  console.warn('NEXT_PUBLIC_API_BASE_URL가 설정이 되어 있지 않습니다.');
-}
-
+/** API 경로 상수 */
 const PATH = {
   LOGIN: '/api/auth/login',
   REFRESH: '/api/auth/refresh',
   LOGOUT: '/api/auth/logout',
 } as const;
 
+/** 기본 JSON 헤더 */
 const JSON_HEADERS = {
   'Content-Type': 'application/json',
   Accept: 'application/json',
 } as const;
 
+/** 동시에 여러 refresh 요청을 막기 위한 플래그 */
 let refreshInFlight: Promise<string> | null = null;
 
 /**
- * 요청된 Refresh Token으로 새로운 Access Token을 발급받음
- * @returns {Promise<string>} 새 Access Token
- * @throws {Error} Refresh Token 없음 또는 응답에 Access Token 없음
+ * Refresh Token으로 새로운 Access Token 발급
  */
 async function requestRefresh(): Promise<string> {
   const refreshToken = getRefreshToken();
   if (!refreshToken) throw new Error('Missing refresh token');
 
-  const res = await axios.post(
-    `${BASE_URL}${PATH.REFRESH}`,
+  const res = await apiClient.post(
+    PATH.REFRESH,
     { refreshToken },
     { headers: JSON_HEADERS, withCredentials: true },
   );
@@ -54,10 +50,10 @@ async function requestRefresh(): Promise<string> {
 
 /**
  * Axios 인스턴스
- * - 기본 baseURL, JSON 헤더, withCredentials 적용
+ * - baseURL을 "/api" 로 고정 (Next.js rewrites가 실제 서버로 프록시)
  */
 const apiClient = axios.create({
-  baseURL: BASE_URL,
+  baseURL: '/api',
   headers: JSON_HEADERS,
   withCredentials: true,
 });
