@@ -43,7 +43,7 @@ const DefaultHeader: React.FC<DefaultHeaderProps> = ({
           </div>
         </div>
 
-        <div className="mt-3">
+        <div className="mt-6 ml-5">
           <NavBar
             isLoggedIn={isLoggedIn}
             textColor="black"

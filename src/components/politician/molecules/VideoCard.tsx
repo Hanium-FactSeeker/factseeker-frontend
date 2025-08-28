@@ -16,7 +16,8 @@ type Props = {
 };
 
 export default function VideoCard({ video, compact = false }: Props) {
-  const { title, link, thumbnail, thumbnailUrl, channelName, publishedAt } = video as any;
+  const { title, link, thumbnail, thumbnailUrl, channelName, publishedAt } =
+    video as any;
   const thumb = thumbnail || thumbnailUrl || '';
 
   return (
@@ -26,27 +27,40 @@ export default function VideoCard({ video, compact = false }: Props) {
       rel="noopener noreferrer"
       className={cx(
         'flex w-full items-center justify-between border-b border-gray-200',
-        compact ? 'p-3 gap-3' : 'p-4 gap-4'
+        compact ? 'gap-3 p-3' : 'gap-4 p-4',
       )}
     >
       <div className="min-w-0">
-        <p className={cx('truncate text-black-normal', compact ? 'text-sm font-medium' : 'text-base font-semibold')}>
+        <p
+          className={cx(
+            'text-black-normal truncate',
+            compact ? 'text-sm font-medium' : 'text-base font-semibold',
+          )}
+        >
           {title}
         </p>
-        <div className={cx('mt-1 flex items-center gap-2 text-gray-500', compact ? 'text-[11px]' : 'text-xs')}>
+        <div
+          className={cx(
+            'mt-1 flex items-center gap-2 text-gray-500',
+            compact ? 'text-[11px]' : 'text-xs',
+          )}
+        >
           {channelName && <span className="truncate">{channelName}</span>}
           {channelName && <span>·</span>}
           {publishedAt && <span className="truncate">{publishedAt}</span>}
         </div>
       </div>
 
-      <div className={cx('relative shrink-0 overflow-hidden rounded-md bg-gray-100',
-        compact ? 'w-28 h-16' : 'w-32 h-20'
-      )}>
+      <div
+        className={cx(
+          'relative shrink-0 overflow-hidden rounded-md bg-gray-100',
+          compact ? 'h-16 w-28' : 'h-20 w-32',
+        )}
+      >
         {thumb ? (
           <Image
-            loader={passthroughLoader}  
-            unoptimized                 
+            loader={passthroughLoader}
+            unoptimized
             src={thumb}
             alt=""
             fill

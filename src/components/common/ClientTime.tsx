@@ -12,5 +12,9 @@ export default function ClientTime({
 }) {
   const [txt, setTxt] = useState<string>('');
   useEffect(() => setTxt(format(new Date())), [format]);
-  return <span className={className} suppressHydrationWarning>{txt}</span>;
+  return (
+    <span className={className} suppressHydrationWarning>
+      {txt}
+    </span>
+  );
 }

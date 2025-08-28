@@ -1,4 +1,3 @@
-import React from 'react';
 import Nav from '@/components/header/atom/Nav';
 
 interface NavItem {
@@ -15,13 +14,13 @@ interface NavBarProps {
   className?: string;
 }
 
-const NavBar: React.FC<NavBarProps> = ({
+const NavBar = ({
   items,
   isLoggedIn,
   textColor = 'white',
   onOpenUrlModal,
   className,
-}) => {
+}: NavBarProps) => {
   return (
     <nav
       className={`z-30 mt-4 flex w-full gap-3 text-xs md:gap-10 md:text-xl ${className}`}

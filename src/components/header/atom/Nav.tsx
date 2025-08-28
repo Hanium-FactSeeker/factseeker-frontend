@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 interface NavLinkProps {
   href: string;
+  onClick?: () => void;
   children: React.ReactNode;
   className?: string;
   textColor?: string;
@@ -10,6 +11,7 @@ interface NavLinkProps {
 
 const Nav: React.FC<NavLinkProps> = ({
   href,
+  onClick,
   children,
   className,
   textColor,

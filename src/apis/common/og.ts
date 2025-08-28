@@ -1,4 +1,7 @@
-export async function getOgImage(url: string, signal?: AbortSignal): Promise<string | undefined> {
+export async function getOgImage(
+  url: string,
+  signal?: AbortSignal,
+): Promise<string | undefined> {
   try {
     const qs = new URLSearchParams({ url }).toString();
     const res = await fetch(`/api/og?${qs}`, { cache: 'no-store', signal });

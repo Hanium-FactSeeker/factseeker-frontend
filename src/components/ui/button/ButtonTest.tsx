@@ -1,7 +1,7 @@
 import { Button } from './index';
 import { KakaoLoginButton } from './KakaoLoginButton';
 import { NaverLoginButton } from './NaverLoginButton';
-import { ToggleButton } from './ToggleButton';
+import ToggleButton from './ToggleButton';
 
 const sizes = ['xxs', 'xs', 'sm', 'md', 'lg'] as const;
 const sizeLabel = {

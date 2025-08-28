@@ -27,7 +27,7 @@ export interface TopScoresSummaryResponse {
 export interface PoliticianBasic {
   id: number;
   name: string;
-  birthDate: string;      
+  birthDate: string;
   party: string;
   facebookUrl?: string | null;
   instagramUrl?: string | null;
@@ -49,7 +49,7 @@ export interface PoliticianListResponse {
 export interface PoliticianBasic {
   id: number;
   name: string;
-  birthDate: string;        
+  birthDate: string;
   party: string;
   facebookUrl?: string | null;
   instagramUrl?: string | null;

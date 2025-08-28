@@ -1,33 +1,33 @@
-"use client";
+'use client';
 
-import React from "react";
-import clsx from "clsx";
-import { TextInputProps } from "./types";
+import React from 'react';
+import clsx from 'clsx';
+import { TextInputProps } from './types';
 
 const sizeMap = {
-  sm: "h-10 md:h-10 text-sm md:text-sm px-3 md:px-3 rounded-lg md:rounded-lg",
-  md: "h-12 md:h-12 text-base md:text-base px-4 md:px-5 rounded-xl md:rounded-2xl",
-  lg: "h-14 md:h-16 text-base md:text-lg px-5 md:px-6 rounded-[20px] md:rounded-[24px]",
+  sm: 'h-10 md:h-10 text-sm md:text-sm px-3 md:px-3 rounded-lg md:rounded-lg',
+  md: 'h-12 md:h-12 text-base md:text-base px-4 md:px-5 rounded-xl md:rounded-2xl',
+  lg: 'h-14 md:h-16 text-base md:text-lg px-5 md:px-6 rounded-[20px] md:rounded-[24px]',
 };
 
 export default function TextInput({
-  className = "",
+  className = '',
   iconLeft,
   iconRight,
-  inputSize = "md",
+  inputSize = 'md',
   fullWidth,
   ...props
 }: TextInputProps) {
-  const widthClass = fullWidth ? "w-full" : "w-full md:w-96";
+  const widthClass = fullWidth ? 'w-full' : 'w-full md:w-96';
 
   return (
     <div
       className={clsx(
-        "relative flex items-center gap-2 md:gap-3",
-        "bg-gray-light text-foreground",
+        'relative flex items-center gap-2 md:gap-3',
+        'bg-gray-light text-foreground',
         widthClass,
         sizeMap[inputSize],
-        className
+        className,
       )}
     >
       {iconLeft && (
@@ -39,8 +39,8 @@ export default function TextInput({
       <input
         {...props}
         className={clsx(
-          "flex-1 bg-transparent text-foreground placeholder:text-gray-strong",
-          "focus:outline-none focus:ring-0 selection:bg-transparent appearance-none"
+          'text-foreground placeholder:text-gray-strong flex-1 bg-transparent',
+          'appearance-none selection:bg-transparent focus:ring-0 focus:outline-none',
         )}
       />
 

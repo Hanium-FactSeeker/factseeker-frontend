@@ -20,7 +20,7 @@ interface SnsCardProps {
   className?: string;
   post?: string;
   postedAt?: string;
-  url?: string; 
+  url?: string;
 }
 
 const SnsCard = ({
@@ -31,7 +31,7 @@ const SnsCard = ({
   figureImg,
   className,
   post,
-  postedAt, 
+  postedAt,
   url,
 }: SnsCardProps) => {
   const SnsLogo = SNS_MAP[type] ?? X;

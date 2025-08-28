@@ -10,11 +10,16 @@ import { getOgImage } from '@/apis/common/og';
 import type { VideoItem } from '@/constants/videoList';
 
 type ScoreRow = {
-  politicianName?: string; name?: string;
-  politicianParty?: string; party?: string;
+  politicianName?: string;
+  name?: string;
+  politicianParty?: string;
+  party?: string;
   analysisDate?: string;
-  overallScore?: number; trustScore?: number; totalScore?: number;
-  gptScore?: number; geminiScore?: number;
+  overallScore?: number;
+  trustScore?: number;
+  totalScore?: number;
+  gptScore?: number;
+  geminiScore?: number;
   profileImageUrl?: string | null;
 };
 
@@ -26,26 +31,35 @@ const pickLatest = (rows: ScoreRow[] = []) =>
     const bd = dateKey(best.analysisDate);
     if (nd > bd) return cur;
     if (nd === bd) {
-      const ns = (cur.overallScore ?? cur.trustScore ?? cur.totalScore ?? 0) as number;
-      const bs = (best.overallScore ?? best.trustScore ?? best.totalScore ?? 0) as number;
+      const ns = (cur.overallScore ??
+        cur.trustScore ??
+        cur.totalScore ??
+        0) as number;
+      const bs = (best.overallScore ??
+        best.trustScore ??
+        best.totalScore ??
+        0) as number;
       return ns >= bs ? cur : best;
     }
     return best;
   }, null);
 
-const safeImg = (u?: string | null) => (u && u !== 'null' && u !== 'undefined' ? u : '');
+const safeImg = (u?: string | null) =>
+  u && u !== 'null' && u !== 'undefined' ? u : '';
 
 const domainLabel = (url = '') => {
   try {
     const host = new URL(url).hostname;
     const parts = host.split('.').slice(-2).join('.');
     return parts.replace('.co.kr', '').replace('.com', '').replace('.kr', '');
-  } catch { return ''; }
+  } catch {
+    return '';
+  }
 };
 
 // 뉴스 → VideoItem
 function mapNewsToVideoItems(
-  news: { title: string; link: string; pubDate?: string }[]
+  news: { title: string; link: string; pubDate?: string }[],
 ): VideoItem[] {
   return news.map((n) => ({
     id: n.link,
@@ -58,7 +72,12 @@ function mapNewsToVideoItems(
 }
 
 function mapYoutubeToVideoItems(
-  vs: { url: string; title: string; thumbnailUrl?: string; updatedAt?: string }[]
+  vs: {
+    url: string;
+    title: string;
+    thumbnailUrl?: string;
+    updatedAt?: string;
+  }[],
 ): VideoItem[] {
   return vs.map((v) => ({
     id: v.url,
@@ -66,11 +85,10 @@ function mapYoutubeToVideoItems(
     link: v.url,
     channelName: '',
     publishedAt: v.updatedAt,
-    thumbnail: v.thumbnailUrl,      
-    thumbnailUrl: v.thumbnailUrl,   
+    thumbnail: v.thumbnailUrl,
+    thumbnailUrl: v.thumbnailUrl,
   })) as unknown as VideoItem[];
 }
-
 
 async function enrichNewsThumbnails(items: VideoItem[], signal?: AbortSignal) {
   const enriched: VideoItem[] = [];
@@ -87,7 +105,7 @@ async function enrichNewsThumbnails(items: VideoItem[], signal?: AbortSignal) {
         } catch {}
       }
     }
-     enriched.push({ ...it, thumbnail: thumb, thumbnailUrl: thumb } as any);
+    enriched.push({ ...it, thumbnail: thumb, thumbnailUrl: thumb } as any);
   }
   return enriched;
 }
@@ -96,10 +114,14 @@ export default function PoliticianDetailClient({ name }: { name: string }) {
   const [loading, setLoading] = useState(true);
 
   const [politician, setPolitician] = useState<{
-    name: string; party: string; img?: string;
+    name: string;
+    party: string;
+    img?: string;
     stats: { fact: number; gpt: number; claude: number };
   }>({
-    name, party: '', img: '',
+    name,
+    party: '',
+    img: '',
     stats: { fact: 0, gpt: 0, claude: 0 },
   });
 
@@ -126,14 +148,27 @@ export default function PoliticianDetailClient({ name }: { name: string }) {
       try {
         setLoading(true);
 
-        const scoresResp: any = await (searchPoliticianScoresByName as any)(name, 0, 50);
+        const scoresResp: any = await (searchPoliticianScoresByName as any)(
+          name,
+          0,
+          50,
+        );
         const payload = (scoresResp?.data ?? scoresResp) || {};
         const list: ScoreRow[] = Array.isArray(payload)
           ? payload
-          : (payload.politicians ?? payload.results ?? payload.items ?? payload.data ?? []);
+          : (payload.politicians ??
+            payload.results ??
+            payload.items ??
+            payload.data ??
+            []);
         const picked = pickLatest(list) || {};
 
-        const overall = Math.round((picked.overallScore ?? picked.trustScore ?? picked.totalScore ?? 0) as number);
+        const overall = Math.round(
+          (picked.overallScore ??
+            picked.trustScore ??
+            picked.totalScore ??
+            0) as number,
+        );
         const gpt = Math.round(picked.gptScore ?? 0);
         const gemini = Math.round(picked.geminiScore ?? 0);
 
@@ -147,7 +182,11 @@ export default function PoliticianDetailClient({ name }: { name: string }) {
         }
 
         const [newsRes, ytRes] = await Promise.allSettled([
-          searchNewsByKeyword(name, { sort: 'date', display: 10, signal: ac.signal }),
+          searchNewsByKeyword(name, {
+            sort: 'date',
+            display: 10,
+            signal: ac.signal,
+          }),
           searchYoutubeByKeyword(name, { signal: ac.signal }),
         ]);
 
@@ -166,8 +205,13 @@ export default function PoliticianDetailClient({ name }: { name: string }) {
           const raw = ytRes.value.items || [];
           setVideos(
             mapYoutubeToVideoItems(
-              raw.map(r => ({ url: r.url, title: r.title, thumbnailUrl: r.thumbnailUrl, updatedAt: r.updatedAt }))
-            )
+              raw.map((r) => ({
+                url: r.url,
+                title: r.title,
+                thumbnailUrl: r.thumbnailUrl,
+                updatedAt: r.updatedAt,
+              })),
+            ),
           );
         } else {
           setVideos([]);
@@ -180,11 +224,18 @@ export default function PoliticianDetailClient({ name }: { name: string }) {
       }
     })();
 
-    return () => { alive = false; ac.abort(); };
+    return () => {
+      alive = false;
+      ac.abort();
+    };
   }, [name]);
 
   if (loading) {
-    return <div className="w-full max-w-6xl px-4 md:px-6 py-6 text-center text-sm text-gray-500">불러오는 중…</div>;
+    return (
+      <div className="w-full max-w-6xl px-4 py-6 text-center text-sm text-gray-500 md:px-6">
+        불러오는 중…
+      </div>
+    );
   }
 
   return (

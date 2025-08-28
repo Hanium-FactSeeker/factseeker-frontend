@@ -17,7 +17,8 @@ export default function Desktop() {
     const q = query.trim();
     let list = snsData;
     if (q) list = list.filter((p) => p.name.includes(q));
-    if (sortKey === 'trust') list = [...list].sort((a, b) => b.percentage - a.percentage);
+    if (sortKey === 'trust')
+      list = [...list].sort((a, b) => b.percentage - a.percentage);
     else list = [...list].reverse();
     return list;
   }, [query, sortKey]);
@@ -64,9 +65,9 @@ export default function Desktop() {
               party={p.party}
               percentage={p.percentage}
               figureImg={p.figureImg ?? ''}
-              post={p.post}            
+              post={p.post}
               postedAt={p.postedAt}
-              url={p.url} 
+              url={p.url}
             />
           ))}
         </div>
@@ -80,8 +81,8 @@ export default function Desktop() {
                 key={n}
                 className={
                   active
-                    ? 'rounded bg-primary-normal px-3 py-1 text-white'
-                    : 'rounded bg-gray-light px-3 py-1 text-black-normal hover:bg-gray-normal'
+                    ? 'bg-primary-normal rounded px-3 py-1 text-white'
+                    : 'bg-gray-light text-black-normal hover:bg-gray-normal rounded px-3 py-1'
                 }
                 onClick={() => setPage(n)}
               >
