@@ -6,8 +6,8 @@ export interface PoliticianScoreDetail {
   politicianId: number;
   politicianName: string;
   politicianParty: string;
-  analysisDate: string;      // 'YYYY-MM-DD'
-  analysisPeriod: string;    // 예: 'DAILY' | 'WEEKLY' 등
+  analysisDate: string; // 'YYYY-MM-DD'
+  analysisPeriod: string; // 예: 'DAILY' | 'WEEKLY' 등
 
   overallScore: number;
   integrityScore: number;
@@ -32,5 +32,5 @@ export interface PoliticianScoreDetail {
   errorMessage?: string | null;
 
   retryCount: number;
-  lastUpdated: string;       // ISO
+  lastUpdated: string; // ISO
 }

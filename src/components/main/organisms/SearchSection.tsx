@@ -33,14 +33,9 @@ const SearchSection = ({ placeHolder }: SearchSectionProps) => {
     fetchedRef.current = true;
 
     (async () => {
-      try {
-        const recentReports = await getRecentReport();
-        setRecents(recentReports);
-      } catch (err) {
-        console.error('[SearchSection] recent error:', err);
-      } finally {
-        setLoading(false);
-      }
+      const recentReports = await getRecentReport();
+      setRecents(recentReports);
+      setLoading(false);
     })();
   }, []);
 

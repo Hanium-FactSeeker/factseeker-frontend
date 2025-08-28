@@ -10,7 +10,7 @@ export type ButtonColor =
   | 'purple';
 export type ButtonSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg';
 
-export type InputSize = "sm" | "md" | "lg";
+export type InputSize = 'sm' | 'md' | 'lg';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
@@ -30,7 +30,8 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   fullWidth?: boolean;
 }
 
-export interface TextInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
+export interface TextInputProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   className?: string;
   iconLeft?: ReactNode;
   iconRight?: ReactNode;

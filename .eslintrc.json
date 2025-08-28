@@ -27,7 +27,7 @@
 
     /* --- 경고 수준(배포는 통과) --- */
     "import/order": [
-      "warn",
+      "off",
       {
         "groups": [
           "builtin",
@@ -52,15 +52,18 @@
         "pathGroupsExcludedImportTypes": ["react", "react-dom", "next"]
       }
     ],
-    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-unused-vars": [
       "warn",
       { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
     ],
-    "@typescript-eslint/consistent-type-imports": ["warn", { "prefer": "type-imports" }],
+    "@typescript-eslint/consistent-type-imports": [
+      "warn",
+      { "prefer": "type-imports" }
+    ],
     "@next/next/no-img-element": "warn",
 
-    /* --- 시끄러운 규칙은 잠시 off (향후 리팩토링 때 켜기) --- */
+    /* --- 잠시 off (향후 리팩토링 때 켜기) --- */
     "import/no-named-as-default": "off",
     "import/no-named-as-default-member": "off",
     "import/export": "off",

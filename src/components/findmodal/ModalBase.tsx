@@ -1,16 +1,21 @@
-'use client'
-import React from 'react'
-import clsx from 'clsx'
+'use client';
+import React from 'react';
+import clsx from 'clsx';
 
 type ModalBaseProps = {
-  open: boolean
-  onClose?: () => void
-  children: React.ReactNode
-  className?: string
-}
+  open: boolean;
+  onClose?: () => void;
+  children: React.ReactNode;
+  className?: string;
+};
 
-export default function ModalBase({ open, onClose, children, className }: ModalBaseProps) {
-  if (!open) return null
+export default function ModalBase({
+  open,
+  onClose,
+  children,
+  className,
+}: ModalBaseProps) {
+  if (!open) return null;
 
   return (
     <div
@@ -21,15 +26,15 @@ export default function ModalBase({ open, onClose, children, className }: ModalB
     >
       <div
         className={clsx(
-          'relative w-full max-w-xs md:max-w-md bg-white rounded-xl md:rounded-2xl shadow p-6 md:p-8',
-          className
+          'relative w-full max-w-xs rounded-xl bg-white p-6 shadow md:max-w-md md:rounded-2xl md:p-8',
+          className,
         )}
         onClick={(e) => e.stopPropagation()}
       >
         <button
           type="button"
           aria-label="닫기"
-          className="absolute right-4 top-4 text-black-alternative hover:opacity-70"
+          className="text-black-alternative absolute top-4 right-4 hover:opacity-70"
           onClick={onClose}
         >
           ✕
@@ -37,5 +42,5 @@ export default function ModalBase({ open, onClose, children, className }: ModalB
         {children}
       </div>
     </div>
-  )
+  );
 }

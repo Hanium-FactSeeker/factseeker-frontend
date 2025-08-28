@@ -1,16 +1,23 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import PoliticianItemDesktop, { PoliticianTopItem } from '../atoms/politicianItemDesktop';
+import PoliticianItemDesktop, {
+  PoliticianTopItem,
+} from '../atoms/politicianItemDesktop';
 import {
   fetchPoliticiansPage,
   fetchTopScoresSummary,
   searchPoliticianScoresByName,
 } from '@/apis/politician/politician';
 
-interface Props { query: string }
+interface Props {
+  query: string;
+}
 
-type Basics = Record<string, { id?: number; profileImageUrl?: string | null; party?: string }>;
+type Basics = Record<
+  string,
+  { id?: number; profileImageUrl?: string | null; party?: string }
+>;
 
 type SearchScoreRow = {
   id?: number;
@@ -18,45 +25,62 @@ type SearchScoreRow = {
   politicianName?: string;
   politicianParty?: string;
   analysisDate?: string;
-  overallScore?: number; 
-  gptScore?: number; 
+  overallScore?: number;
+  gptScore?: number;
   geminiScore?: number;
-  trustScore?: number; 
+  trustScore?: number;
   totalScore?: number;
-  name?: string; 
-  party?: string; 
+  name?: string;
+  party?: string;
   profileImageUrl?: string | null;
 };
 
-const safeImg = (u?: string | null) => (u && u !== 'null' && u !== 'undefined' ? u : '');
-const normalizeName = (name?: string) => (name ?? '').replace(/\s+/g, '').trim();
+const safeImg = (u?: string | null) =>
+  u && u !== 'null' && u !== 'undefined' ? u : '';
+const normalizeName = (name?: string) =>
+  (name ?? '').replace(/\s+/g, '').trim();
 const dateKey = (s?: string) => (s ? new Date(s).getTime() || 0 : 0);
 
 const imgOf = (v: unknown) =>
-  safeImg(typeof v === 'function' ? undefined : (v as string | null | undefined));
+  safeImg(
+    typeof v === 'function' ? undefined : (v as string | null | undefined),
+  );
 
 function toScores(r: SearchScoreRow) {
   const overall = r.overallScore ?? r.trustScore ?? r.totalScore ?? 0;
   const gpt = r.gptScore ?? 0;
   const gemini = r.geminiScore ?? 0;
-  return { overall: Math.round(overall), gpt: Math.round(gpt), gemini: Math.round(gemini) };
+  return {
+    overall: Math.round(overall),
+    gpt: Math.round(gpt),
+    gemini: Math.round(gemini),
+  };
 }
 
 function dedupLatest(rows: SearchScoreRow[]) {
-  const map = new Map<string, SearchScoreRow>(); 
+  const map = new Map<string, SearchScoreRow>();
   for (const row of rows) {
     const key = normalizeName(row.politicianName || row.name);
     if (!key) continue;
     const prev = map.get(key);
-    if (!prev) { map.set(key, row); continue; }
+    if (!prev) {
+      map.set(key, row);
+      continue;
+    }
 
     const dNew = dateKey(row.analysisDate);
     const dOld = dateKey(prev.analysisDate);
     if (dNew > dOld) {
       map.set(key, row);
     } else if (dNew === dOld) {
-      const sNew = (row.overallScore ?? row.trustScore ?? row.totalScore ?? 0) as number;
-      const sOld = (prev.overallScore ?? prev.trustScore ?? prev.totalScore ?? 0) as number;
+      const sNew = (row.overallScore ??
+        row.trustScore ??
+        row.totalScore ??
+        0) as number;
+      const sOld = (prev.overallScore ??
+        prev.trustScore ??
+        prev.totalScore ??
+        0) as number;
       if (sNew >= sOld) map.set(key, row);
     }
   }
@@ -71,7 +95,7 @@ export default function PoliticianBoardDesktop({ query }: Props) {
 
   const q = (query ?? '').trim();
   const pageSize = 12;
-  const [page, setPage] = useState(0); 
+  const [page, setPage] = useState(0);
   const [searching, setSearching] = useState(false);
   const [searchAll, setSearchAll] = useState<PoliticianTopItem[]>([]);
   const [totalPages, setTotalPages] = useState(0);
@@ -88,7 +112,7 @@ export default function PoliticianBoardDesktop({ query }: Props) {
         const basics = await fetchPoliticiansPage(0, 1000);
         if (!alive) return;
         const bm: Basics = {};
-        (basics.politicians ?? []).forEach(p => {
+        (basics.politicians ?? []).forEach((p) => {
           bm[p.name] = {
             id: p.id,
             profileImageUrl: safeImg(p.profileImageUrl),
@@ -99,15 +123,20 @@ export default function PoliticianBoardDesktop({ query }: Props) {
 
         const top12 = await fetchTopScoresSummary();
         if (!alive) return;
-        const mappedTop: PoliticianTopItem[] = (top12 ?? []).slice(0, 12).map(s => ({
-          id: bm[s.name]?.id ?? s.id,
-          name: s.name,
-          party: s.party || bm[s.name]?.party || '', 
-          profileImageUrl: bm[s.name]?.profileImageUrl || imgOf((s as any).profileImageUrl), 
-          overallScore: Math.round(s.overallScore ?? s.trustScore ?? s.totalScore ?? 0),
-          gptScore: Math.round(s.gptScore ?? 0),
-          geminiScore: Math.round(s.geminiScore ?? 0),
-        }));
+        const mappedTop: PoliticianTopItem[] = (top12 ?? [])
+          .slice(0, 12)
+          .map((s) => ({
+            id: bm[s.name]?.id ?? s.id,
+            name: s.name,
+            party: s.party || bm[s.name]?.party || '',
+            profileImageUrl:
+              bm[s.name]?.profileImageUrl || imgOf((s as any).profileImageUrl),
+            overallScore: Math.round(
+              s.overallScore ?? s.trustScore ?? s.totalScore ?? 0,
+            ),
+            gptScore: Math.round(s.gptScore ?? 0),
+            geminiScore: Math.round(s.geminiScore ?? 0),
+          }));
         setTop(mappedTop);
       } catch (e) {
         console.error('politician board init error', e);
@@ -116,10 +145,14 @@ export default function PoliticianBoardDesktop({ query }: Props) {
       }
     })();
 
-    return () => { alive = false; };
+    return () => {
+      alive = false;
+    };
   }, []);
 
-  useEffect(() => { setPage(0); }, [q]);
+  useEffect(() => {
+    setPage(0);
+  }, [q]);
 
   useEffect(() => {
     let alive = true;
@@ -133,21 +166,32 @@ export default function PoliticianBoardDesktop({ query }: Props) {
       try {
         setSearching(true);
 
-        const resp: any = await (searchPoliticianScoresByName as any)(q,  0, 500);
+        const resp: any = await (searchPoliticianScoresByName as any)(
+          q,
+          0,
+          500,
+        );
         const payload = (resp?.data ?? resp) || {};
-        const listRaw: SearchScoreRow[] = Array.isArray(payload) ? payload : (payload.politicians ?? payload.results ?? payload.items ?? payload.data ?? []);
+        const listRaw: SearchScoreRow[] = Array.isArray(payload)
+          ? payload
+          : (payload.politicians ??
+            payload.results ??
+            payload.items ??
+            payload.data ??
+            []);
 
         const latest = dedupLatest(listRaw);
 
-        const all: PoliticianTopItem[] = latest.map(row => {
+        const all: PoliticianTopItem[] = latest.map((row) => {
           const name = row.politicianName || row.name || '';
           const base = basicsMap[name] || {};
           const scores = toScores(row);
           return {
             id: base.id ?? row.politicianId ?? row.id,
             name,
-            party: row.politicianParty || row.party || base.party || '', 
-            profileImageUrl: base.profileImageUrl ?? imgOf((row as any).profileImageUrl),
+            party: row.politicianParty || row.party || base.party || '',
+            profileImageUrl:
+              base.profileImageUrl ?? imgOf((row as any).profileImageUrl),
             overallScore: scores.overall,
             gptScore: scores.gpt,
             geminiScore: scores.gemini,
@@ -165,7 +209,10 @@ export default function PoliticianBoardDesktop({ query }: Props) {
       }
     }, 200);
 
-    return () => { alive = false; clearTimeout(t); };
+    return () => {
+      alive = false;
+      clearTimeout(t);
+    };
   }, [q, basicsMap]);
 
   const visible = useMemo(() => {
@@ -182,7 +229,7 @@ export default function PoliticianBoardDesktop({ query }: Props) {
 
   if (loading) {
     return (
-      <div className="flex w-full max-w-[1200px] flex-col itemscenter gap-6">
+      <div className="itemscenter flex w-full max-w-[1200px] flex-col gap-6">
         <div className="w-full rounded-xl border border-gray-200 bg-white p-6 text-center text-sm text-gray-500">
           불러오는 중…
         </div>
@@ -213,12 +260,18 @@ export default function PoliticianBoardDesktop({ query }: Props) {
       <div className="w-full">
         <div className="grid grid-cols-6 gap-x-6 gap-y-6">
           {row1.map((p, i) => (
-            <PoliticianItemDesktop key={`r1-${i}-${p.id ?? p.name}`} item={{ ...p, party: p.party ?? '' }} />
+            <PoliticianItemDesktop
+              key={`r1-${i}-${p.id ?? p.name}`}
+              item={{ ...p, party: p.party ?? '' }}
+            />
           ))}
         </div>
         <div className="mt-6 grid grid-cols-6 gap-x-6 gap-y-6">
           {row2.map((p, i) => (
-            <PoliticianItemDesktop key={`r2-${i}-${p.id ?? p.name}`} item={{ ...p, party: p.party ?? '' }} />
+            <PoliticianItemDesktop
+              key={`r2-${i}-${p.id ?? p.name}`}
+              item={{ ...p, party: p.party ?? '' }}
+            />
           ))}
         </div>
 
@@ -226,15 +279,17 @@ export default function PoliticianBoardDesktop({ query }: Props) {
           <div className="mt-6 flex items-center justify-center gap-3 text-sm text-gray-600">
             <button
               className="rounded border border-gray-300 px-3 py-1 disabled:opacity-50"
-              onClick={() => setPage(p => Math.max(0, p - 1))}
+              onClick={() => setPage((p) => Math.max(0, p - 1))}
               disabled={page <= 0}
             >
               이전
             </button>
-            <span className="px-2">{page + 1} / {totalPages}</span>
+            <span className="px-2">
+              {page + 1} / {totalPages}
+            </span>
             <button
               className="rounded border border-gray-300 px-3 py-1 disabled:opacity-50"
-              onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
+              onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
               disabled={page >= totalPages - 1}
             >
               다음

@@ -1,3 +1,5 @@
+'use client';
+
 import FrontStars from '@/assets/front_starts.svg';
 import BackStars from '@/assets/back_stars.svg';
 import Logo from '@/components/ui/logo';

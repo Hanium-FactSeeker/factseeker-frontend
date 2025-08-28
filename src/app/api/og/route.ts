@@ -28,7 +28,11 @@ function withOtherScheme(url: string) {
 }
 
 function resolveUrl(href: string, base: string) {
-  try { return new URL(href, base).toString(); } catch { return undefined; }
+  try {
+    return new URL(href, base).toString();
+  } catch {
+    return undefined;
+  }
 }
 
 function pickOgImage(html: string, baseUrl: string) {
@@ -45,7 +49,9 @@ function pickOgImage(html: string, baseUrl: string) {
       if (abs) return abs;
     }
   }
-  const icon = html.match(/<link[^>]+rel=["'](?:apple-touch-icon|icon)["'][^>]+href=["']([^"']+)["']/i);
+  const icon = html.match(
+    /<link[^>]+rel=["'](?:apple-touch-icon|icon)["'][^>]+href=["']([^"']+)["']/i,
+  );
   if (icon?.[1]) {
     const abs = resolveUrl(icon[1], baseUrl);
     if (abs) return abs;
@@ -58,7 +64,7 @@ async function tryFetchHtml(url: string, signal: AbortSignal) {
     'user-agent':
       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +
       '(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
     'accept-language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
     'accept-encoding': 'identity',
   } as Record<string, string>;
@@ -93,8 +99,7 @@ export async function GET(req: NextRequest) {
       const r1 = await tryFetchHtml(first, ctrl.signal);
       html = r1.text || '';
       image = html ? pickOgImage(html, first) : undefined;
-    } catch {
-    }
+    } catch {}
 
     if (!image) {
       const alt = withOtherScheme(first);

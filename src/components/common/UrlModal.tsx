@@ -88,7 +88,7 @@ export default function UrlModal({
         </div>
 
         <div className="text-black-normal flex flex-wrap justify-center gap-6 text-sm underline">
-          <span className="cursor-pointer">
+          {/* <span className="cursor-pointer">
             최근에 검색한 영상 : 타이틀 ...
           </span>
           <span className="cursor-pointer">
@@ -96,7 +96,7 @@ export default function UrlModal({
           </span>
           <span className="cursor-pointer">
             최근에 검색한 영상 : 타이틀 ...
-          </span>
+          </span> */}
         </div>
       </div>
     </div>

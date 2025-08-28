@@ -26,9 +26,7 @@ export interface NewsApiError {
 export type NewsApiResponse = NewsApiSuccess | NewsApiError;
 
 const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL ??
-  process.env.API_BASE_URL ??
-  '';
+  process.env.NEXT_PUBLIC_API_BASE_URL ?? process.env.API_BASE_URL ?? '';
 
 function stripTags(html = '') {
   const text = html.replace(/<[^>]*>/g, '');
@@ -50,10 +48,27 @@ export interface NewsItem {
 
 export async function searchNewsByKeyword(
   query: string,
-  options: { start?: number; display?: number; sort?: NewsSort; signal?: AbortSignal } = {}
-): Promise<{ items: NewsItem[]; total: number; start: number; display: number; lastBuildDate: string }> {
+  options: {
+    start?: number;
+    display?: number;
+    sort?: NewsSort;
+    signal?: AbortSignal;
+  } = {},
+): Promise<{
+  items: NewsItem[];
+  total: number;
+  start: number;
+  display: number;
+  lastBuildDate: string;
+}> {
   if (!query?.trim()) {
-    return { items: [], total: 0, start: 1, display: options.display ?? 10, lastBuildDate: '' };
+    return {
+      items: [],
+      total: 0,
+      start: 1,
+      display: options.display ?? 10,
+      lastBuildDate: '',
+    };
   }
   const { start = 1, display = 10, sort = 'date', signal } = options;
 
@@ -78,7 +93,8 @@ export async function searchNewsByKeyword(
   if (!res.ok) throw new Error(`NEWS_API_HTTP_${res.status}`);
 
   const json: NewsApiResponse = await res.json();
-  if (!('success' in json) || !json.success) throw new Error((json as any)?.message || 'NEWS_API_FAILED');
+  if (!('success' in json) || !json.success)
+    throw new Error((json as any)?.message || 'NEWS_API_FAILED');
 
   const { data } = json;
   const items: NewsItem[] = (data.items || []).map((it) => ({

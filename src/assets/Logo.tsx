@@ -10,10 +10,7 @@ interface LogoProps {
 const Logo = ({ width = 40, height = 40, className = '' }: LogoProps) => {
   return (
     <div className="flex flex-col items-center">
-      <FrontStar  
-        width={width}
-        height={height}
-        className={`${className}`} />
+      <FrontStar width={width} height={height} className={`${className}`} />
     </div>
   );
 };

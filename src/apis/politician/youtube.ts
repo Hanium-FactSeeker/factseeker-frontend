@@ -9,9 +9,7 @@ type Wrapped<T> = { success?: boolean; message?: string; data?: T };
 
 // ✅ 백엔드 BASE URL
 const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL ??
-  process.env.API_BASE_URL ??
-  '';
+  process.env.NEXT_PUBLIC_API_BASE_URL ?? process.env.API_BASE_URL ?? '';
 
 function normalizeResponse(json: any): YoutubeRawItem[] {
   const payload = (json?.data ?? json) as any;
@@ -23,12 +21,21 @@ function normalizeResponse(json: any): YoutubeRawItem[] {
 
 export async function searchYoutubeByKeyword(
   keyword: string,
-  options: { signal?: AbortSignal } = {}
-): Promise<{ items: { url: string; title: string; thumbnailUrl: string; updatedAt: string }[] }> {
+  options: { signal?: AbortSignal } = {},
+): Promise<{
+  items: {
+    url: string;
+    title: string;
+    thumbnailUrl: string;
+    updatedAt: string;
+  }[];
+}> {
   if (!keyword?.trim()) return { items: [] };
 
   if (!API_BASE) {
-    throw new Error('YOUTUBE_API_BASE_URL_MISSING: set NEXT_PUBLIC_API_BASE_URL');
+    throw new Error(
+      'YOUTUBE_API_BASE_URL_MISSING: set NEXT_PUBLIC_API_BASE_URL',
+    );
   }
   const qs = new URLSearchParams({ keyword: keyword.trim() }).toString();
   const url = `${API_BASE}/api/youtube/search?${qs}`;
@@ -49,7 +56,10 @@ export async function searchYoutubeByKeyword(
     throw new Error(msg);
   }
 
-  const json: Wrapped<YoutubeRawItem | YoutubeRawItem[]> | YoutubeRawItem | YoutubeRawItem[] = await res.json();
+  const json:
+    | Wrapped<YoutubeRawItem | YoutubeRawItem[]>
+    | YoutubeRawItem
+    | YoutubeRawItem[] = await res.json();
   const rawList = normalizeResponse(json);
 
   const items = rawList.map((r) => ({
