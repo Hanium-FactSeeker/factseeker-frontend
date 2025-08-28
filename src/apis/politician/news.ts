@@ -25,8 +25,7 @@ export interface NewsApiError {
 }
 export type NewsApiResponse = NewsApiSuccess | NewsApiError;
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? process.env.API_BASE_URL ?? '';
+const API_PATH = '/api/news';
 
 function stripTags(html = '') {
   const text = html.replace(/<[^>]*>/g, '');
@@ -79,10 +78,10 @@ export async function searchNewsByKeyword(
     sort,
   });
 
-  if (!API_BASE) {
+  if (!API_PATH) {
     throw new Error('NEWS_API_BASE_URL_MISSING: set NEXT_PUBLIC_API_BASE_URL');
   }
-  const url = `${API_BASE}/api/news?${params.toString()}`;
+  const url = `${API_PATH}?${params.toString()}`;
 
   const res = await fetch(url, {
     method: 'GET',
