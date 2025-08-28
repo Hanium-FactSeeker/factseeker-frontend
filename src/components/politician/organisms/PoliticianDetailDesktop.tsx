@@ -25,7 +25,7 @@ type Politician = {
 interface Props {
   politician: Politician;
   videos: VideoItem[];
-  news: VideoItem[];
+  news?: VideoItem[];
   updatedAt?: string;
 }
 
@@ -39,7 +39,7 @@ export default function PoliticianDetailDesktop({
   const [tab, setTab] = useState<'news' | 'youtube'>('youtube');
 
   const pageSize = 5;
-  const list = tab === 'youtube' ? videos : news;
+  const list = tab === 'youtube' ? videos : (news ?? []);
 
   const slides: VideoItem[][] = useMemo(() => {
     const chunks: VideoItem[][] = [];
