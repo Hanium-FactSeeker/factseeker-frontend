@@ -15,7 +15,7 @@ export interface LogoutResponse {
  */
 export async function logoutApi(signal?: AbortSignal): Promise<LogoutResponse> {
   const res = await apiClient.post<LogoutResponse>(
-    '/api/auth/logout',
+    '/auth/logout',
     {},
     {
       withCredentials: true,

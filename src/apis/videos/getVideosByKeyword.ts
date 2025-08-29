@@ -42,7 +42,7 @@ export async function getVideosByKeyword(
 ): Promise<VideoItem[]> {
   if (!keyword) return [];
 
-  const url = `/api/youtube/search`;
+  const url = `/youtube/search`;
   const res = await apiClient.get(url, {
     params: { keyword },
     headers: { Accept: 'application/json' },

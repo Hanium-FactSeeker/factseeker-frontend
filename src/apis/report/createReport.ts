@@ -16,7 +16,7 @@ export async function createReport(
   signal?: AbortSignal,
 ): Promise<number> {
   const res = await apiClient.post(
-    '/api/analysis',
+    '/analysis',
     { youtube_url: youtubeUrl },
     {
       headers: {

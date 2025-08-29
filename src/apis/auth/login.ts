@@ -47,7 +47,7 @@ export interface LoginResponse {
  * @throws {Error} 인증 실패 또는 네트워크 오류
  */
 export async function loginUser(payload: LoginRequest): Promise<LoginResponse> {
-  const res = await apiClient.post<LoginResponse>('/api/auth/login', payload, {
+  const res = await apiClient.post<LoginResponse>('/auth/login', payload, {
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     withCredentials: true,
   });

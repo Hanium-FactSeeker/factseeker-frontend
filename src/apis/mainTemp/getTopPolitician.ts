@@ -13,7 +13,7 @@ type RawPolitician = {
 
 export async function getTopPoliticians(): Promise<RawPolitician[]> {
   const res = await apiClient.get<RawPolitician>(
-    '/api/politicians/scores/top-summary',
+    '/politicians/scores/top-summary',
     {
       headers: { Accept: '*/*' },
     },
