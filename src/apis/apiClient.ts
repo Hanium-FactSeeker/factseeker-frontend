@@ -11,9 +11,9 @@ import {
 
 /** API 경로 상수 */
 const PATH = {
-  LOGIN: '/api/auth/login',
-  REFRESH: '/api/auth/refresh',
-  LOGOUT: '/api/auth/logout',
+  LOGIN: '/auth/login',
+  REFRESH: '/auth/refresh',
+  LOGOUT: '/auth/logout',
 } as const;
 
 /** 기본 JSON 헤더 */

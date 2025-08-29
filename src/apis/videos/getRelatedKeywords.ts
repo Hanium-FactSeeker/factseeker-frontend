@@ -15,7 +15,7 @@ interface KeywordPayload {
 export async function getRelatedKeywords(videoId: string) {
   if (!videoId) throw new Error('videoId is required');
 
-  const url = `/api/analysis/top10/${encodeURIComponent(videoId)}/keywords`;
+  const url = `/analysis/top10/${encodeURIComponent(videoId)}/keywords`;
 
   const res = await apiClient.get<ApiResponse<KeywordPayload>>(url, {
     headers: { Accept: 'application/json' },

@@ -24,10 +24,6 @@ const MainVideoItemMobile = ({ idx, video }: videoListProps) => {
     router.push(`/report/${url}`);
   };
 
-  useEffect(() => {
-    console.log(video);
-  }, [video]);
-
   return (
     <div className="flex h-64 w-40 flex-col gap-2">
       <p className="text-md font-bold">Top {idx + 1}</p>
