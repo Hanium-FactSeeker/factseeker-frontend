@@ -7,6 +7,7 @@ export interface RawNewsItem {
   description: string;
   pubDate: string;
 }
+
 export interface RawNewsPayload {
   lastBuildDate: string;
   total: number;
@@ -14,18 +15,21 @@ export interface RawNewsPayload {
   display: number;
   items: RawNewsItem[];
 }
+
 export interface NewsApiSuccess {
   success: true;
   message: string;
   data: RawNewsPayload;
 }
+
 export interface NewsApiError {
   success: false;
   message: string;
 }
+
 export type NewsApiResponse = NewsApiSuccess | NewsApiError;
 
-const API_PATH = '/api/news';
+const API_PATH = '/news';
 
 function stripTags(html = '') {
   const text = html.replace(/<[^>]*>/g, '');
@@ -96,6 +100,7 @@ export async function searchNewsByKeyword(
     throw new Error((json as any)?.message || 'NEWS_API_FAILED');
 
   const { data } = json;
+
   const items: NewsItem[] = (data.items || []).map((it) => ({
     title: stripTags(it.title),
     description: stripTags(it.description),

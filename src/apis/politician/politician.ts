@@ -17,17 +17,10 @@ export async function fetchPoliticianScores(
   size: number = 8,
   sortType: 'LATEST' | 'TRUST_SCORE' = 'TRUST_SCORE',
 ): Promise<PoliticianScoresResponse> {
-  console.log('GET /api/politicians/scores 요청 시작', {
-    page,
-    size,
-    sortType,
-  });
-
   try {
-    const res = await apiClient.get('/api/politicians/scores', {
+    const res = await apiClient.get('/politicians/scores', {
       params: { page, size, sortType },
     });
-    console.log('GET /api/politicians/scores 응답 성공', res.data);
 
     return res.data as PoliticianScoresResponse;
   } catch (error: any) {
@@ -59,7 +52,7 @@ export async function fetchPoliticianScoreDetail(
     throw e;
   }
 
-  const path = `/api/politicians/scores/${id}`;
+  const path = `/politicians/scores/${id}`;
   console.log(`GET ${path} 요청 시작`);
 
   try {
@@ -106,7 +99,7 @@ export async function searchPoliticianScoresByName(
     throw e;
   }
 
-  const path = '/api/politicians/scores/search';
+  const path = '/politicians/scores/search';
   console.log(`GET ${path} 요청 시작`, { name: trimmed });
 
   try {
@@ -157,7 +150,7 @@ export async function searchPoliticianScoresByName(
 
 //상위 12명 신뢰도 점수 요약 조회
 export async function fetchTopScoresSummary(): Promise<PoliticianScoreItem[]> {
-  const path = '/api/politicians/scores/top-summary';
+  const path = '/politicians/scores/top-summary';
   console.log(`GET ${path} 요청 시작`);
 
   try {
@@ -214,7 +207,7 @@ export async function fetchPoliticiansPage(
   page: number = 0,
   size: number = 10,
 ): Promise<PoliticianListResponse> {
-  const path = '/api/politicians';
+  const path = '/politicians';
   console.log(`GET ${path} 요청 시작`, { page, size });
 
   try {
@@ -298,7 +291,7 @@ export async function fetchPoliticianDetail(
     throw e;
   }
 
-  const path = `/api/politicians/${idStr}`;
+  const path = `/politicians/${idStr}`;
   console.log(`GET ${path} 요청 시작`);
 
   try {
@@ -350,7 +343,7 @@ export async function fetchPoliticiansByName(
     throw e;
   }
 
-  const path = '/api/politicians/search';
+  const path = '/politicians/search';
   console.log(`GET ${path} 요청 시작`, { name: q });
 
   try {

@@ -7,7 +7,7 @@ export interface YoutubeRawItem {
 
 type Wrapped<T> = { success?: boolean; message?: string; data?: T };
 
-const API_PATH = '/api/youtube/search';
+const API_PATH = '/youtube/search';
 
 function normalizeResponse(json: unknown): YoutubeRawItem[] {
   const payload =

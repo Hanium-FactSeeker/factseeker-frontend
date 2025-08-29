@@ -30,7 +30,7 @@ type ApiResp = {
  *
  */
 export async function getVideoMeta(videoId: string, signal?: AbortSignal) {
-  const res = await apiClient.get<ApiResp>('/api/youtube/video', {
+  const res = await apiClient.get<ApiResp>('/youtube/video', {
     params: { videoId },
     headers: { Accept: 'application/json' },
     withCredentials: true,

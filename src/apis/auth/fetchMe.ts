@@ -5,10 +5,10 @@ import type { MeResponse } from '@/types/auth';
 
 /**
  * 현재 로그인한 사용자 정보 조회
- * GET /api/auth/me
+ * GET /auth/me
  */
 export async function fetchMe(signal?: AbortSignal): Promise<any> {
-  const res = await apiClient.get<MeResponse>('/api/auth/me', {
+  const res = await apiClient.get<MeResponse>('/auth/me', {
     headers: { Accept: 'application/json' },
     withCredentials: true,
     signal,

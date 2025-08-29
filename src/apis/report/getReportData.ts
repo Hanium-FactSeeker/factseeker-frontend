@@ -24,7 +24,7 @@ export async function getReportData<T = any>(
   signal?: AbortSignal,
 ) {
   const res = await apiClient.get<GetReportDataResp<T>>(
-    `/api/analysis/${videoAnalysisId}`,
+    `/analysis/${videoAnalysisId}`,
     {
       headers: { Accept: 'application/json', 'X-Debug-Label': 'getReportData' },
       withCredentials: true,

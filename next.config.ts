@@ -17,7 +17,7 @@ const nextConfig: NextConfig = {
       {
         source: '/api/:path*',
         // 실제 백엔드 주소 환경변수로 주입
-        destination: `${process.env.API_BASE_URL}/:path*`,
+        destination: `${process.env.API_BASE_URL}/api/:path*`,
       },
     ];
   },

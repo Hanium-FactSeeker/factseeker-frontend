@@ -16,7 +16,7 @@ interface ApiResp {
 
 /** 인기 정치 영상 조회 */
 export async function getHotVideos(size = 10): Promise<VideoItem[]> {
-  const res = await apiClient.get<ApiResp>('/api/youtube/videos', {
+  const res = await apiClient.get<ApiResp>('/youtube/videos', {
     params: { size },
     headers: { Accept: 'application/json' },
     withCredentials: true,

@@ -15,7 +15,7 @@ interface RecentApiResp {
 }
 
 export async function getRecentReport(): Promise<RecentAnalysis[]> {
-  const res = await apiClient.get<RecentApiResp>('/api/analysis/me/recent', {
+  const res = await apiClient.get<RecentApiResp>('/analysis/me/recent', {
     headers: { Accept: 'application/json' },
   });
 
