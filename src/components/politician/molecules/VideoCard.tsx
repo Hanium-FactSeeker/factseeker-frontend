@@ -27,7 +27,7 @@ export default function VideoCard({ video, compact = false }: Props) {
       rel="noopener noreferrer"
       className={cx(
         'flex w-full items-center justify-between border-b border-gray-200',
-        compact ? 'gap-3 p-3' : 'gap-4 p-4',
+        compact ? 'gap-3 p-2' : 'gap-4 p-4',
       )}
     >
       <div className="min-w-0">

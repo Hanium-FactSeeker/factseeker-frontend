@@ -51,7 +51,7 @@ export default function PoliticianDetailMobile({
   const cumulative = `${Math.round(politician.stats.fact ?? 0)}%`;
 
   return (
-    <section className="w-full rounded-2xl border border-gray-200 bg-white p-4">
+    <section className="mx-auto w-full rounded-2xl bg-white p-4">
       <div className="mb-4 rounded-2xl border border-gray-200 p-4">
         <p className="text-black-normal mb-3 text-center text-lg font-extrabold">
           선택 인물
@@ -85,7 +85,7 @@ export default function PoliticianDetailMobile({
             { label: '뉴스기사 모아보기', value: 'news' },
             { label: '유튜브 모아보기', value: 'youtube' },
           ]}
-          className="w-full justify-between"
+          className="flex w-full justify-center gap-4"
         />
       </div>
 

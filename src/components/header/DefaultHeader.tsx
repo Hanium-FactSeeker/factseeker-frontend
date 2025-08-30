@@ -2,24 +2,25 @@
 
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import NavBar from './moclue/NavBar';
 import Logo from '@/components/ui/logo';
+import NavBar from './moclue/NavBar';
 import UrlModal from '@/components/common/UrlModal';
 import { getNavItems } from '@/constants/navItems';
+import { useAuthStore } from '@/store/useAuthStore';
 import HeaderAuthControls from './moclue/HeaderAuthControls';
 
 interface DefaultHeaderProps {
-  isLoggedIn: boolean;
   navTextColor?: 'white' | 'black';
   initialSearch?: string;
 }
 
-const DefaultHeader: React.FC<DefaultHeaderProps> = ({
-  isLoggedIn,
+const DefaultHeader = ({
+  navTextColor = 'black',
   initialSearch,
-}) => {
+}: DefaultHeaderProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const { isLoggedIn } = useAuthStore();
 
   const handleSubmit = (value: string) => {
     const encoded = encodeURIComponent(value);
@@ -27,9 +28,10 @@ const DefaultHeader: React.FC<DefaultHeaderProps> = ({
     setOpen(false);
   };
 
-  const { default: defaultItems } = useMemo(() => {
-    return getNavItems(() => setOpen(true));
-  }, []);
+  const { default: defaultItems } = useMemo(
+    () => getNavItems(() => setOpen(true)),
+    [],
+  );
 
   return (
     <>
@@ -46,7 +48,7 @@ const DefaultHeader: React.FC<DefaultHeaderProps> = ({
         <div className="mt-6 ml-5">
           <NavBar
             isLoggedIn={isLoggedIn}
-            textColor="black"
+            textColor={navTextColor}
             onOpenUrlModal={() => setOpen(true)}
             items={defaultItems}
             className="ml-5"

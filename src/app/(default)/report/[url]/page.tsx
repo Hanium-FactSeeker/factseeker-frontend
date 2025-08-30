@@ -3,8 +3,6 @@
 import { Suspense } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 
-import Footer from '@/components/footer';
-import DefaultHeader from '@/components/header/DefaultHeader';
 import SearchLoading from '../SearchLoading';
 import DataLoader from '@/components/report/organisms/DataLoader';
 
@@ -21,13 +19,11 @@ const Page = () => {
 
   return (
     <div>
-      <DefaultHeader isLoggedIn={false} initialSearch={originalUrl} />
       <main className="bg-gray-light flex w-full flex-col items-center justify-center p-4">
         <Suspense fallback={<SearchLoading onCancel={handleCancel} />}>
           <DataLoader url={originalUrl} onCancel={handleCancel} />
         </Suspense>
       </main>
-      <Footer />
     </div>
   );
 };
