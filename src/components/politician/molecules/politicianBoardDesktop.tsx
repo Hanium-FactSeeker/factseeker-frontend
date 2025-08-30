@@ -40,7 +40,6 @@ const safeImg = (u?: string | null) =>
 const normalizeName = (name?: string) =>
   (name ?? '').replace(/\s+/g, '').trim();
 const dateKey = (s?: string) => (s ? new Date(s).getTime() || 0 : 0);
-
 const imgOf = (v: unknown) =>
   safeImg(
     typeof v === 'function' ? undefined : (v as string | null | undefined),
@@ -67,12 +66,10 @@ function dedupLatest(rows: SearchScoreRow[]) {
       map.set(key, row);
       continue;
     }
-
     const dNew = dateKey(row.analysisDate);
     const dOld = dateKey(prev.analysisDate);
-    if (dNew > dOld) {
-      map.set(key, row);
-    } else if (dNew === dOld) {
+    if (dNew > dOld) map.set(key, row);
+    else if (dNew === dOld) {
       const sNew = (row.overallScore ??
         row.trustScore ??
         row.totalScore ??
@@ -91,7 +88,7 @@ export default function PoliticianBoardDesktop({ query }: Props) {
   const [loading, setLoading] = useState(true);
   const [top, setTop] = useState<PoliticianTopItem[]>([]);
   const [basicsMap, setBasicsMap] = useState<Basics>({});
-  const inited = useRef(false);
+  const mountedRef = useRef(true);
 
   const q = (query ?? '').trim();
   const pageSize = 12;
@@ -101,116 +98,113 @@ export default function PoliticianBoardDesktop({ query }: Props) {
   const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
-    if (inited.current) return;
-    inited.current = true;
+    mountedRef.current = true;
 
-    let alive = true;
     (async () => {
-      try {
-        setLoading(true);
+      setLoading(true);
 
-        const basics = await fetchPoliticiansPage(0, 1000);
-        if (!alive) return;
-        const bm: Basics = {};
-        (basics.politicians ?? []).forEach((p) => {
-          bm[p.name] = {
-            id: p.id,
-            profileImageUrl: safeImg(p.profileImageUrl),
-            party: p.party,
-          };
-        });
-        setBasicsMap(bm);
+      // 1) 기본 인물 정보
+      const basics = await fetchPoliticiansPage(0, 1000);
+      if (!mountedRef.current) return;
 
-        const top12 = await fetchTopScoresSummary();
-        if (!alive) return;
-        const mappedTop: PoliticianTopItem[] = (top12 ?? [])
-          .slice(0, 12)
-          .map((s) => ({
-            id: bm[s.name]?.id ?? s.id,
-            name: s.name,
-            party: s.party || bm[s.name]?.party || '',
-            profileImageUrl:
-              bm[s.name]?.profileImageUrl || imgOf((s as any).profileImageUrl),
-            overallScore: Math.round(
-              s.overallScore ?? s.trustScore ?? s.totalScore ?? 0,
-            ),
-            gptScore: Math.round(s.gptScore ?? 0),
-            geminiScore: Math.round(s.geminiScore ?? 0),
-          }));
-        setTop(mappedTop);
-      } catch (e) {
-        console.error('politician board init error', e);
-      } finally {
-        if (alive) setLoading(false);
-      }
+      const bm: Basics = {};
+      (basics.politicians ?? []).forEach((p) => {
+        bm[p.name] = {
+          id: p.id,
+          profileImageUrl: safeImg(p.profileImageUrl),
+          party: p.party,
+        };
+      });
+      setBasicsMap(bm);
+
+      // 2) TOP 12 요약
+      const top12 = await fetchTopScoresSummary();
+      if (!mountedRef.current) return;
+
+      const mappedTop: PoliticianTopItem[] = (top12 ?? [])
+        .slice(0, 12)
+        .map((s) => ({
+          id: bm[s.name]?.id ?? s.id,
+          name: s.name,
+          party: s.party || bm[s.name]?.party || '',
+          profileImageUrl:
+            bm[s.name]?.profileImageUrl || imgOf((s as any).profileImageUrl),
+          overallScore: Math.round(
+            s.overallScore ?? s.trustScore ?? s.totalScore ?? 0,
+          ),
+          gptScore: Math.round(s.gptScore ?? 0),
+          geminiScore: Math.round(s.geminiScore ?? 0),
+        }));
+
+      setTop(mappedTop);
+      setLoading(false);
     })();
 
     return () => {
-      alive = false;
+      mountedRef.current = false;
     };
   }, []);
 
+  // 검색어 변경 시 페이지 초기화
   useEffect(() => {
     setPage(0);
   }, [q]);
 
+  // 검색 로직 (디바운스 + 마운트 가드)
   useEffect(() => {
-    let alive = true;
     if (!q) {
+      setSearching(false);
       setSearchAll([]);
       setTotalPages(0);
       return;
     }
 
+    setSearching(true);
+    const ac = new AbortController();
     const t = setTimeout(async () => {
-      try {
-        setSearching(true);
+      // API
+      const resp: any = await (searchPoliticianScoresByName as any)(
+        q,
+        0,
+        500,
+        ac.signal,
+      );
+      const payload = (resp?.data ?? resp) || {};
+      const listRaw: SearchScoreRow[] = Array.isArray(payload)
+        ? payload
+        : (payload.politicians ??
+          payload.results ??
+          payload.items ??
+          payload.data ??
+          []);
 
-        const resp: any = await (searchPoliticianScoresByName as any)(
-          q,
-          0,
-          500,
-        );
-        const payload = (resp?.data ?? resp) || {};
-        const listRaw: SearchScoreRow[] = Array.isArray(payload)
-          ? payload
-          : (payload.politicians ??
-            payload.results ??
-            payload.items ??
-            payload.data ??
-            []);
+      if (!mountedRef.current) return;
 
-        const latest = dedupLatest(listRaw);
+      const latest = dedupLatest(listRaw);
 
-        const all: PoliticianTopItem[] = latest.map((row) => {
-          const name = row.politicianName || row.name || '';
-          const base = basicsMap[name] || {};
-          const scores = toScores(row);
-          return {
-            id: base.id ?? row.politicianId ?? row.id,
-            name,
-            party: row.politicianParty || row.party || base.party || '',
-            profileImageUrl:
-              base.profileImageUrl ?? imgOf((row as any).profileImageUrl),
-            overallScore: scores.overall,
-            gptScore: scores.gpt,
-            geminiScore: scores.gemini,
-          };
-        });
+      const all: PoliticianTopItem[] = latest.map((row) => {
+        const name = row.politicianName || row.name || '';
+        const base = basicsMap[name] || {};
+        const scores = toScores(row);
+        return {
+          id: base.id ?? row.politicianId ?? row.id,
+          name,
+          party: row.politicianParty || row.party || base.party || '',
+          profileImageUrl:
+            base.profileImageUrl ?? imgOf((row as any).profileImageUrl),
+          overallScore: scores.overall,
+          gptScore: scores.gpt,
+          geminiScore: scores.gemini,
+        };
+      });
 
-        setSearchAll(all);
-        setTotalPages(Math.max(1, Math.ceil(all.length / pageSize)));
-      } catch (e) {
-        console.error('scores/search mapping error', e);
-        setSearchAll([]);
-        setTotalPages(0);
-      } finally {
-        setSearching(false);
-      }
+      setSearchAll(all);
+      setTotalPages(Math.max(1, Math.ceil(all.length / pageSize)));
+      setSearching(false);
     }, 200);
 
     return () => {
-      alive = false;
+      ac.abort();
       clearTimeout(t);
     };
   }, [q, basicsMap]);

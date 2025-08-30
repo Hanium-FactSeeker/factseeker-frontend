@@ -4,13 +4,14 @@ import { useEffect, useRef, useState } from 'react';
 import ReportTitle from '@/components/report/molecules/ReportTitle';
 import ContentInfo from '@/components/report/organisms/ContentInfo';
 import ContentEvidence from '@/components/report/organisms/ContentEvidence';
-import SearchLoading from '@/app/report/SearchLoading';
-import SearchError from '@/app/report/SearchError';
+
 import { createReport } from '@/apis/report/createReport';
 import { getReportData } from '@/apis/report/getReportData';
 import { getVideoMeta } from '@/apis/report/getVideoMeta';
 import type { ReportInfo, EvidenceItem } from '@/types/report';
 import { waiting } from '@/utils/waiting';
+import SearchError from '@/app/(default)/report/SearchError';
+import SearchLoading from '@/app/(default)/report/SearchLoading';
 
 type ReportData = { info?: ReportInfo; claims?: EvidenceItem[] };
 

@@ -1,13 +1,12 @@
 'use client';
+
 import React from 'react';
 import SignUpForm from './SignUpForm';
 
 export default function SignUp() {
   return (
-    <div className="bg-background text-foreground flex min-h-screen items-center justify-center px-4 md:px-0">
-      <div className="w-full max-w-xs rounded-lg bg-white p-6 shadow md:max-w-md md:rounded-xl md:p-8">
-        <SignUpForm />
-      </div>
+    <div className="text-foreground mx-auto my-20 flex w-full max-w-xs items-center justify-center rounded-lg bg-white px-4 md:my-10 md:max-w-md md:rounded-xl md:p-8 md:px-0">
+      <SignUpForm />
     </div>
   );
 }

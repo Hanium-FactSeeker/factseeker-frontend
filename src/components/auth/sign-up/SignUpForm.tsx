@@ -101,13 +101,6 @@ export default function SignUpForm() {
 
   return (
     <div className="w-full">
-      <div className="mb-4 flex flex-col items-center gap-2">
-        <Logo width={30} height={30} />
-        <span className="text-primary-normal text-[20px] font-bold">
-          Fact Seeker
-        </span>
-      </div>
-
       <h2 className="text-black-normal mb-6 text-center text-xl font-bold">
         회원가입
       </h2>

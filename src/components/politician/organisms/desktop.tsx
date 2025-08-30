@@ -32,7 +32,7 @@ export default function PoliticianDesktop() {
 
   return (
     <section className="flex w-full flex-col items-center">
-      <div className="mt-14 w-full max-w-[1200px] px-4">
+      <div className="mx-auto mt-14 w-full max-w-[1200px] px-4">
         <h2 className="text-black-normal text-center text-[22px] leading-7 font-bold">
           오늘의 인기 정치인 TOP 12
         </h2>
@@ -41,24 +41,22 @@ export default function PoliticianDesktop() {
         </p>
       </div>
 
-      <div className="mt-6 w-full max-w-[1200px] px-4">
-        <div className="flex w-full items-center gap-3">
-          <Input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="순위에 없는 다른 정치인도 검색해 보세요"
-            onClick={() => {}}
-            iconRight={<Magnifier />}
-            className="h-14 w-full rounded-[20px] border-[#D9DBDC]"
-          />
-          <ClientTime className="text-gray-strong mt-4 text-[12px] font-medium whitespace-nowrap" />
-        </div>
+      <div className="mt-6 flex w-full max-w-[1200px] items-end justify-between gap-10 px-4">
+        <Input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="순위에 없는 다른 정치인을 검색해 보세요"
+          onClick={() => {}}
+          iconRight={<Magnifier />}
+          className="h-14 w-[70%] rounded-[20px] border-[#D9DBDC]"
+        />
+        <ClientTime className="text-gray-strong mr-2 text-[12px] font-medium whitespace-nowrap" />
       </div>
 
       <div className="mt-6 w-full max-w-[1200px] px-4">
         <div
           className="mx-auto w-full rounded-[10px] bg-white shadow-[0_4px_4px_rgba(0,0,0,0.08)]"
-          style={{ border: '1px solid var(--gray-normal)' }}
+          style={{ border: '2px solid var(--gray-normal)' }}
         >
           <div className="px-6 py-6">
             <PoliticianBoard query={query} />

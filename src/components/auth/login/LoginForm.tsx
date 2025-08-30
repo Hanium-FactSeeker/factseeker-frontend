@@ -41,13 +41,6 @@ export default function LoginForm() {
 
   return (
     <div className="flex w-full flex-col items-center gap-6">
-      <div className="flex flex-col items-center gap-2">
-        <Logo width={30} height={30} />
-        <span className="text-primary-normal text-2xl font-bold">
-          Fact Seeker
-        </span>
-      </div>
-
       <h2 className="text-black-normal text-xl font-bold">로그인</h2>
       <form onSubmit={handleLogin} className="flex w-full flex-col gap-4">
         <TextInput

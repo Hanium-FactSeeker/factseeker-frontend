@@ -1,3 +1,5 @@
+import apiClient from '../apiClient';
+
 export interface YoutubeRawItem {
   url: string;
   videoTitle: string;
@@ -33,41 +35,41 @@ export async function searchYoutubeByKeyword(
 }> {
   if (!keyword?.trim()) return { items: [] };
 
-  const qs = new URLSearchParams({ keyword: keyword.trim() }).toString();
-  const url = `${API_PATH}?${qs}`;
+  try {
+    const res = await apiClient.get<Wrapped<YoutubeRawItem | YoutubeRawItem[]>>(
+      API_PATH,
+      {
+        params: { keyword: keyword.trim() },
+        signal: options.signal, // Axios v1부터 AbortSignal 지원
+        headers: { Accept: '*/*' },
+      },
+    );
 
-  const res = await fetch(url, {
-    method: 'GET',
-    cache: 'no-store',
-    headers: { Accept: '*/*' },
-    signal: options.signal,
-  });
+    const json = res.data;
 
-  if (!res.ok) {
-    let msg = `YOUTUBE_API_HTTP_${res.status}`;
-    try {
-      const errJson = await res.json();
-      if (typeof errJson?.message === 'string') msg = errJson.message;
-    } catch {
-      /* ignore parse error */
+    // Wrapped 형태에서 success=false면 메시지 보여주기
+    if (json && typeof json === 'object' && 'success' in json) {
+      const w = json as Wrapped<unknown>;
+      if (w.success === false) {
+        throw new Error(w.message || 'YOUTUBE_API_FAILED');
+      }
     }
+
+    const rawList = normalizeResponse(json);
+    const items = rawList.map((r) => ({
+      url: r.url,
+      title: r.videoTitle,
+      thumbnailUrl: r.thumbnailUrl,
+      updatedAt: r.updatedAt,
+    }));
+
+    return { items };
+  } catch (err: any) {
+    const status = err?.response?.status;
+    const msg =
+      err?.response?.data?.message ||
+      err?.message ||
+      (status ? `YOUTUBE_API_HTTP_${status}` : 'YOUTUBE_API_FAILED');
     throw new Error(msg);
   }
-
-  const json = await res.json();
-  // Wrapped 형태에서 success=false면 메시지 보여주기
-  if (typeof json === 'object' && json && 'success' in (json as any)) {
-    const w = json as Wrapped<unknown>;
-    if (w.success === false) throw new Error(w.message || 'YOUTUBE_API_FAILED');
-  }
-
-  const rawList = normalizeResponse(json);
-  const items = rawList.map((r) => ({
-    url: r.url,
-    title: r.videoTitle,
-    thumbnailUrl: r.thumbnailUrl,
-    updatedAt: r.updatedAt,
-  }));
-
-  return { items };
 }
