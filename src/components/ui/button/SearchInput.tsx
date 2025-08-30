@@ -47,7 +47,7 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
           ref={ref}
           {...props}
           className={clsx(
-            'text-black-normal placeholder-gray-normal flex-1 bg-transparent outline-none',
+            'text-black-normal placeholder-gray-strong flex-1 bg-transparent outline-none',
             iconLeft && 'pl-1',
             iconRight && 'pr-1',
           )}

@@ -4,11 +4,9 @@ import { useEffect, useState } from 'react';
 import { getHotVideos } from '@/apis/videos/getHotVideos';
 import { getPercents } from '@/apis/videos/getPercents';
 import { VideoItem } from '@/types/videos';
-import DefaultHeader from '@/components/header/DefaultHeader';
 import FilterBar from '@/components/ui/filterBar.tsx';
 import Desktop from '@/components/videos/organisms/VideoLists.desktop';
 import Mobile from '@/components/videos/organisms/VideoLists.mobile';
-import Footer from '@/components/footer';
 
 const Video = () => {
   const [videos, setVideos] = useState<VideoItem[]>([]);
@@ -60,22 +58,18 @@ const Video = () => {
   }, []);
 
   return (
-    <>
-      <DefaultHeader isLoggedIn={false} />
-      <div className="flex min-h-screen w-full flex-col items-center gap-8">
-        <FilterBar />
-        <h3 className="text-Black_normal mt-4 ml-24 self-start text-lg font-semibold">
-          오늘의 인기 영상 TOP 10
-        </h3>
-        <div className="hidden md:block">
-          <Desktop videos={videos} />
-        </div>
-        <div className="block md:hidden">
-          <Mobile videos={videos} />
-        </div>
+    <div className="flex w-full flex-col items-center gap-8">
+      <FilterBar />
+      <h3 className="text-Black_normal mt-4 ml-24 self-start text-lg font-semibold">
+        오늘의 인기 영상 TOP 10
+      </h3>
+      <div className="hidden md:block">
+        <Desktop videos={videos} />
       </div>
-      <Footer />
-    </>
+      <div className="block md:hidden">
+        <Mobile videos={videos} />
+      </div>
+    </div>
   );
 };
 

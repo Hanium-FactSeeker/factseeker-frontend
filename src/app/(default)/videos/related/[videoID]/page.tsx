@@ -17,14 +17,12 @@ const VideoRelatedPage = async ({
   const thumb = resolvedSearch.thumb ?? '';
   return (
     <div>
-      <DefaultHeader isLoggedIn={false} />
       <div className="flex items-center justify-center">
         <Content
           videoId={videoId ?? ''}
           initialVideo={{ id: videoId, title, thumbnail: thumb }}
         />
       </div>
-      <Footer />
     </div>
   );
 };

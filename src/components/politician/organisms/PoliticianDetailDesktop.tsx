@@ -52,7 +52,7 @@ export default function PoliticianDetailDesktop({
   const cumulative = `${Math.round(politician.stats.fact ?? 0)}%`;
 
   return (
-    <section className="w-full rounded-2xl border border-gray-200 bg-white p-6">
+    <section className="mx-auto mt-6 w-[90%] rounded-2xl border border-gray-200 bg-white px-8 py-4">
       <div className="mb-5">
         <Link
           href="/politician"
@@ -63,8 +63,8 @@ export default function PoliticianDetailDesktop({
       </div>
 
       <div className="grid grid-cols-[40%_60%] gap-2">
-        <aside className="w-full max-w-[360px] justify-self-center rounded-[12px] p-6">
-          <div className="mb-6 rounded-2xl border border-gray-200 p-5">
+        <aside className="w-full max-w-[360px] justify-self-center rounded-[12px] p-2">
+          <div className="my-4 rounded-2xl border border-gray-200 p-5">
             <p className="text-black-normal mb-4 text-center text-xl font-extrabold">
               선택 인물
             </p>
@@ -101,7 +101,7 @@ export default function PoliticianDetailDesktop({
               { label: '뉴스기사 모아보기', value: 'news' },
               { label: '유튜브 모아보기', value: 'youtube' },
             ]}
-            className="w-full justify-between"
+            className="flex w-full justify-center gap-2"
           />
           <style jsx>{`
             [role='tablist'] button {
@@ -112,13 +112,12 @@ export default function PoliticianDetailDesktop({
         </aside>
 
         <section className="min-w-0 rounded-[12px]">
-          <div className="flex items-center justify-end border-b border-gray-200 px-6 py-4">
+          <div className="b border-gray-20 border-gray-normal flex items-center justify-end border-b px-6 py-2">
             {updatedAt && <p className="text-xs text-gray-500">{updatedAt}</p>}
           </div>
 
-          {/* ✅ 두 탭 모두 Swiper로 통일 (스타일 그대로) */}
           {list.length ? (
-            <div className="pt-2">
+            <div>
               <Swiper
                 className="desktop-video-swiper"
                 modules={[Navigation, Pagination]}

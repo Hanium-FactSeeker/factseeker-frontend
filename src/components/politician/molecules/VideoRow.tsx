@@ -19,10 +19,10 @@ export default function VideoRow({ video }: Props) {
       className="group grid w-full grid-cols-[1fr_144px] items-center gap-4 border-b border-gray-200 py-4 hover:bg-gray-50"
     >
       <div className="min-w-0">
-        <p className="text-black-normal line-clamp-2 text-sm group-hover:underline md:text-base">
+        <p className="text-black-normal line-clamp-2 text-sm font-semibold group-hover:underline md:text-base">
           {video.title}
         </p>
-        <div className="mt-1 flex items-center gap-2 text-xs text-gray-500">
+        <div className="mt-1 flex items-center gap-2 text-xs font-medium text-gray-500">
           <span className="truncate">{video.channelName}</span>
           {dateText && (
             <>
