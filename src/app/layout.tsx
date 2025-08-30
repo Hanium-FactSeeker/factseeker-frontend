@@ -12,8 +12,55 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'factseeker',
-  description: 'To detect the fake news in South korea',
+  metadataBase: new URL('https://www.fact-seeker.com/'),
+  applicationName: 'FactSeeker',
+  title: {
+    default: 'FactSeeker',
+    template: '%s | FactSeeker',
+  },
+  description: '대한민국의 정치 분야 가짜뉴스를 AI로 판별하는 팩트체크 서비스',
+  keywords: [
+    '팩트체크',
+    '가짜뉴스',
+    '허위정보',
+    '정치',
+    'AI',
+    'FactSeeker',
+    '대한민국 정치',
+  ],
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
+  manifest: '/site.webmanifest',
+  colorScheme: 'light dark',
+  openGraph: {
+    title: '팩트씨커 FactSeeker',
+    description:
+      '대한민국의 정치 분야 가짜뉴스를 AI로 판별하는 팩트체크 서비스',
+    url: 'https://www.fact-seeker.com/',
+    siteName: 'FactSeeker',
+    images: [
+      {
+        url: 'https://www.fact-seeker.com/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'FactSeeker 미리보기 이미지',
+      },
+    ],
+    locale: 'ko_KR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '팩트씨커 FactSeeker',
+    description: '대한민국의 가짜뉴스를 AI로 판별하는 팩트체크 서비스',
+    images: ['https://www.fact-seeker.com/og-image.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
