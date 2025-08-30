@@ -1,4 +1,5 @@
-// /api/news  키워드 뉴스 검색
+import apiClient from '../apiClient';
+
 export type NewsSort = 'sim' | 'date';
 
 export interface RawNewsItem {
@@ -73,46 +74,51 @@ export async function searchNewsByKeyword(
       lastBuildDate: '',
     };
   }
+
   const { start = 1, display = 10, sort = 'date', signal } = options;
 
-  const params = new URLSearchParams({
+  const params = {
     query: query.trim(),
     start: String(start),
     display: String(display),
     sort,
-  });
+  } as const;
 
-  if (!API_PATH) {
-    throw new Error('NEWS_API_BASE_URL_MISSING: set NEXT_PUBLIC_API_BASE_URL');
+  try {
+    const res = await apiClient.get<NewsApiResponse>(API_PATH, {
+      params,
+      signal,
+      headers: { Accept: '*/*' },
+    });
+
+    const json = res.data;
+
+    if (!('success' in json) || !json.success) {
+      throw new Error((json as any)?.message || 'NEWS_API_FAILED');
+    }
+
+    const { data } = json;
+
+    const items: NewsItem[] = (data.items || []).map((it) => ({
+      title: stripTags(it.title),
+      description: stripTags(it.description),
+      link: it.link,
+      pubDate: it.pubDate,
+    }));
+
+    return {
+      items,
+      total: data.total,
+      start: data.start,
+      display: data.display,
+      lastBuildDate: data.lastBuildDate,
+    };
+  } catch (err: any) {
+    const status = err?.response?.status;
+    const msg =
+      err?.response?.data?.message ||
+      err?.message ||
+      (status ? `NEWS_API_HTTP_${status}` : 'NEWS_API_FAILED');
+    throw new Error(msg);
   }
-  const url = `${API_PATH}?${params.toString()}`;
-
-  const res = await fetch(url, {
-    method: 'GET',
-    cache: 'no-store',
-    headers: { Accept: '*/*' },
-    signal,
-  });
-  if (!res.ok) throw new Error(`NEWS_API_HTTP_${res.status}`);
-
-  const json: NewsApiResponse = await res.json();
-  if (!('success' in json) || !json.success)
-    throw new Error((json as any)?.message || 'NEWS_API_FAILED');
-
-  const { data } = json;
-
-  const items: NewsItem[] = (data.items || []).map((it) => ({
-    title: stripTags(it.title),
-    description: stripTags(it.description),
-    link: it.link,
-    pubDate: it.pubDate,
-  }));
-
-  return {
-    items,
-    total: data.total,
-    start: data.start,
-    display: data.display,
-    lastBuildDate: data.lastBuildDate,
-  };
 }
