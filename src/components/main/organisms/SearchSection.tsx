@@ -57,7 +57,9 @@ const SearchSection = ({ placeHolder }: SearchSectionProps) => {
         />
 
         <span className="mt-2 ml-2 flex gap-2 text-[10px] md:gap-6 md:text-base">
-          <span className="text-nowrap">최근에 검색한 자료: </span>
+          <span className="text-black-normal text-nowrap">
+            최근에 검색한 자료:
+          </span>
           <div className="flex flex-col">
             {loading ? (
               <span className="opacity-60">불러오는 중…</span>

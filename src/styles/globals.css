@@ -25,14 +25,17 @@
   --true-3: #fcc12b;
   --true-4: #f5782a;
   --true-5: #cf291b;
+
+  color-scheme: light;
 }
 
+/* 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
+} */
 
 html {
   font-family:
