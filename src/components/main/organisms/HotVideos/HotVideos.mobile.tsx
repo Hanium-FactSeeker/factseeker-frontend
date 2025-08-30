@@ -26,7 +26,7 @@ const MobileHotVideosSection = ({ videos }: HotVideosProps) => {
         {slicedVideos.map((item, idx) => (
           <SwiperSlide key={idx} className={`${idx === 0 ? 'ml-[1%]' : ''}`}>
             {idx === slicedVideos.length - 1 ? (
-              <div className="flex h-64 w-36 flex-col justify-center text-sm font-semibold">
+              <div className="text-black-normal flex h-64 w-36 flex-col justify-center text-sm font-semibold">
                 <p>인기 영상을 </p>
                 <p> 더 보고 싶다면? </p>
                 <Link

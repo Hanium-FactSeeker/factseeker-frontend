@@ -28,7 +28,7 @@ const InfoBar = () => {
   });
 
   return (
-    <div className="flex w-full items-center justify-between px-4 md:px-10">
+    <div className="text-black-normal flex w-full items-center justify-between px-4 md:px-10">
       <div className="text-primary-navy flex gap-2 text-[10px] font-medium md:text-sm">
         {/* <span>업데이트 시간</span>
         <span>{updatedAt || '--:--:--'}</span> */}

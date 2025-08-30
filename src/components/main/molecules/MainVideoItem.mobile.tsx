@@ -26,7 +26,7 @@ const MainVideoItemMobile = ({ idx, video }: videoListProps) => {
 
   return (
     <div className="flex h-64 w-40 flex-col gap-2">
-      <p className="text-md font-bold">Top {idx + 1}</p>
+      <p className="text-md text-black-normal font-bold">Top {idx + 1}</p>
       <div className="relative h-auto w-36" rel="noopener noreferrer">
         <img
           src={video?.thumbnail}
@@ -42,7 +42,7 @@ const MainVideoItemMobile = ({ idx, video }: videoListProps) => {
           />
         </div>
       </div>
-      <p className="line-clamp-2 w-36 overflow-hidden text-sm font-semibold">
+      <p className="text-black-normal line-clamp-2 w-36 overflow-hidden text-sm font-semibold">
         {video?.title}
       </p>
       <div className="flex gap-2">
