@@ -53,7 +53,7 @@ const SwitchButton = ({ value, onChange, options, className }: Props) => {
             role="tab"
             onClick={() => onChange(opt.value)}
             className={clsx(
-              'rounded-lg border-0 px-4 py-2 font-medium shadow-none',
+              'rounded-lg border-0 font-medium shadow-none md:px-4 md:py-2',
               active
                 ? 'bg-white text-black'
                 : 'text-gray-strong bg-transparent hover:bg-white/60 active:bg-white/80',
