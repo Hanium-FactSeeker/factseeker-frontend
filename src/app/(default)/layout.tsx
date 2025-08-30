@@ -8,7 +8,7 @@ export default function DefaultGroupLayout({
   return (
     <>
       <DefaultHeader />
-      <main className="flex flex-1 flex-col">{children}</main>
+      <main className="mt-4 flex flex-1 flex-col">{children}</main>
     </>
   );
 }

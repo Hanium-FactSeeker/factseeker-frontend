@@ -32,28 +32,30 @@ const DefaultHeader = ({
     () => getNavItems(() => setOpen(true)),
     [],
   );
-
   return (
     <>
-      <header className="z-50 w-full bg-white/90 px-4 py-3 md:px-8 md:py-5">
-        <div className="flex items-center justify-between">
-          <div className="ml-10">
+      <header className="border-gray-normal sticky top-0 z-50 w-full bg-white/90 backdrop-blur">
+        {/* 상단 바: 로고 / 로그인영역 */}
+        <div className="items-centermd:h-16 mx-[6%] flex h-18 max-w-screen-xl items-end justify-between">
+          <div className="shrink-0">
             <Logo />
           </div>
-          <div className="mr-2 flex justify-end gap-4 text-sm font-medium md:text-lg">
+          <div className="flex items-center">
             <HeaderAuthControls />
           </div>
         </div>
 
-        <div className="mt-6 ml-5">
+        {/* 내비 바: 항목 정렬(줄바꿈 허용) */}
+        <div className="mx-[6%] flex justify-center">
           <NavBar
             isLoggedIn={isLoggedIn}
             textColor={navTextColor}
             onOpenUrlModal={() => setOpen(true)}
             items={defaultItems}
-            className="ml-5"
+            className="flex-wrap md:gap-6 md:py-3"
           />
         </div>
+        <div className="border-gray-normal mx-auto mt-2 w-[90%] border-b"></div>
       </header>
 
       <UrlModal
