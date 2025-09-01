@@ -1,11 +1,11 @@
 'use client';
 
 import Search from '@/components/ui/search';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import LogoStar from '@/components/ui/logo/LogoStar';
 import { getRecentReport, RecentAnalysis } from '@/apis/report/getRecentReport';
-
+import { useAuthStore } from '@/store/useAuthStore';
 interface SearchSectionProps {
   placeHolder: string;
 }
@@ -15,7 +15,8 @@ const SearchSection = ({ placeHolder }: SearchSectionProps) => {
   const [recents, setRecents] = useState<RecentAnalysis[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const fetchedRef = useRef(false);
+
+  const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
 
   const handleSearch = () => {
     if (!search) return;
@@ -27,17 +28,28 @@ const SearchSection = ({ placeHolder }: SearchSectionProps) => {
   };
 
   useEffect(() => {
-    if (fetchedRef.current) {
+    if (!isLoggedIn) {
+      setRecents([]);
+      setLoading(false);
       return;
     }
-    fetchedRef.current = true;
+
+    setLoading(true);
+    let cancelled = false;
 
     (async () => {
-      const recentReports = await getRecentReport();
-      setRecents(recentReports);
-      setLoading(false);
+      try {
+        const recentReports = await getRecentReport();
+        if (!cancelled) setRecents(recentReports);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
     })();
-  }, []);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isLoggedIn]);
 
   return (
     <div className="border-primary-light flex h-52 w-[80%] flex-col items-center justify-center rounded-2xl border-2 py-0 md:flex-row md:gap-18">
@@ -64,7 +76,9 @@ const SearchSection = ({ placeHolder }: SearchSectionProps) => {
             {loading ? (
               <span className="opacity-60">불러오는 중…</span>
             ) : recents.length === 0 ? (
-              <span className="opacity-60">없음</span>
+              <span className="opacity-60">
+                {isLoggedIn ? '없음' : '로그인 필요'}
+              </span>
             ) : (
               recents.map((r) => (
                 <button
