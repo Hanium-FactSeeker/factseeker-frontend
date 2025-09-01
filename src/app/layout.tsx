@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://www.fact-seeker.com/'),
   applicationName: 'FactSeeker',
   title: {
-    default: 'FactSeeker',
+    default: '팩트씨커 FactSeeker',
     template: '%s | FactSeeker',
   },
   description: '대한민국의 정치 분야 가짜뉴스를 AI로 판별하는 팩트체크 서비스',
