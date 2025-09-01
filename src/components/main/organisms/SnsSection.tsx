@@ -1,5 +1,9 @@
 'use client';
 
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 
@@ -25,13 +29,16 @@ const SnsSection = () => {
         }}
       >
         {snsData.map((item, idx) => (
-          <SwiperSlide key={idx} className={`${idx === 0 ? 'ml-[1%]' : ''}`}>
+          <SwiperSlide key={idx} className={idx === 0 ? 'ml-[1%]' : ''}>
             <SnsCard
               name={item.name}
               party={item.party}
               type={item.type as SnsType}
               percentage={item.percentage}
               figureImg={item.figureImg ?? ''}
+              url={item.url}
+              post={item.post}
+              postedAt={item.postedAt}
             />
           </SwiperSlide>
         ))}

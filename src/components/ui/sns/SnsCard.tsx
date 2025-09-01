@@ -37,14 +37,14 @@ const SnsCard = ({
   const SnsLogo = SNS_MAP[type] ?? X;
 
   const handleOpen = () => {
-    if (!url || !url.trim()) return; // url 없으면 아무 동작 안 함
+    if (!url || !url.trim()) return;
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   return (
     <div
       className={clsx(
-        'border-gray-normal flex h-62 w-40 flex-col items-center gap-3 rounded-xl border bg-white py-2 md:h-74 md:w-56',
+        'border-gray-normal flex h-[248px] w-40 flex-col items-center gap-3 rounded-xl border bg-white py-2 md:h-[296px] md:w-56',
         className,
       )}
     >
@@ -71,10 +71,12 @@ const SnsCard = ({
         </div>
       </div>
 
-      <div className="border-gray-normal w-11 border-b-1" />
-      <p className="line-clamp-3 w-34 text-center text-xs break-all md:w-46 md:text-xs md:leading-6">
+      <div className="border-gray-normal w-11 border-b" />
+
+      <p className="line-clamp-3 w-[8.5rem] text-center text-xs break-all md:w-[11.5rem] md:text-xs md:leading-6">
         {post ?? ''}
       </p>
+
       <p
         className="text-primary-normal text-xs font-normal hover:cursor-pointer md:text-sm"
         onClick={(e) => {
