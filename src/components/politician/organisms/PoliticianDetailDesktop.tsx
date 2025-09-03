@@ -27,6 +27,9 @@ interface Props {
   videos: VideoItem[];
   news?: VideoItem[];
   updatedAt?: string;
+  loadingCard?: boolean;
+  loadingNews?: boolean;
+  loadingVideos?: boolean;
 }
 
 export default function PoliticianDetailDesktop({
@@ -34,6 +37,9 @@ export default function PoliticianDetailDesktop({
   videos,
   news,
   updatedAt,
+  loadingCard,
+  loadingNews,
+  loadingVideos,
 }: Props) {
   const imgSrc = politician.img ?? politician.figureImg ?? '';
   const [tab, setTab] = useState<'news' | 'youtube'>('youtube');
@@ -69,22 +75,28 @@ export default function PoliticianDetailDesktop({
               선택 인물
             </p>
 
-            <div className="mb-5 flex items-center justify-center gap-4">
-              <div className="relative h-20 w-20 shrink-0">
-                <PoliticianImage
-                  src={imgSrc}
-                  alt={`${politician.name} 이미지`}
-                />
+            {loadingCard ? (
+              <div className="mb-5 flex h-20 items-center justify-center text-sm text-gray-500">
+                불러오는 중…
               </div>
-              <div className="min-w-0">
-                <p className="text-black-normal truncate text-lg font-bold">
-                  {maskTail(politician.name, 1)}
-                </p>
-                <p className="text-black-normal mt-1 truncate text-sm">
-                  {politician.party}
-                </p>
+            ) : (
+              <div className="mb-5 flex items-center justify-center gap-4">
+                <div className="relative h-20 w-20 shrink-0">
+                  <PoliticianImage
+                    src={imgSrc}
+                    alt={`${politician.name} 이미지`}
+                  />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-black-normal truncate text-lg font-bold">
+                    {maskTail(politician.name, 1)}
+                  </p>
+                  <p className="text-black-normal mt-1 truncate text-sm">
+                    {politician.party}
+                  </p>
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="text-black-normal mb-6 py-3 text-center text-sm">
               <span className="font-medium">누적 신뢰도: </span>
@@ -116,7 +128,11 @@ export default function PoliticianDetailDesktop({
             {updatedAt && <p className="text-xs text-gray-500">{updatedAt}</p>}
           </div>
 
-          {list.length ? (
+          {(tab === 'youtube' ? loadingVideos : loadingNews) ? (
+            <div className="flex h-[320px] items-center justify-center text-sm text-gray-500">
+              {tab === 'youtube' ? '영상 불러오는 중…' : '뉴스 불러오는 중…'}
+            </div>
+          ) : list.length ? (
             <div>
               <Swiper
                 className="desktop-video-swiper"

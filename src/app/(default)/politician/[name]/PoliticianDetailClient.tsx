@@ -31,14 +31,8 @@ const pickLatest = (rows: ScoreRow[] = []) =>
     const bd = dateKey(best.analysisDate);
     if (nd > bd) return cur;
     if (nd === bd) {
-      const ns = (cur.overallScore ??
-        cur.trustScore ??
-        cur.totalScore ??
-        0) as number;
-      const bs = (best.overallScore ??
-        best.trustScore ??
-        best.totalScore ??
-        0) as number;
+      const ns = (cur.overallScore ?? cur.trustScore ?? cur.totalScore ?? 0) as number;
+      const bs = (best.overallScore ?? best.trustScore ?? best.totalScore ?? 0) as number;
       return ns >= bs ? cur : best;
     }
     return best;
@@ -57,7 +51,6 @@ const domainLabel = (url = '') => {
   }
 };
 
-// 뉴스 → VideoItem
 function mapNewsToVideoItems(
   news: { title: string; link: string; pubDate?: string }[],
 ): VideoItem[] {
@@ -67,7 +60,6 @@ function mapNewsToVideoItems(
     link: n.link,
     channelName: domainLabel(n.link),
     publishedAt: n.pubDate,
-    // thumbnailUrl: 나중에 주입
   })) as unknown as VideoItem[];
 }
 
@@ -111,7 +103,9 @@ async function enrichNewsThumbnails(items: VideoItem[], signal?: AbortSignal) {
 }
 
 export default function PoliticianDetailClient({ name }: { name: string }) {
-  const [loading, setLoading] = useState(true);
+  const [loadingCard, setLoadingCard] = useState(true);
+  const [loadingNews, setLoadingNews] = useState(true);
+  const [loadingVideos, setLoadingVideos] = useState(true);
 
   const [politician, setPolitician] = useState<{
     name: string;
@@ -146,8 +140,7 @@ export default function PoliticianDetailClient({ name }: { name: string }) {
 
     (async () => {
       try {
-        setLoading(true);
-
+        setLoadingCard(true);
         const scoresResp: any = await (searchPoliticianScoresByName as any)(
           name,
           0,
@@ -157,10 +150,10 @@ export default function PoliticianDetailClient({ name }: { name: string }) {
         const list: ScoreRow[] = Array.isArray(payload)
           ? payload
           : (payload.politicians ??
-            payload.results ??
-            payload.items ??
-            payload.data ??
-            []);
+              payload.results ??
+              payload.items ??
+              payload.data ??
+              []);
         const picked = pickLatest(list) || {};
 
         const overall = Math.round(
@@ -180,32 +173,41 @@ export default function PoliticianDetailClient({ name }: { name: string }) {
             stats: { fact: overall, gpt, claude: gemini },
           });
         }
+      } catch (e) {
+        console.warn('[scores] load failed:', e);
+      } finally {
+        if (alive) setLoadingCard(false);
+      }
+    })();
 
-        const [newsRes, ytRes] = await Promise.allSettled([
-          searchNewsByKeyword(name, {
-            sort: 'date',
-            display: 10,
-            signal: ac.signal,
-          }),
-          searchYoutubeByKeyword(name, { signal: ac.signal }),
-        ]);
+    (async () => {
+      try {
+        setLoadingNews(true);
+        const newsRes = await searchNewsByKeyword(name, {
+          sort: 'date',
+          display: 10,
+          signal: ac.signal,
+        });
+        const base = mapNewsToVideoItems(newsRes.items || []);
+        const withThumbs = await enrichNewsThumbnails(base, ac.signal);
+        if (alive) setNews(withThumbs);
+      } catch (e) {
+        if (alive) setNews([]);
+        console.warn('[news] load failed:', e);
+      } finally {
+        if (alive) setLoadingNews(false);
+      }
+    })();
 
-        if (!alive) return;
-
-        if (newsRes.status === 'fulfilled') {
-          const base = mapNewsToVideoItems(newsRes.value.items || []);
-          const withThumbs = await enrichNewsThumbnails(base, ac.signal);
-          setNews(withThumbs);
-        } else {
-          setNews([]);
-          console.warn('[news] load failed:', newsRes.reason);
-        }
-
-        if (ytRes.status === 'fulfilled') {
-          const raw = ytRes.value.items || [];
+    (async () => {
+      try {
+        setLoadingVideos(true);
+        const ytRes = await searchYoutubeByKeyword(name, { signal: ac.signal });
+        const raw = ytRes.items || [];
+        if (alive)
           setVideos(
             mapYoutubeToVideoItems(
-              raw.map((r) => ({
+              raw.map((r: any) => ({
                 url: r.url,
                 title: r.title,
                 thumbnailUrl: r.thumbnailUrl,
@@ -213,30 +215,19 @@ export default function PoliticianDetailClient({ name }: { name: string }) {
               })),
             ),
           );
-        } else {
-          setVideos([]);
-          console.warn('[youtube] load failed:', ytRes.reason);
-        }
       } catch (e) {
-        console.error('[politician detail] fetch error', e);
+        if (alive) setVideos([]);
+        console.warn('[youtube] load failed:', e);
       } finally {
-        if (alive) setLoading(false);
+        if (alive) setLoadingVideos(false);
       }
     })();
 
-    return () => {
+  return () => {
       alive = false;
       ac.abort();
     };
   }, [name]);
-
-  if (loading) {
-    return (
-      <div className="w-full max-w-6xl px-4 py-6 text-center text-sm text-gray-500 md:px-6">
-        불러오는 중…
-      </div>
-    );
-  }
 
   return (
     <>
@@ -246,6 +237,9 @@ export default function PoliticianDetailClient({ name }: { name: string }) {
           videos={videos}
           news={news}
           updatedAt={updatedAt}
+          loadingCard={loadingCard}
+          loadingNews={loadingNews}
+          loadingVideos={loadingVideos}
         />
       </div>
       <div className="w-full md:hidden">
@@ -254,6 +248,9 @@ export default function PoliticianDetailClient({ name }: { name: string }) {
           videos={videos}
           news={news}
           updatedAt={updatedAt}
+          loadingCard={loadingCard}
+          loadingNews={loadingNews}
+          loadingVideos={loadingVideos}
         />
       </div>
     </>
