@@ -18,10 +18,7 @@ const VideoRelatedPage = async ({
   return (
     <div>
       <div className="flex items-center justify-center">
-        <Content
-          videoId={videoId ?? ''}
-          initialVideo={{ id: videoId, title, thumbnail: thumb }}
-        />
+        <Content videoId={videoId ?? ''} initialVideo={{ id: videoId, title, thumbnail: thumb }} />
       </div>
     </div>
   );

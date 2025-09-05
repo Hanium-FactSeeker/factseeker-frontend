@@ -22,9 +22,7 @@ const NavBar = ({
   className,
 }: NavBarProps) => {
   return (
-    <nav
-      className={`z-30 mt-4 flex w-full gap-3 text-xs md:gap-10 md:text-xl ${className}`}
-    >
+    <nav className={`z-30 mt-4 flex w-full gap-3 text-xs md:gap-10 md:text-xl ${className}`}>
       {items.map((item) =>
         item.href ? (
           <Nav key={item.label} href={item.href} textColor={textColor}>

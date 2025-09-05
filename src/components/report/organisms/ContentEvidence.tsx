@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import ButtonGroup from '../molecules/ButtonGroup';
 import ClaimTabs from '../molecules/ClaimTabs';
 import EvidenceList from '../molecules/EvidenceList';
-import { EvidenceItem } from '@/types/report';
+import type { EvidenceItem } from '@/types/report';
 
 type ContentEvidenceProps = {
   claims: EvidenceItem[];
@@ -37,17 +37,9 @@ const ContentEvidence = ({ claims, totalScore }: ContentEvidenceProps) => {
 
   return (
     <div className="relative mt-12 flex w-full flex-col items-center">
-      <ClaimTabs
-        count={claims.length}
-        activeIdx={activeIdx}
-        onChange={setActiveIdx}
-      />
+      <ClaimTabs count={claims.length} activeIdx={activeIdx} onChange={setActiveIdx} />
       <div className="pointer-events-auto relative z-0 flex w-full flex-col items-center justify-center">
-        <EvidenceList
-          claim={current}
-          activeIdx={activeIdx}
-          totalScore={totalScore}
-        />
+        <EvidenceList claim={current} activeIdx={activeIdx} totalScore={totalScore} />
         <ButtonGroup />
       </div>
     </div>

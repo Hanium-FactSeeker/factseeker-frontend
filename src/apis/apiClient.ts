@@ -1,22 +1,21 @@
 'use client';
 
-import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import type { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import axios from 'axios';
 import {
   clearTokens,
   getAccessToken,
   getRefreshToken,
   getTokenType,
   setTokens,
-} from '../lib/auth/tokens';
+} from '@/lib/auth/tokens';
 
-/** API 경로 상수 */
 const PATH = {
   LOGIN: '/auth/login',
   REFRESH: '/auth/refresh',
   LOGOUT: '/auth/logout',
 } as const;
 
-/** 기본 JSON 헤더 */
 const JSON_HEADERS = {
   'Content-Type': 'application/json',
   Accept: 'application/json',
@@ -67,8 +66,7 @@ apiClient.interceptors.request.use((config) => {
   const type = getTokenType();
   if (token) {
     config.headers = config.headers ?? {};
-    (config.headers as Record<string, string>).Authorization =
-      `${type} ${token}`;
+    (config.headers as Record<string, string>).Authorization = `${type} ${token}`;
   }
   return config;
 });
@@ -94,11 +92,7 @@ apiClient.interceptors.response.use(
     const url = cfg.url ?? '';
 
     // 로그인/리프레시/로그아웃 요청은 예외 처리
-    if (
-      url.includes(PATH.LOGIN) ||
-      url.includes(PATH.REFRESH) ||
-      url.includes(PATH.LOGOUT)
-    ) {
+    if (url.includes(PATH.LOGIN) || url.includes(PATH.REFRESH) || url.includes(PATH.LOGOUT)) {
       return Promise.reject(err);
     }
 
@@ -114,16 +108,12 @@ apiClient.interceptors.response.use(
         const newAccess = await refreshInFlight;
 
         cfg.headers = cfg.headers ?? {};
-        (cfg.headers as Record<string, string>).Authorization =
-          `${getTokenType()} ${newAccess}`;
+        (cfg.headers as Record<string, string>).Authorization = `${getTokenType()} ${newAccess}`;
 
         return apiClient(cfg);
       } catch (e) {
         clearTokens();
-        if (
-          typeof window !== 'undefined' &&
-          window.location.pathname !== '/login'
-        ) {
+        if (typeof window !== 'undefined' && window.location.pathname !== '/login') {
           window.location.href = '/login';
         }
         return Promise.reject(e);

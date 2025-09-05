@@ -12,12 +12,9 @@ type RawPolitician = {
 };
 
 export async function getTopPoliticians(): Promise<RawPolitician[]> {
-  const res = await apiClient.get<RawPolitician>(
-    '/politicians/scores/top-summary',
-    {
-      headers: { Accept: '*/*' },
-    },
-  );
+  const res = await apiClient.get<RawPolitician>('/politicians/scores/top-summary', {
+    headers: { Accept: '*/*' },
+  });
 
   const payload = res.data as any;
   const list: RawPolitician[] = Array.isArray(payload?.politicians)

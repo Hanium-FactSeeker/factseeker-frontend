@@ -2,7 +2,7 @@ import React from 'react';
 import LogoStar from './LogoStar';
 import GptIcon from './GptIcon';
 import ClaudeIcon from './ClaudeIcon';
-import { IconProps } from '@/types/logo';
+import type { IconProps } from '@/types/logo';
 
 const Icon = ({ name, className = '' }: IconProps) => {
   switch (name) {

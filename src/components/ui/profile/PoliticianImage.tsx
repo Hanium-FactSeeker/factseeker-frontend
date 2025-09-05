@@ -22,8 +22,7 @@ export default function PoliticianImage({
   className,
   fallbackSize = 'md',
 }: PoliticianImageProps) {
-  const finalSrc =
-    src && src !== 'null' && src.trim() !== '' ? src : (defaultImg as any);
+  const finalSrc = src && src !== 'null' && src.trim() !== '' ? src : (defaultImg as any);
 
   const wrapperClass = `relative overflow-hidden rounded-full ${className ?? sizeMap[fallbackSize]}`;
 

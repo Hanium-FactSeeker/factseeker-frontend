@@ -2,7 +2,7 @@ import PoliticianImage from '../profile/PoliticianImage';
 import X from '@/assets/logo/logo_x.svg';
 import Youtube from '@/assets/logo/logo_youtube.svg';
 import Facebook from '@/assets/logo/logo_facebook.svg';
-import { SnsType } from '@/types/logo';
+import type { SnsType } from '@/types/logo';
 import clsx from 'clsx';
 
 const SNS_MAP: Record<SnsType, React.FC<React.SVGProps<SVGSVGElement>>> = {
@@ -59,15 +59,9 @@ const SnsCard = ({
           className="relative h-14 w-14 md:h-20 md:w-20"
         />
         <div className="flex flex-col gap-1">
-          <p className="text-black-normal text-sm font-bold md:text-base">
-            {name}
-          </p>
-          <p className="text-black-normal text-center text-xs font-normal md:text-xs">
-            {party}
-          </p>
-          <p className="text-primary-normal text-xs font-bold md:text-sm">
-            신뢰성: {percentage}
-          </p>
+          <p className="text-black-normal text-sm font-bold md:text-base">{name}</p>
+          <p className="text-black-normal text-center text-xs font-normal md:text-xs">{party}</p>
+          <p className="text-primary-normal text-xs font-bold md:text-sm">신뢰성: {percentage}</p>
         </div>
       </div>
 

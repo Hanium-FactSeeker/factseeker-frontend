@@ -1,6 +1,6 @@
 import React from 'react';
 import Icon from '@/components/ui/logo/Icon';
-import { ReliabilityStatProps } from '../../../types/logo';
+import type { ReliabilityStatProps } from '../../../types/logo';
 
 export default function ReliabilityStat({ name, value }: ReliabilityStatProps) {
   return (

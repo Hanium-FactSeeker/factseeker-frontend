@@ -6,10 +6,7 @@ interface ProfileButtonProps {
   textColor?: string;
 }
 
-const ProfileButton: React.FC<ProfileButtonProps> = ({
-  label = '프로필',
-  textColor = 'white',
-}) => {
+const ProfileButton: React.FC<ProfileButtonProps> = ({ label = '프로필', textColor = 'white' }) => {
   const colorClass = textColor === 'white' ? 'text-white' : 'text-black-normal';
 
   return (

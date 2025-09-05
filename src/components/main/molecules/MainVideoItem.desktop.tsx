@@ -1,8 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import FactBadge from '@/components/ui/factBadge';
-// import { BadgeType } from '@/types/validity';
-import { VideoItem } from '@/types/videos';
+import type { VideoItem } from '@/types/videos';
 import { percentToValidity } from '@/utils/calculateValidity';
 
 interface videoListProps {
@@ -32,14 +31,13 @@ const MainVideoItemDesktop = ({ idx, video }: videoListProps) => {
   const router = useRouter();
 
   const badgePercent =
-    video?.gradeStatus === 'COMPLETED' &&
-    typeof video?.gradePercent === 'number'
+    video?.gradeStatus === 'COMPLETED' && typeof video?.gradePercent === 'number'
       ? video.gradePercent
       : 0;
 
   const handleGoReport = () => {
-    const url = encodeURIComponent(video?.link ?? '');
-    router.push(`/report/${url}`);
+    const videoId = encodeURIComponent(video?.id ?? '');
+    router.push(`/report?videoId=${videoId}`);
   };
 
   return (
@@ -58,17 +56,10 @@ const MainVideoItemDesktop = ({ idx, video }: videoListProps) => {
 
       {/* 제목 */}
       <div className="flex flex-col">
-        <p className="text-black-normal w-80 flex-1 text-lg font-bold break-keep">
-          {video?.title}
-        </p>
+        <p className="text-black-normal w-80 flex-1 text-lg font-bold break-keep">{video?.title}</p>
         <div className="mt-2 flex gap-2">
           <a href={video?.link} target="_blank" rel="noopener noreferrer">
-            <Button
-              variant="filled"
-              color="gray"
-              size="md"
-              className="mt-2 w-28"
-            >
+            <Button variant="filled" color="gray" size="md" className="mt-2 w-28">
               원문 보기
             </Button>
           </a>
@@ -85,11 +76,7 @@ const MainVideoItemDesktop = ({ idx, video }: videoListProps) => {
       </div>
       {/* 썸네일 */}
       <div className="flex h-auto w-36 overflow-hidden">
-        <img
-          src={video.thumbnail}
-          alt="썸네일"
-          className="h-full w-full object-cover"
-        />
+        <img src={video.thumbnail} alt="썸네일" className="h-full w-full object-cover" />
       </div>
     </div>
   );

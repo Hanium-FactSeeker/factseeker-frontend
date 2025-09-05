@@ -2,7 +2,7 @@
 
 import PoliticianDetailDesktop from './PoliticianDetailDesktop';
 import PoliticianDetailMobile from './PoliticianDetailMobile';
-import type { VideoItem } from '@/constants/videoList';
+import type { VideoItem } from '@/types/videos';
 
 type Stat = { fact: number; gpt: number; claude: number };
 type Politician = {

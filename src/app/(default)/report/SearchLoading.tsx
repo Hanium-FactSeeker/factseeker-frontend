@@ -22,11 +22,7 @@ export default function SearchLoading({ onCancel }: SearchLoadingProps) {
           기사를 분석 중입니다
         </p>
 
-        <div
-          className="flex flex-col items-center gap-5"
-          role="status"
-          aria-live="polite"
-        >
+        <div className="flex flex-col items-center gap-5" role="status" aria-live="polite">
           <Spinner option={option} />
         </div>
 

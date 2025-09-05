@@ -5,7 +5,7 @@ import Link from 'next/link';
 import PoliticianImage from '@/components/ui/profile/PoliticianImage';
 import VideoRow from '@/components/politician/molecules/VideoRow';
 import SwitchButton from '@/components/ui/button/SwitchButton';
-import type { VideoItem } from '@/constants/videoList';
+import type { VideoItem } from '@/types/videos';
 import { maskTail } from '@/utils/maskTail';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
@@ -60,10 +60,7 @@ export default function PoliticianDetailDesktop({
   return (
     <section className="mx-auto mt-6 w-[90%] rounded-2xl border border-gray-200 bg-white px-8 py-4">
       <div className="mb-5">
-        <Link
-          href="/politician"
-          className="text-sm font-medium text-gray-500 hover:underline"
-        >
+        <Link href="/politician" className="text-sm font-medium text-gray-500 hover:underline">
           {'< 다시 선택'}
         </Link>
       </div>
@@ -71,9 +68,7 @@ export default function PoliticianDetailDesktop({
       <div className="grid grid-cols-[40%_60%] gap-2">
         <aside className="w-full max-w-[360px] justify-self-center rounded-[12px] p-2">
           <div className="my-4 rounded-2xl border border-gray-200 p-5">
-            <p className="text-black-normal mb-4 text-center text-xl font-extrabold">
-              선택 인물
-            </p>
+            <p className="text-black-normal mb-4 text-center text-xl font-extrabold">선택 인물</p>
 
             {loadingCard ? (
               <div className="mb-5 flex h-20 items-center justify-center text-sm text-gray-500">
@@ -82,18 +77,13 @@ export default function PoliticianDetailDesktop({
             ) : (
               <div className="mb-5 flex items-center justify-center gap-4">
                 <div className="relative h-20 w-20 shrink-0">
-                  <PoliticianImage
-                    src={imgSrc}
-                    alt={`${politician.name} 이미지`}
-                  />
+                  <PoliticianImage src={imgSrc} alt={`${politician.name} 이미지`} />
                 </div>
                 <div className="min-w-0">
                   <p className="text-black-normal truncate text-lg font-bold">
                     {maskTail(politician.name, 1)}
                   </p>
-                  <p className="text-black-normal mt-1 truncate text-sm">
-                    {politician.party}
-                  </p>
+                  <p className="text-black-normal mt-1 truncate text-sm">{politician.party}</p>
                 </div>
               </div>
             )}
@@ -195,9 +185,7 @@ export default function PoliticianDetailDesktop({
             </div>
           ) : (
             <div className="flex h-[320px] items-center justify-center text-sm text-gray-500">
-              {tab === 'youtube'
-                ? '영상 데이터가 없습니다.'
-                : '뉴스 데이터가 없습니다.'}
+              {tab === 'youtube' ? '영상 데이터가 없습니다.' : '뉴스 데이터가 없습니다.'}
             </div>
           )}
         </section>

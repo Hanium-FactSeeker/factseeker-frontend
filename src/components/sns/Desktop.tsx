@@ -4,7 +4,8 @@ import { useMemo, useState } from 'react';
 import Input from '@/components/ui/button/SearchInput';
 import SwitchButton from '@/components/ui/button/SwitchButton';
 import SnsCard from '@/components/ui/sns/SnsCard';
-import { snsData, SnsItem } from '@/constants/snsData';
+import type { SnsItem } from '@/constants/snsData';
+import { snsData } from '@/constants/snsData';
 
 const PAGE_SIZE = 10;
 
@@ -17,8 +18,7 @@ export default function Desktop() {
     const q = query.trim();
     let list = snsData;
     if (q) list = list.filter((p) => p.name.includes(q));
-    if (sortKey === 'trust')
-      list = [...list].sort((a, b) => b.percentage - a.percentage);
+    if (sortKey === 'trust') list = [...list].sort((a, b) => b.percentage - a.percentage);
     else list = [...list].reverse();
     return list;
   }, [query, sortKey]);

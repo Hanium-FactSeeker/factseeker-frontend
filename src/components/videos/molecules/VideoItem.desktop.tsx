@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import FactMark from '@/components/ui/factMark';
-import { VideoItem } from '@/types/videos';
+import type { VideoItem } from '@/types/videos';
 import { percentToValidity } from '@/utils/calculateValidity';
 
 interface VideoItemProps {
@@ -21,8 +21,8 @@ const VideoItemDesktop = ({ video }: VideoItemProps) => {
   };
 
   const handleGoReport = () => {
-    const url = encodeURIComponent(video?.link ?? '');
-    router.push(`/report/${url}`);
+    const videoId = encodeURIComponent(video?.id ?? '');
+    router.push(`/report?videoId=${videoId}`);
   };
 
   return (
@@ -34,11 +34,7 @@ const VideoItemDesktop = ({ video }: VideoItemProps) => {
       >
         <img className="h-20 w-36" src={video?.thumbnail} />
         <div className="absolute right-22 bottom-2 z-10">
-          <FactMark
-            width={70}
-            height={90}
-            type={percentToValidity(video?.gradePercent ?? 0)}
-          />
+          <FactMark width={70} height={90} type={percentToValidity(video?.gradePercent ?? 0)} />
         </div>
       </a>
       <p className="text-black-normal text-md line-clamp-2 h-12 w-54 overflow-hidden text-center font-bold text-ellipsis">
@@ -51,12 +47,7 @@ const VideoItemDesktop = ({ video }: VideoItemProps) => {
         <Button variant="outline" color="gray" size="md" onClick={goRelated}>
           연관 분석
         </Button>
-        <Button
-          variant="filled"
-          color="purple"
-          size="md"
-          onClick={handleGoReport}
-        >
+        <Button variant="filled" color="purple" size="md" onClick={handleGoReport}>
           리포트 분석
         </Button>
       </div>

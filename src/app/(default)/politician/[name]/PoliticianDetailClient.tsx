@@ -7,7 +7,7 @@ import { searchPoliticianScoresByName } from '@/apis/politician/politician';
 import { searchNewsByKeyword } from '@/apis/politician/news';
 import { searchYoutubeByKeyword } from '@/apis/politician/youtube';
 import { getOgImage } from '@/apis/common/og';
-import type { VideoItem } from '@/constants/videoList';
+import type { VideoItem } from '@/types/videos';
 
 type ScoreRow = {
   politicianName?: string;
@@ -38,8 +38,7 @@ const pickLatest = (rows: ScoreRow[] = []) =>
     return best;
   }, null);
 
-const safeImg = (u?: string | null) =>
-  u && u !== 'null' && u !== 'undefined' ? u : '';
+const safeImg = (u?: string | null) => (u && u !== 'null' && u !== 'undefined' ? u : '');
 
 const domainLabel = (url = '') => {
   try {
@@ -141,26 +140,15 @@ export default function PoliticianDetailClient({ name }: { name: string }) {
     (async () => {
       try {
         setLoadingCard(true);
-        const scoresResp: any = await (searchPoliticianScoresByName as any)(
-          name,
-          0,
-          50,
-        );
+        const scoresResp: any = await (searchPoliticianScoresByName as any)(name, 0, 50);
         const payload = (scoresResp?.data ?? scoresResp) || {};
         const list: ScoreRow[] = Array.isArray(payload)
           ? payload
-          : (payload.politicians ??
-              payload.results ??
-              payload.items ??
-              payload.data ??
-              []);
+          : (payload.politicians ?? payload.results ?? payload.items ?? payload.data ?? []);
         const picked = pickLatest(list) || {};
 
         const overall = Math.round(
-          (picked.overallScore ??
-            picked.trustScore ??
-            picked.totalScore ??
-            0) as number,
+          (picked.overallScore ?? picked.trustScore ?? picked.totalScore ?? 0) as number,
         );
         const gpt = Math.round(picked.gptScore ?? 0);
         const gemini = Math.round(picked.geminiScore ?? 0);
@@ -223,7 +211,7 @@ export default function PoliticianDetailClient({ name }: { name: string }) {
       }
     })();
 
-  return () => {
+    return () => {
       alive = false;
       ac.abort();
     };

@@ -1,3 +1,5 @@
+import type { ValidityType } from './validity';
+
 export interface VideoItem {
   id: string;
   title: string;
@@ -7,6 +9,9 @@ export interface VideoItem {
   gradePercent?: number | null;
   gradeStatus?: 'COMPLETED' | 'PENDING' | 'FAILED' | 'UNKNOWN';
   channelName?: string;
+  publishedAt?: string;
+  date?: string;
+  grade?: ValidityType | null;
 }
 
 export interface HotVideosProps {

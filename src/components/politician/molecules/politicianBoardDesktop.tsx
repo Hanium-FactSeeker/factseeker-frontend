@@ -1,9 +1,8 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import PoliticianItemDesktop, {
-  PoliticianTopItem,
-} from '../atoms/politicianItemDesktop';
+import type { PoliticianTopItem } from '../atoms/politicianItemDesktop';
+import PoliticianItemDesktop from '../atoms/politicianItemDesktop';
 import {
   fetchPoliticiansPage,
   fetchTopScoresSummary,
@@ -14,10 +13,7 @@ interface Props {
   query: string;
 }
 
-type Basics = Record<
-  string,
-  { id?: number; profileImageUrl?: string | null; party?: string }
->;
+type Basics = Record<string, { id?: number; profileImageUrl?: string | null; party?: string }>;
 
 type SearchScoreRow = {
   id?: number;
@@ -35,15 +31,11 @@ type SearchScoreRow = {
   profileImageUrl?: string | null;
 };
 
-const safeImg = (u?: string | null) =>
-  u && u !== 'null' && u !== 'undefined' ? u : '';
-const normalizeName = (name?: string) =>
-  (name ?? '').replace(/\s+/g, '').trim();
+const safeImg = (u?: string | null) => (u && u !== 'null' && u !== 'undefined' ? u : '');
+const normalizeName = (name?: string) => (name ?? '').replace(/\s+/g, '').trim();
 const dateKey = (s?: string) => (s ? new Date(s).getTime() || 0 : 0);
 const imgOf = (v: unknown) =>
-  safeImg(
-    typeof v === 'function' ? undefined : (v as string | null | undefined),
-  );
+  safeImg(typeof v === 'function' ? undefined : (v as string | null | undefined));
 
 function toScores(r: SearchScoreRow) {
   const overall = r.overallScore ?? r.trustScore ?? r.totalScore ?? 0;
@@ -70,14 +62,8 @@ function dedupLatest(rows: SearchScoreRow[]) {
     const dOld = dateKey(prev.analysisDate);
     if (dNew > dOld) map.set(key, row);
     else if (dNew === dOld) {
-      const sNew = (row.overallScore ??
-        row.trustScore ??
-        row.totalScore ??
-        0) as number;
-      const sOld = (prev.overallScore ??
-        prev.trustScore ??
-        prev.totalScore ??
-        0) as number;
+      const sNew = (row.overallScore ?? row.trustScore ?? row.totalScore ?? 0) as number;
+      const sOld = (prev.overallScore ?? prev.trustScore ?? prev.totalScore ?? 0) as number;
       if (sNew >= sOld) map.set(key, row);
     }
   }
@@ -121,20 +107,15 @@ export default function PoliticianBoardDesktop({ query }: Props) {
       const top12 = await fetchTopScoresSummary();
       if (!mountedRef.current) return;
 
-      const mappedTop: PoliticianTopItem[] = (top12 ?? [])
-        .slice(0, 12)
-        .map((s) => ({
-          id: bm[s.name]?.id ?? s.id,
-          name: s.name,
-          party: s.party || bm[s.name]?.party || '',
-          profileImageUrl:
-            bm[s.name]?.profileImageUrl || imgOf((s as any).profileImageUrl),
-          overallScore: Math.round(
-            s.overallScore ?? s.trustScore ?? s.totalScore ?? 0,
-          ),
-          gptScore: Math.round(s.gptScore ?? 0),
-          geminiScore: Math.round(s.geminiScore ?? 0),
-        }));
+      const mappedTop: PoliticianTopItem[] = (top12 ?? []).slice(0, 12).map((s) => ({
+        id: bm[s.name]?.id ?? s.id,
+        name: s.name,
+        party: s.party || bm[s.name]?.party || '',
+        profileImageUrl: bm[s.name]?.profileImageUrl || imgOf((s as any).profileImageUrl),
+        overallScore: Math.round(s.overallScore ?? s.trustScore ?? s.totalScore ?? 0),
+        gptScore: Math.round(s.gptScore ?? 0),
+        geminiScore: Math.round(s.geminiScore ?? 0),
+      }));
 
       setTop(mappedTop);
       setLoading(false);
@@ -163,20 +144,11 @@ export default function PoliticianBoardDesktop({ query }: Props) {
     const ac = new AbortController();
     const t = setTimeout(async () => {
       // API
-      const resp: any = await (searchPoliticianScoresByName as any)(
-        q,
-        0,
-        500,
-        ac.signal,
-      );
+      const resp: any = await (searchPoliticianScoresByName as any)(q, 0, 500, ac.signal);
       const payload = (resp?.data ?? resp) || {};
       const listRaw: SearchScoreRow[] = Array.isArray(payload)
         ? payload
-        : (payload.politicians ??
-          payload.results ??
-          payload.items ??
-          payload.data ??
-          []);
+        : (payload.politicians ?? payload.results ?? payload.items ?? payload.data ?? []);
 
       if (!mountedRef.current) return;
 
@@ -190,8 +162,7 @@ export default function PoliticianBoardDesktop({ query }: Props) {
           id: base.id ?? row.politicianId ?? row.id,
           name,
           party: row.politicianParty || row.party || base.party || '',
-          profileImageUrl:
-            base.profileImageUrl ?? imgOf((row as any).profileImageUrl),
+          profileImageUrl: base.profileImageUrl ?? imgOf((row as any).profileImageUrl),
           overallScore: scores.overall,
           gptScore: scores.gpt,
           geminiScore: scores.gemini,

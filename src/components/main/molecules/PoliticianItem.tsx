@@ -24,43 +24,20 @@ const PoliticianItem = ({ p }: { p: Politician }) => {
     <div className="flex h-40 w-full items-center justify-center gap-4 md:h-56 md:gap-8">
       <div className="flex flex-col items-center gap-1 md:gap-2">
         <div className="relative">
-          <PoliticianImage
-            src={faceSrc}
-            alt={`${p.name} 이미지`}
-            className="h-16 w-16"
-          />
+          <PoliticianImage src={faceSrc} alt={`${p.name} 이미지`} className="h-16 w-16" />
           <div className="absolute right-7 bottom-10 z-10">
             <FactMark type={badgeType} width={50} height={50} />
           </div>
         </div>
 
-        <p className="text-black-normal text-md font-bold md:text-xl">
-          {maskTail(p.name, 1)}
-        </p>
-        <p className="text-black-normal text-sm font-normal md:text-base">
-          {p.party}
-        </p>
+        <p className="text-black-normal text-md font-bold md:text-xl">{maskTail(p.name, 1)}</p>
+        <p className="text-black-normal text-sm font-normal md:text-base">{p.party}</p>
       </div>
 
       <div className="flex flex-col gap-2">
-        <ReliabilityStat
-          iconWidth={20}
-          iconHeight={20}
-          name="GPT"
-          value={p.stats.gpt}
-        />
-        <ReliabilityStat
-          iconWidth={20}
-          iconHeight={20}
-          name="Gemini"
-          value={p.stats.gemini}
-        />
-        <ReliabilityStat
-          iconWidth={20}
-          iconHeight={20}
-          name="전체"
-          value={p.stats.overall}
-        />
+        <ReliabilityStat iconWidth={20} iconHeight={20} name="GPT" value={p.stats.gpt} />
+        <ReliabilityStat iconWidth={20} iconHeight={20} name="Gemini" value={p.stats.gemini} />
+        <ReliabilityStat iconWidth={20} iconHeight={20} name="전체" value={p.stats.overall} />
       </div>
     </div>
   );

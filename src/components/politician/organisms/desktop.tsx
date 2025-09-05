@@ -7,14 +7,7 @@ import ClientTime from '@/components/common/ClientTime';
 
 const Magnifier = () => (
   <svg width="25" height="25" viewBox="0 0 24 24" aria-hidden>
-    <circle
-      cx="11"
-      cy="11"
-      r="7"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-    />
+    <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2" />
     <line
       x1="17"
       y1="17"

@@ -11,8 +11,7 @@ const sizeMap = {
 
 type SizeKey = keyof typeof sizeMap;
 
-export interface SearchInputProps
-  extends InputHTMLAttributes<HTMLInputElement> {
+export interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
   inputSize?: SizeKey;
   fullWidth?: boolean;
   iconRight?: ReactNode;
@@ -20,17 +19,7 @@ export interface SearchInputProps
 }
 
 const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
-  (
-    {
-      className = '',
-      inputSize = 'md',
-      fullWidth,
-      iconLeft,
-      iconRight,
-      ...props
-    },
-    ref,
-  ) => {
+  ({ className = '', inputSize = 'md', fullWidth, iconLeft, iconRight, ...props }, ref) => {
     return (
       <div
         className={clsx(
