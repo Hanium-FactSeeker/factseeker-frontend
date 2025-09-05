@@ -9,19 +9,9 @@ interface NavLinkProps {
   textColor?: string;
 }
 
-const Nav: React.FC<NavLinkProps> = ({
-  href,
-  onClick,
-  children,
-  className,
-  textColor,
-}) => {
+const Nav: React.FC<NavLinkProps> = ({ href, onClick, children, className, textColor }) => {
   const colorClass =
-    textColor === 'white'
-      ? 'text-white'
-      : textColor === 'black'
-        ? 'text-black-normal'
-        : '';
+    textColor === 'white' ? 'text-white' : textColor === 'black' ? 'text-black-normal' : '';
   return (
     <Link
       href={href}

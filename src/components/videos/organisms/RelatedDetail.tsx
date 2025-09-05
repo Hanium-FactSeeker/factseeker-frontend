@@ -47,8 +47,7 @@ const RelatedDesktopLayout = ({ videoId, initialVideo }: Props) => {
           setKeywords(ks);
         }
       } catch (e: any) {
-        if (!cancelled)
-          setKwError(e?.message ?? '키워드를 불러오지 못했습니다.');
+        if (!cancelled) setKwError(e?.message ?? '키워드를 불러오지 못했습니다.');
       } finally {
         if (!cancelled) setKwLoading(false);
       }
@@ -90,9 +89,7 @@ const RelatedDesktopLayout = ({ videoId, initialVideo }: Props) => {
         }
       } catch (e: any) {
         if (!cancelled) {
-          setRelError(
-            e?.response?.data?.message ?? e?.message ?? '연관 영상 조회 실패',
-          );
+          setRelError(e?.response?.data?.message ?? e?.message ?? '연관 영상 조회 실패');
           setRelItems([]);
         }
       } finally {

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import VideoItemMobile from '../../molecules/MainVideoItem.mobile';
-import { HotVideosProps } from '@/types/videos';
+import type { HotVideosProps } from '@/types/videos';
 
 const MobileHotVideosSection = ({ videos }: HotVideosProps) => {
   const slicedVideos = videos.slice(0, 6);
@@ -29,10 +29,7 @@ const MobileHotVideosSection = ({ videos }: HotVideosProps) => {
               <div className="text-black-normal flex h-64 w-36 flex-col justify-center text-sm font-semibold">
                 <p>인기 영상을 </p>
                 <p> 더 보고 싶다면? </p>
-                <Link
-                  className="text-primary-normal mt-2 font-bold"
-                  href={'/videos'}
-                >
+                <Link className="text-primary-normal mt-2 font-bold" href={'/videos'}>
                   바로가기 &gt;
                 </Link>
               </div>

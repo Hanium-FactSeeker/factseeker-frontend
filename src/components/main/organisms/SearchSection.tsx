@@ -30,7 +30,9 @@ const SearchSection = ({ placeHolder }: SearchSectionProps) => {
       toast.error('url을 입력한 뒤 다시 시도해 주세요');
       return;
     }
-    router.push(`/report?url=${encodeURIComponent(search)}`);
+    const s = search.trim();
+    const normalized = /^https?:\/\//i.test(s) ? s : `https://${s}`;
+    router.push(`/report?url=${encodeURIComponent(normalized)}`);
   };
 
   useEffect(() => {
@@ -72,10 +74,13 @@ const SearchSection = ({ placeHolder }: SearchSectionProps) => {
           onChange={(e) => setSearch(e.target.value)}
           placeHolder={placeHolder}
           onClick={handleSearch}
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
         />
 
         <span className="mt-2 ml-2 flex gap-2 text-[10px] md:gap-6 md:text-base">
-          <span className="text-black-normal text-nowrap">최근에 검색한 자료:</span>
+          <span className="text-black-normal text-nowrap">
+            최근에 검색한 자료:
+          </span>
           <div className="flex flex-col">
             {loading ? (
               <span className="opacity-60">불러오는 중…</span>

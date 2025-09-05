@@ -2,7 +2,7 @@
 
 import React from 'react';
 import clsx from 'clsx';
-import { TextInputProps } from './types';
+import type { TextInputProps } from './types';
 
 const sizeMap = {
   sm: 'h-10 md:h-10 text-sm md:text-sm px-3 md:px-3 rounded-lg md:rounded-lg',
@@ -31,9 +31,7 @@ export default function TextInput({
       )}
     >
       {iconLeft && (
-        <div className="text-gray-strong flex items-center justify-center">
-          {iconLeft}
-        </div>
+        <div className="text-gray-strong flex items-center justify-center">{iconLeft}</div>
       )}
 
       <input
@@ -45,9 +43,7 @@ export default function TextInput({
       />
 
       {iconRight && (
-        <div className="text-gray-strong flex items-center justify-center">
-          {iconRight}
-        </div>
+        <div className="text-gray-strong flex items-center justify-center">{iconRight}</div>
       )}
     </div>
   );

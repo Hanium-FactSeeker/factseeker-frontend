@@ -53,12 +53,9 @@ export async function fetchPoliticianScoreDetail(
   }
 
   const path = `/politicians/scores/${id}`;
-  console.log(`GET ${path} 요청 시작`);
 
   try {
     const res = await apiClient.get(path);
-    console.log(`GET ${path} 응답 성공`, res.data);
-
     const raw = res.data as
       | PoliticianScoreDetail
       | ApiWrap<PoliticianScoreDetail>
@@ -100,11 +97,9 @@ export async function searchPoliticianScoresByName(
   }
 
   const path = '/politicians/scores/search';
-  console.log(`GET ${path} 요청 시작`, { name: trimmed });
 
   try {
     const res = await apiClient.get(path, { params: { name: trimmed } });
-    console.log(`GET ${path} 응답 성공`, res.data);
 
     const raw = res.data as
       | PoliticianScoreDetail[]
@@ -151,11 +146,8 @@ export async function searchPoliticianScoresByName(
 //상위 12명 신뢰도 점수 요약 조회
 export async function fetchTopScoresSummary(): Promise<PoliticianScoreItem[]> {
   const path = '/politicians/scores/top-summary';
-  console.log(`GET ${path} 요청 시작`);
-
   try {
     const res = await apiClient.get(path);
-    console.log(`GET ${path} 응답 성공`, res.data);
 
     const raw = res.data as
       | TopScoresSummaryResponse
@@ -208,12 +200,8 @@ export async function fetchPoliticiansPage(
   size: number = 10,
 ): Promise<PoliticianListResponse> {
   const path = '/politicians';
-  console.log(`GET ${path} 요청 시작`, { page, size });
-
   try {
     const res = await apiClient.get(path, { params: { page, size } });
-    console.log(`GET ${path} 응답 성공`, res.data);
-
     const raw = res.data as
       | PoliticianListResponse
       | ApiWrap<PoliticianListResponse | PoliticianBasic[]>
@@ -292,12 +280,8 @@ export async function fetchPoliticianDetail(
   }
 
   const path = `/politicians/${idStr}`;
-  console.log(`GET ${path} 요청 시작`);
-
   try {
     const res = await apiClient.get(path);
-    console.log(`GET ${path} 응답 성공`, res.data);
-
     const raw = res.data as
       | PoliticianDetail
       | ApiWrap<PoliticianDetail>
@@ -344,12 +328,8 @@ export async function fetchPoliticiansByName(
   }
 
   const path = '/politicians/search';
-  console.log(`GET ${path} 요청 시작`, { name: q });
-
   try {
     const res = await apiClient.get(path, { params: { name: q } });
-    console.log(`GET ${path} 응답 성공`, res.data);
-
     const raw = res.data as
       | PoliticianBasic[]
       | PoliticianBasic

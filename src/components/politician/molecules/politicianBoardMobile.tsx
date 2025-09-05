@@ -40,7 +40,6 @@ const normalizeName = (name?: string) =>
   (name ?? '').replace(/\s+/g, '').trim();
 const dateKey = (s?: string) => (s ? new Date(s).getTime() || 0 : 0);
 
-// 🔧 TS2345 방지
 const imgOf = (v: unknown) =>
   safeImg(
     typeof v === 'function' ? undefined : (v as string | null | undefined),

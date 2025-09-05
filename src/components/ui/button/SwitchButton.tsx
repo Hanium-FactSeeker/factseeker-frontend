@@ -36,10 +36,7 @@ const SwitchButton = ({ value, onChange, options, className }: Props) => {
     <div
       role="tablist"
       aria-label="정렬 선택"
-      className={clsx(
-        'inline-flex items-center gap-1 rounded-xl bg-gray-100 p-1',
-        className,
-      )}
+      className={clsx('inline-flex items-center gap-1 rounded-xl bg-gray-100 p-1', className)}
     >
       {options.map((opt) => {
         const active = value === opt.value;

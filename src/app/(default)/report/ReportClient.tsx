@@ -49,7 +49,8 @@ export default function ReportClient() {
   }, [analysisId, videoId, url]);
 
   const handleCancel = () => {
-    if (typeof window !== 'undefined' && window.history.length > 1) router.back();
+    if (typeof window !== 'undefined' && window.history.length > 1)
+      router.back();
     else router.push('/');
   };
 

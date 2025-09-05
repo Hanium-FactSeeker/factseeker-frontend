@@ -1,8 +1,8 @@
 'use client';
 
-import type { VideoItem } from '@/constants/videoList';
+import type { VideoItem } from '@/types/videos';
 import FactBadge from '@/components/ui/factBadge';
-import { ValidityType } from '@/types/validity';
+import type { ValidityType } from '@/types/validity';
 
 interface Props {
   video: VideoItem;
@@ -34,11 +34,7 @@ export default function VideoRow({ video }: Props) {
       </div>
 
       <div className="relative h-20 w-36 justify-self-end overflow-hidden rounded-lg">
-        <img
-          src={video.thumbnail}
-          alt={video.title}
-          className="h-full w-full object-cover"
-        />
+        <img src={video.thumbnail} alt={video.title} className="h-full w-full object-cover" />
         {video.grade && (
           <div className="absolute top-0 left-0 z-10">
             <FactBadge

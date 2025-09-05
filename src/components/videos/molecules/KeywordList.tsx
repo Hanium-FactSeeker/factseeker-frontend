@@ -32,8 +32,7 @@ export const KeywordList = ({ keywords, selected, onSelect }: Props) => {
                 aria-pressed={isSelected}
                 className={clsx(
                   'hover:border-primary-normal rounded-xl transition-all',
-                  isSelected &&
-                    'border-primary-normal whitespace-nowrap shadow-md',
+                  isSelected && 'border-primary-normal whitespace-nowrap shadow-md',
                 )}
               >
                 {k}
@@ -50,8 +49,7 @@ export const KeywordList = ({ keywords, selected, onSelect }: Props) => {
                 aria-pressed={isSelected}
                 className={clsx(
                   'hover:border-primary-normal rounded-xl whitespace-nowrap transition-all',
-                  isSelected &&
-                    'border-primary-normal whitespace-nowrap shadow-md',
+                  isSelected && 'border-primary-normal whitespace-nowrap shadow-md',
                 )}
               >
                 {k}

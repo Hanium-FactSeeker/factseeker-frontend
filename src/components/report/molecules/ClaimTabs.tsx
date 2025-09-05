@@ -81,11 +81,7 @@ export const ClaimTabs = ({ count, activeIdx, onChange }: ClaimTabsProps) => {
         {labels.map((label, index) => {
           const isActive = activeIdx === index;
           return (
-            <button
-              key={index}
-              onClick={() => onChange(index)}
-              className={btnClass(isActive)}
-            >
+            <button key={index} onClick={() => onChange(index)} className={btnClass(isActive)}>
               {label}
             </button>
           );

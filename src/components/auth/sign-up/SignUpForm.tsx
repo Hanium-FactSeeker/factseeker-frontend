@@ -50,9 +50,7 @@ export default function SignUpForm() {
     agreed: false,
   });
 
-  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
-    {},
-  );
+  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
 
   const validate = () => {
     const errs: Partial<Record<keyof FormData, string>> = {};
@@ -66,14 +64,8 @@ export default function SignUpForm() {
     }
 
     const pw = formData.password;
-    if (
-      pw.length < 8 ||
-      !/[a-zA-Z]/.test(pw) ||
-      !/[0-9]/.test(pw) ||
-      !/[^a-zA-Z0-9]/.test(pw)
-    ) {
-      errs.password =
-        '비밀번호는 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다.';
+    if (pw.length < 8 || !/[a-zA-Z]/.test(pw) || !/[0-9]/.test(pw) || !/[^a-zA-Z0-9]/.test(pw)) {
+      errs.password = '비밀번호는 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다.';
     }
 
     if (formData.password !== formData.confirmPassword) {
@@ -101,18 +93,11 @@ export default function SignUpForm() {
 
   return (
     <div className="w-full">
-      <h2 className="text-black-normal mb-6 text-center text-xl font-bold">
-        회원가입
-      </h2>
+      <h2 className="text-black-normal mb-6 text-center text-xl font-bold">회원가입</h2>
 
-      <form
-        onSubmit={handleSubmit}
-        className="flex w-full flex-col items-center gap-6"
-      >
+      <form onSubmit={handleSubmit} className="flex w-full flex-col items-center gap-6">
         <div className="flex w-full flex-col gap-1">
-          <label className="text-black-normal text-sm font-semibold">
-            아이디
-          </label>
+          <label className="text-black-normal text-sm font-semibold">아이디</label>
           <TextInput
             name="username"
             placeholder="아이디를 입력해 주세요"
@@ -124,9 +109,7 @@ export default function SignUpForm() {
         </div>
 
         <div className="flex w-full flex-col gap-1">
-          <label className="text-black-normal text-sm font-semibold">
-            전화번호
-          </label>
+          <label className="text-black-normal text-sm font-semibold">전화번호</label>
           <TextInput
             name="phone"
             placeholder="010-0000-0000"
@@ -135,15 +118,11 @@ export default function SignUpForm() {
             onChange={handleChange}
             className="bg-gray-light text-foreground"
           />
-          {errors.phone && (
-            <p className="text-sm text-red-500">{errors.phone}</p>
-          )}
+          {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
         </div>
 
         <div className="flex w-full flex-col gap-1">
-          <label className="text-black-normal text-sm font-semibold">
-            이메일
-          </label>
+          <label className="text-black-normal text-sm font-semibold">이메일</label>
           <TextInput
             name="email"
             placeholder="이메일을 입력해 주세요"
@@ -152,15 +131,11 @@ export default function SignUpForm() {
             onChange={handleChange}
             className="bg-gray-light text-foreground"
           />
-          {errors.email && (
-            <p className="text-sm text-red-500">{errors.email}</p>
-          )}
+          {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
         </div>
 
         <div className="flex w-full flex-col gap-1">
-          <label className="text-black-normal text-sm font-semibold">
-            비밀번호
-          </label>
+          <label className="text-black-normal text-sm font-semibold">비밀번호</label>
           <TextInput
             name="password"
             type="password"
@@ -170,15 +145,11 @@ export default function SignUpForm() {
             onChange={handleChange}
             className="bg-gray-light text-foreground"
           />
-          {errors.password && (
-            <p className="text-sm text-red-500">{errors.password}</p>
-          )}
+          {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
         </div>
 
         <div className="flex w-full flex-col gap-1">
-          <label className="text-black-normal text-sm font-semibold">
-            비밀번호 확인
-          </label>
+          <label className="text-black-normal text-sm font-semibold">비밀번호 확인</label>
           <TextInput
             name="confirmPassword"
             type="password"

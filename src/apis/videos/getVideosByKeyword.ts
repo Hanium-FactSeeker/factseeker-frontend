@@ -37,9 +37,7 @@ function normalize(raw: RawVideo): VideoItem {
 }
 
 /** 키워드로 연관 영상 검색 */
-export async function getVideosByKeyword(
-  keyword: string,
-): Promise<VideoItem[]> {
+export async function getVideosByKeyword(keyword: string): Promise<VideoItem[]> {
   if (!keyword) return [];
 
   const url = `/youtube/search`;

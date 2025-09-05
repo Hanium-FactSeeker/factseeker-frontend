@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import FactMark from '@/components/ui/factMark';
-import { VideoItem } from '@/types/videos';
+import type { VideoItem } from '@/types/videos';
 import { useRouter } from 'next/navigation';
 import { percentToValidity } from '@/utils/calculateValidity';
 
@@ -30,24 +30,15 @@ const VideoItemMobile = ({ idx, video }: VideoItemProps) => {
   return (
     <div className="border-gray-normal flex h-46 w-full gap-2 border-b">
       <div>
-        <p className="text-black-normal mb-6 text-lg font-bold">
-          Top {idx + 1}
-        </p>
+        <p className="text-black-normal mb-6 text-lg font-bold">Top {idx + 1}</p>
         <a
           href={video?.link}
           target="_blank"
           className="relative flex h-24 w-36 items-center justify-center"
         >
-          <img
-            className="relative mb-2 h-32 w-34 rounded-xl"
-            src={video?.thumbnail}
-          />
+          <img className="relative mb-2 h-32 w-34 rounded-xl" src={video?.thumbnail} />
           <div className="absolute -top-5 left-2 z-10">
-            <FactMark
-              width={60}
-              height={60}
-              type={percentToValidity(video?.gradePercent ?? 0)}
-            />
+            <FactMark width={60} height={60} type={percentToValidity(video?.gradePercent ?? 0)} />
           </div>
         </a>
       </div>
@@ -62,12 +53,7 @@ const VideoItemMobile = ({ idx, video }: VideoItemProps) => {
           <Button variant="outline" color="gray" size="xxs" onClick={goRelated}>
             연관 분석
           </Button>
-          <Button
-            variant="filled"
-            color="purple"
-            size="xxs"
-            onClick={handleGoReport}
-          >
+          <Button variant="filled" color="purple" size="xxs" onClick={handleGoReport}>
             리포트 분석
           </Button>
         </div>

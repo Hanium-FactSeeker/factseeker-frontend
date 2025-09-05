@@ -5,7 +5,7 @@ import Link from 'next/link';
 import PoliticianImage from '@/components/ui/profile/PoliticianImage';
 import VideoRow from '@/components/politician/molecules/VideoRow';
 import SwitchButton from '@/components/ui/button/SwitchButton';
-import type { VideoItem } from '@/constants/videoList';
+import type { VideoItem } from '@/types/videos';
 import { maskTail } from '@/utils/maskTail';
 
 type Stat = { fact: number; gpt: number; claude: number };
@@ -54,18 +54,13 @@ export default function PoliticianDetailMobile({
   return (
     <section className="mx-auto mt-4 w-full rounded-2xl border border-gray-200 bg-white px-4 py-4">
       <div className="mb-3">
-        <Link
-          href="/politician"
-          className="text-sm font-medium text-gray-500 hover:underline"
-        >
+        <Link href="/politician" className="text-sm font-medium text-gray-500 hover:underline">
           {'< 다시 선택'}
         </Link>
       </div>
 
       <div className="my-3 rounded-2xl border border-gray-200 p-4">
-        <p className="text-black-normal mb-3 text-center text-lg font-extrabold">
-          선택 인물
-        </p>
+        <p className="text-black-normal mb-3 text-center text-lg font-extrabold">선택 인물</p>
 
         {loadingCard ? (
           <div className="mb-4 flex h-16 items-center justify-center text-sm text-gray-500">
@@ -80,9 +75,7 @@ export default function PoliticianDetailMobile({
               <p className="text-black-normal truncate text-base font-bold">
                 {maskTail(politician.name, 1)}
               </p>
-              <p className="text-black-normal mt-1 truncate text-xs">
-                {politician.party}
-              </p>
+              <p className="text-black-normal mt-1 truncate text-xs">{politician.party}</p>
             </div>
           </div>
         )}
@@ -92,9 +85,7 @@ export default function PoliticianDetailMobile({
           <span className="font-bold">{cumulative}</span>
         </div>
 
-        {updatedAt && (
-          <div className="mt-1 text-center text-xs text-gray-500">{updatedAt}</div>
-        )}
+        {updatedAt && <div className="mt-1 text-center text-xs text-gray-500">{updatedAt}</div>}
       </div>
 
       <SwitchButton

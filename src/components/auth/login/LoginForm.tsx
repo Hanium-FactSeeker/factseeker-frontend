@@ -46,9 +46,7 @@ export default function LoginForm() {
         <TextInput
           fullWidth
           placeholder="아이디"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setLoginId(e.target.value)
-          }
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLoginId(e.target.value)}
           value={loginId}
           iconLeft={<FaUser />}
           className="bg-gray-light text-foreground"
@@ -57,52 +55,32 @@ export default function LoginForm() {
           fullWidth
           type="password"
           placeholder="비밀번호"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setPassword(e.target.value)
-          }
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
           value={password}
           iconLeft={<FaLock />}
           className="bg-gray-light text-foreground"
         />
 
-        <Button
-          type="submit"
-          onClick={handleLogin}
-          fullWidth
-          size="lg"
-          color="black"
-        >
+        <Button type="submit" onClick={handleLogin} fullWidth size="lg" color="black">
           로그인
         </Button>
       </form>
 
       <div className="text-black-normal flex items-center justify-center gap-2 text-xs">
-        <button
-          className="cursor-pointer hover:underline"
-          onClick={() => router.push('/sign-up')}
-        >
+        <button className="cursor-pointer hover:underline" onClick={() => router.push('/sign-up')}>
           회원가입
         </button>
         <span>|</span>
-        <button
-          className="cursor-pointer hover:underline"
-          onClick={() => setOpenFindId(true)}
-        >
+        <button className="cursor-pointer hover:underline" onClick={() => setOpenFindId(true)}>
           아이디 찾기
         </button>
         <span>|</span>
-        <button
-          className="cursor-pointer hover:underline"
-          onClick={() => setOpenFindPw(true)}
-        >
+        <button className="cursor-pointer hover:underline" onClick={() => setOpenFindPw(true)}>
           비밀번호 찾기
         </button>
       </div>
       <FindIdModal open={openFindId} onClose={() => setOpenFindId(false)} />
-      <FindPasswordModal
-        open={openFindPw}
-        onClose={() => setOpenFindPw(false)}
-      />
+      <FindPasswordModal open={openFindPw} onClose={() => setOpenFindPw(false)} />
       <div className="bg-gray-normal h-px w-full" />
 
       <p className="mt-4 text-sm">소셜 로그인</p>

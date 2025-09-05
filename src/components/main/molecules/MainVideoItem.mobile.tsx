@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import FactBadge from '@/components/ui/factBadge';
-import { VideoItem } from '@/types/videos';
+import type { VideoItem } from '@/types/videos';
 import { percentToValidity } from '@/utils/calculateValidity';
 import { useEffect } from 'react';
 
@@ -14,8 +14,7 @@ const MainVideoItemMobile = ({ idx, video }: videoListProps) => {
   const router = useRouter();
 
   const badgePercent =
-    video?.gradeStatus === 'COMPLETED' &&
-    typeof video?.gradePercent === 'number'
+    video?.gradeStatus === 'COMPLETED' && typeof video?.gradePercent === 'number'
       ? video.gradePercent
       : 0;
 
@@ -28,11 +27,7 @@ const MainVideoItemMobile = ({ idx, video }: videoListProps) => {
     <div className="flex h-64 w-40 flex-col gap-2">
       <p className="text-md text-black-normal font-bold">Top {idx + 1}</p>
       <div className="relative h-auto w-36" rel="noopener noreferrer">
-        <img
-          src={video?.thumbnail}
-          alt="썸네일"
-          className="h-full w-full object-cover"
-        />
+        <img src={video?.thumbnail} alt="썸네일" className="h-full w-full object-cover" />
         <div className="absolute top-0 left-0 z-10">
           <FactBadge
             percent={badgePercent}

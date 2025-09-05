@@ -14,10 +14,7 @@ interface DefaultHeaderProps {
   initialSearch?: string;
 }
 
-const DefaultHeader = ({
-  navTextColor = 'black',
-  initialSearch,
-}: DefaultHeaderProps) => {
+const DefaultHeader = ({ navTextColor = 'black', initialSearch }: DefaultHeaderProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const { isLoggedIn } = useAuthStore();
@@ -28,10 +25,7 @@ const DefaultHeader = ({
     setOpen(false);
   };
 
-  const { default: defaultItems } = useMemo(
-    () => getNavItems(() => setOpen(true)),
-    [],
-  );
+  const { default: defaultItems } = useMemo(() => getNavItems(() => setOpen(true)), []);
   return (
     <>
       <header className="border-gray-normal sticky top-0 z-50 w-full bg-white/90 backdrop-blur">
