@@ -1,7 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import FactBadge from '@/components/ui/factBadge';
-// import { BadgeType } from '@/types/validity';
 import { VideoItem } from '@/types/videos';
 import { percentToValidity } from '@/utils/calculateValidity';
 
@@ -38,8 +37,8 @@ const MainVideoItemDesktop = ({ idx, video }: videoListProps) => {
       : 0;
 
   const handleGoReport = () => {
-    const url = encodeURIComponent(video?.link ?? '');
-    router.push(`/report/${url}`);
+    const videoId = encodeURIComponent(video?.id ?? '');
+    router.push(`/report?videoId=${videoId}`);
   };
 
   return (

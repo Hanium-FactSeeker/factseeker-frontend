@@ -12,9 +12,10 @@ const DesktopHotVideosSection = ({ videos }: HotVideosProps) => {
 
   const slicedVideos = videos.slice(0, 5);
   const top = videos[0];
+
   const handleGoReport = () => {
-    const url = encodeURIComponent(slicedVideos[0]?.link ?? '');
-    router.push(`/report/${url}`);
+    const videoId = encodeURIComponent(slicedVideos[0]?.id ?? '');
+    router.push(`/report?videoId=${videoId}`);
   };
 
   return (

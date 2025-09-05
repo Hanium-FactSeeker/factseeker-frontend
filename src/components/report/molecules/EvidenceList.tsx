@@ -9,7 +9,7 @@ import type { EvidenceItem } from '@/types/report';
 
 type Props = {
   activeIdx: number;
-  claim: EvidenceItem; // 선택된 주장
+  claim: EvidenceItem;
   totalScore: number;
 };
 
@@ -20,14 +20,7 @@ type Props = {
  */
 const EvidenceList = ({ activeIdx, claim, totalScore }: Props) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  /**
-   * 특정 근거 아이템을 열고/닫습니다
-   * 동일한 인덱스를 다시 클릭하면 토글을 닫습니다
-   */
-  const toggleOpen = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
+  const toggleOpen = (index: number) => setOpenIndex(openIndex === index ? null : index);
 
   // 서버 스키마 변동 우려로 다음과 같이 설정했습니다
   const items = (claim?.evidence ?? []).map((e: any) => ({
@@ -38,19 +31,21 @@ const EvidenceList = ({ activeIdx, claim, totalScore }: Props) => {
     link: e.url ?? e.link ?? '#',
   }));
 
+  const hasEvidence = items.length > 0;
+
   return (
     <div className="border-gray-normal flex min-h-30 w-[90%] flex-col items-start rounded-md border bg-white px-2 py-4 md:w-[70%] md:p-8">
       <div>
         <h1 className="text-primary-normal flex items-start gap-1 text-sm font-bold md:gap-2 md:text-xl">
           <IoInformationCircleOutline size="24" color="#802BFF" />
           <span className="md:-mt-1">
-            이 영상의 신뢰성은 다음의 근거를 바탕으로 {totalScore}%로
-            측정됩니다.
+            {hasEvidence
+              ? `이 영상의 신뢰성은 다음의 근거를 바탕으로 ${totalScore}%로 측정됩니다.`
+              : `이 영상의 신뢰성은 ${totalScore}%로 측정되었지만, 현재 주장에 대한 뒷받침 근거는 찾을 수 없습니다.`}
           </span>
         </h1>
         <p className="text-black-alternative md:text-md mt-2 text-xs font-medium">
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;보내주신 자료에 나타난 주장 별 근거를
-          정리했습니다.
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;보내주신 자료에 나타난 주장 별 근거를 정리했습니다.
         </p>
       </div>
 
@@ -63,8 +58,10 @@ const EvidenceList = ({ activeIdx, claim, totalScore }: Props) => {
             </p>
           </span>
 
-          {items.length === 0 ? (
-            <div className="text-sm text-gray-500"></div>
+          {!hasEvidence ? (
+            <div className="rounded-md border border-gray-200 bg-gray-50 p-4 text-sm text-gray-600">
+              현재 뒷받침 근거가 없습니다. 추후 다시 확인해 주세요.
+            </div>
           ) : (
             items.map((item, idx) => (
               <EvidenceToggle

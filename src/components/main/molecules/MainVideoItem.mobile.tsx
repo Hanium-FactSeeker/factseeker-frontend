@@ -20,8 +20,8 @@ const MainVideoItemMobile = ({ idx, video }: videoListProps) => {
       : 0;
 
   const handleGoReport = () => {
-    const url = encodeURIComponent(video?.link ?? '');
-    router.push(`/report/${url}`);
+    const videoId = encodeURIComponent(video?.id ?? '');
+    router.push(`/report?videoId=${videoId}`);
   };
 
   return (

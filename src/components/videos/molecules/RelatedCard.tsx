@@ -12,8 +12,8 @@ const RelatedCard = ({ item }: { item: VideoItem }) => {
   const router = useRouter();
 
   const handleGoReport = () => {
-    const url = encodeURIComponent(item?.url || '');
-    router.push(`/report/${url}`);
+    const analysisId = encodeURIComponent(item?.id || '');
+    router.push(`/report?analysisId=${analysisId}`);
   };
 
   return (

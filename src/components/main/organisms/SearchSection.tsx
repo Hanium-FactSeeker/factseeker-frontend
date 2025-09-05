@@ -4,8 +4,11 @@ import Search from '@/components/ui/search';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import LogoStar from '@/components/ui/logo/LogoStar';
-import { getRecentReport, RecentAnalysis } from '@/apis/report/getRecentReport';
+import type { RecentAnalysis } from '@/apis/report/getRecentReport';
+import { getRecentReport } from '@/apis/report/getRecentReport';
 import { useAuthStore } from '@/store/useAuthStore';
+import { toast } from 'react-hot-toast';
+
 interface SearchSectionProps {
   placeHolder: string;
 }
@@ -19,12 +22,15 @@ const SearchSection = ({ placeHolder }: SearchSectionProps) => {
   const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
 
   const handleSearch = () => {
-    if (!search) return;
-    router.push(`/report/${encodeURIComponent(search)}`);
-  };
-
-  const handleGoReport = (url: string) => {
-    router.push(`/report/${encodeURIComponent(url)}`);
+    if (!isLoggedIn) {
+      toast.error('로그인이 필요한 서비스입니다');
+      return;
+    }
+    if (!search) {
+      toast.error('url을 입력한 뒤 다시 시도해 주세요');
+      return;
+    }
+    router.push(`/report?url=${encodeURIComponent(search)}`);
   };
 
   useEffect(() => {
@@ -69,22 +75,19 @@ const SearchSection = ({ placeHolder }: SearchSectionProps) => {
         />
 
         <span className="mt-2 ml-2 flex gap-2 text-[10px] md:gap-6 md:text-base">
-          <span className="text-black-normal text-nowrap">
-            최근에 검색한 자료:
-          </span>
+          <span className="text-black-normal text-nowrap">최근에 검색한 자료:</span>
           <div className="flex flex-col">
             {loading ? (
               <span className="opacity-60">불러오는 중…</span>
             ) : recents.length === 0 ? (
               <span className="opacity-60">
-                {isLoggedIn ? '없음' : '로그인 필요'}
+                {isLoggedIn ? '없음' : '로그인이 필요한 서비스입니다'}
               </span>
             ) : (
               recents.map((r) => (
                 <button
                   key={r.videoAnalysisId}
                   className="text-gray-strong hover:text-primary-normal max-w-36 truncate pb-1 text-left underline md:max-w-100"
-                  onClick={() => handleGoReport(r.videoUrl)}
                   title={r.videoTitle}
                 >
                   {r.videoTitle}

@@ -22,6 +22,11 @@ const VideoItemMobile = ({ idx, video }: VideoItemProps) => {
     router.push(`/videos/related/${video.id}?${params.toString()}`);
   };
 
+  const handleGoReport = () => {
+    const videoId = encodeURIComponent(video?.id ?? '');
+    router.push(`/report?videoId=${videoId}`);
+  };
+
   return (
     <div className="border-gray-normal flex h-46 w-full gap-2 border-b">
       <div>
@@ -57,7 +62,12 @@ const VideoItemMobile = ({ idx, video }: VideoItemProps) => {
           <Button variant="outline" color="gray" size="xxs" onClick={goRelated}>
             연관 분석
           </Button>
-          <Button variant="filled" color="purple" size="xxs">
+          <Button
+            variant="filled"
+            color="purple"
+            size="xxs"
+            onClick={handleGoReport}
+          >
             리포트 분석
           </Button>
         </div>
