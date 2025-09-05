@@ -49,12 +49,7 @@ export default function ButtonTest() {
               <div className="mb-1 text-sm font-medium">{color}</div>
               <div className="flex flex-wrap gap-3">
                 {sizes.map((size) => (
-                  <Button
-                    key={size}
-                    variant="outline"
-                    color={color as any}
-                    size={size as any}
-                  >
+                  <Button key={size} variant="outline" color={color as any} size={size as any}>
                     {sizeLabel[size]}
                   </Button>
                 ))}
@@ -68,11 +63,7 @@ export default function ButtonTest() {
           <h3 className="mb-2 text-xl font-bold">Toggle Buttons</h3>
           <div className="flex flex-wrap gap-4">
             {sizes.map((size) => (
-              <ToggleButton
-                key={size}
-                size={size}
-                label={toggleSizeLabel[size]}
-              />
+              <ToggleButton key={size} size={size} label={toggleSizeLabel[size]} />
             ))}
           </div>
         </div>

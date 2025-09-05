@@ -1,13 +1,7 @@
-import { ButtonHTMLAttributes, ReactNode, InputHTMLAttributes } from 'react';
+import type { ButtonHTMLAttributes, ReactNode, InputHTMLAttributes } from 'react';
 
 export type ButtonVariant = 'filled' | 'outline';
-export type ButtonColor =
-  | 'default'
-  | 'kakao'
-  | 'naver'
-  | 'black'
-  | 'gray'
-  | 'purple';
+export type ButtonColor = 'default' | 'kakao' | 'naver' | 'black' | 'gray' | 'purple';
 export type ButtonSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg';
 
 export type InputSize = 'sm' | 'md' | 'lg';
@@ -30,8 +24,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   fullWidth?: boolean;
 }
 
-export interface TextInputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface TextInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   className?: string;
   iconLeft?: ReactNode;
   iconRight?: ReactNode;

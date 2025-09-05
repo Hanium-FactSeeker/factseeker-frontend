@@ -9,12 +9,7 @@ type ModalBaseProps = {
   className?: string;
 };
 
-export default function ModalBase({
-  open,
-  onClose,
-  children,
-  className,
-}: ModalBaseProps) {
+export default function ModalBase({ open, onClose, children, className }: ModalBaseProps) {
   if (!open) return null;
 
   return (

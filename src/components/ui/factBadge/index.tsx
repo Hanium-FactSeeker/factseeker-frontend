@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { ValidityType } from '@/types/validity';
+import type { ValidityType } from '@/types/validity';
 
 interface FactBadgeProps {
   type: ValidityType;

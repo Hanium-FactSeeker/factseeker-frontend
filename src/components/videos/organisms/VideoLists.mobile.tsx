@@ -1,5 +1,4 @@
-import VideoItemDesktop from '@/components/videos/molecules/VideoItem.desktop';
-import { HotVideosProps } from '@/types/videos';
+import type { HotVideosProps } from '@/types/videos';
 import VideoItemMobile from '../molecules/VideoItem.mobile';
 
 const VideoListsMobile = ({ videos }: HotVideosProps) => {

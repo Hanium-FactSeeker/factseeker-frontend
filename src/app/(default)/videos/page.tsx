@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { getHotVideos } from '@/apis/videos/getHotVideos';
 import { getPercents } from '@/apis/videos/getPercents';
-import { VideoItem } from '@/types/videos';
+import type { VideoItem } from '@/types/videos';
 import FilterBar from '@/components/ui/filterBar.tsx';
 import Desktop from '@/components/videos/organisms/VideoLists.desktop';
 import Mobile from '@/components/videos/organisms/VideoLists.mobile';
@@ -24,14 +24,9 @@ const Video = () => {
         const merged: VideoItem[] = all.map((v) => {
           const p = percents.find((r) => r.videoId === v.id);
           const raw = p?.totalConfidenceScore ?? null;
-          const score =
-            raw === null ? null : typeof raw === 'number' ? raw : Number(raw);
+          const score = raw === null ? null : typeof raw === 'number' ? raw : Number(raw);
 
-          if (
-            p?.status === 'COMPLETED' &&
-            score !== null &&
-            !Number.isNaN(score)
-          ) {
+          if (p?.status === 'COMPLETED' && score !== null && !Number.isNaN(score)) {
             return { ...v, gradePercent: score, gradeStatus: 'COMPLETED' };
           }
           if (p?.status === 'FAILED') {

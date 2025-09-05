@@ -10,7 +10,7 @@ import { Navigation, Pagination } from 'swiper/modules';
 import SnsCard from '@/components/ui/sns/SnsCard';
 import SectionTitle from '@/components/ui/title/SectionTitle';
 import { snsData } from '@/constants/snsData';
-import { SnsType } from '@/types/logo';
+import type { SnsType } from '@/types/logo';
 
 const SnsSection = () => {
   return (

@@ -1,9 +1,8 @@
 'use client';
 
 import SectionTitle from '@/components/ui/title/SectionTitle';
-import PoliticianCard, {
-  Politician,
-} from '@/components/main/molecules/PoliticianItem';
+import type { Politician } from '@/components/main/molecules/PoliticianItem';
+import PoliticianCard from '@/components/main/molecules/PoliticianItem';
 import VerticalSlider from '@/components/ui/slider/VerticalSlider';
 import { SLIDE_SIZE } from '@/constants/main';
 import { Grouping } from '@/utils/grouping';

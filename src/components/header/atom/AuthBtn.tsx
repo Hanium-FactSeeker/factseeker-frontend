@@ -9,9 +9,7 @@ const AuthText: React.FC<AuthProps> = ({ textColor = 'white' }) => {
   const colorClass = textColor === 'white' ? 'text-white' : 'text-black-normal';
 
   return (
-    <div
-      className={`mr-8 flex justify-end gap-2 text-xs ${colorClass} md:text-xl`}
-    >
+    <div className={`mr-8 flex justify-end gap-2 text-xs ${colorClass} md:text-xl`}>
       <Link href="/login" className="cursor-pointer">
         로그인
       </Link>

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image, { type ImageLoader } from 'next/image';
-import type { VideoItem } from '@/constants/videoList';
+import type { VideoItem } from '@/types/videos';
 
 function cx(...args: Array<string | false | null | undefined>) {
   return args.filter(Boolean).join(' ');
@@ -16,8 +16,7 @@ type Props = {
 };
 
 export default function VideoCard({ video, compact = false }: Props) {
-  const { title, link, thumbnail, thumbnailUrl, channelName, publishedAt } =
-    video as any;
+  const { title, link, thumbnail, thumbnailUrl, channelName, publishedAt } = video as any;
   const thumb = thumbnail || thumbnailUrl || '';
 
   return (

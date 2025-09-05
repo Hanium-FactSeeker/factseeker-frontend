@@ -15,9 +15,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-center gap-6 md:gap-12">
       <InfoBar />
-      <SearchSection
-        placeHolder={'분석을 진행할 유튜브의 url을 입력해 주세요'}
-      />
+      <SearchSection placeHolder={'분석을 진행할 유튜브의 url을 입력해 주세요'} />
       <PoliticianSection />
       <HotVideosSection />
       <SnsSection />

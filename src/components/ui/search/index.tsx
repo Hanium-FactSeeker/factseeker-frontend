@@ -5,6 +5,7 @@ interface SearchBarProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeHolder: string;
   onClick: () => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 const Search: React.FC<SearchBarProps> = ({
   value,

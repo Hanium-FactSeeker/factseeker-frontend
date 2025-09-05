@@ -5,7 +5,7 @@ import Link from 'next/link';
 import PoliticianImage from '@/components/ui/profile/PoliticianImage';
 import VideoRow from '@/components/politician/molecules/VideoRow';
 import SwitchButton from '@/components/ui/button/SwitchButton';
-import type { VideoItem } from '@/constants/videoList';
+import type { VideoItem } from '@/types/videos';
 import { maskTail } from '@/utils/maskTail';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
@@ -27,6 +27,9 @@ interface Props {
   videos: VideoItem[];
   news?: VideoItem[];
   updatedAt?: string;
+  loadingCard?: boolean;
+  loadingNews?: boolean;
+  loadingVideos?: boolean;
 }
 
 export default function PoliticianDetailDesktop({
@@ -34,6 +37,9 @@ export default function PoliticianDetailDesktop({
   videos,
   news,
   updatedAt,
+  loadingCard,
+  loadingNews,
+  loadingVideos,
 }: Props) {
   const imgSrc = politician.img ?? politician.figureImg ?? '';
   const [tab, setTab] = useState<'news' | 'youtube'>('youtube');
@@ -54,10 +60,7 @@ export default function PoliticianDetailDesktop({
   return (
     <section className="mx-auto mt-6 w-[90%] rounded-2xl border border-gray-200 bg-white px-8 py-4">
       <div className="mb-5">
-        <Link
-          href="/politician"
-          className="text-sm font-medium text-gray-500 hover:underline"
-        >
+        <Link href="/politician" className="text-sm font-medium text-gray-500 hover:underline">
           {'< 다시 선택'}
         </Link>
       </div>
@@ -65,26 +68,25 @@ export default function PoliticianDetailDesktop({
       <div className="grid grid-cols-[40%_60%] gap-2">
         <aside className="w-full max-w-[360px] justify-self-center rounded-[12px] p-2">
           <div className="my-4 rounded-2xl border border-gray-200 p-5">
-            <p className="text-black-normal mb-4 text-center text-xl font-extrabold">
-              선택 인물
-            </p>
+            <p className="text-black-normal mb-4 text-center text-xl font-extrabold">선택 인물</p>
 
-            <div className="mb-5 flex items-center justify-center gap-4">
-              <div className="relative h-20 w-20 shrink-0">
-                <PoliticianImage
-                  src={imgSrc}
-                  alt={`${politician.name} 이미지`}
-                />
+            {loadingCard ? (
+              <div className="mb-5 flex h-20 items-center justify-center text-sm text-gray-500">
+                불러오는 중…
               </div>
-              <div className="min-w-0">
-                <p className="text-black-normal truncate text-lg font-bold">
-                  {maskTail(politician.name, 1)}
-                </p>
-                <p className="text-black-normal mt-1 truncate text-sm">
-                  {politician.party}
-                </p>
+            ) : (
+              <div className="mb-5 flex items-center justify-center gap-4">
+                <div className="relative h-20 w-20 shrink-0">
+                  <PoliticianImage src={imgSrc} alt={`${politician.name} 이미지`} />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-black-normal truncate text-lg font-bold">
+                    {maskTail(politician.name, 1)}
+                  </p>
+                  <p className="text-black-normal mt-1 truncate text-sm">{politician.party}</p>
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="text-black-normal mb-6 py-3 text-center text-sm">
               <span className="font-medium">누적 신뢰도: </span>
@@ -116,7 +118,11 @@ export default function PoliticianDetailDesktop({
             {updatedAt && <p className="text-xs text-gray-500">{updatedAt}</p>}
           </div>
 
-          {list.length ? (
+          {(tab === 'youtube' ? loadingVideos : loadingNews) ? (
+            <div className="flex h-[320px] items-center justify-center text-sm text-gray-500">
+              {tab === 'youtube' ? '영상 불러오는 중…' : '뉴스 불러오는 중…'}
+            </div>
+          ) : list.length ? (
             <div>
               <Swiper
                 className="desktop-video-swiper"
@@ -179,9 +185,7 @@ export default function PoliticianDetailDesktop({
             </div>
           ) : (
             <div className="flex h-[320px] items-center justify-center text-sm text-gray-500">
-              {tab === 'youtube'
-                ? '영상 데이터가 없습니다.'
-                : '뉴스 데이터가 없습니다.'}
+              {tab === 'youtube' ? '영상 데이터가 없습니다.' : '뉴스 데이터가 없습니다.'}
             </div>
           )}
         </section>

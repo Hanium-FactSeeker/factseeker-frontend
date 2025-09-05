@@ -1,4 +1,4 @@
-import { ValidityType, FaceType } from '@/types/validity';
+import type { ValidityType, FaceType } from '@/types/validity';
 
 /**
  * percent(0~100)를 5개로 나누어 ValidityType으로 변환

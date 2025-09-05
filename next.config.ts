@@ -1,5 +1,13 @@
 import type { NextConfig } from 'next';
 
+function pickApiBase() {
+  const raw = process.env.API_BASE_URL;
+
+  if (!raw) return undefined;
+  const withProto = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+  return withProto.replace(/\/+$/, '');
+}
+
 const nextConfig: NextConfig = {
   images: {
     domains: ['yt3.ggpht.com', 'i.ytimg.com', 'img.youtube.com'],
@@ -13,11 +21,15 @@ const nextConfig: NextConfig = {
   },
 
   async rewrites() {
+    const base = pickApiBase();
+    if (!base) {
+      console.warn('[rewrites] API base URL not set. Skipping /api proxy.');
+      return [];
+    }
     return [
       {
         source: '/api/:path*',
-        // 실제 백엔드 주소 환경변수로 주입
-        destination: `${process.env.API_BASE_URL}/api/:path*`,
+        destination: `${base}/api/:path*`,
       },
     ];
   },

@@ -26,17 +26,11 @@ export default function HeaderAuthControls() {
   if (!isLoggedIn) {
     return (
       <div className="z-[999] self-end text-xs font-semibold md:text-sm">
-        <button
-          className="cursor-pointer hover:underline"
-          onClick={() => router.push('/login')}
-        >
+        <button className="cursor-pointer hover:underline" onClick={() => router.push('/login')}>
           로그인
         </button>
         <span className="mx-2 opacity-60">|</span>
-        <button
-          className="cursor-pointer hover:underline"
-          onClick={() => router.push('/sign-up')}
-        >
+        <button className="cursor-pointer hover:underline" onClick={() => router.push('/sign-up')}>
           회원가입
         </button>
       </div>

@@ -14,15 +14,13 @@ const isClient = () => typeof window !== 'undefined';
  * 세션 스토리지에서 Access Token 조회
  * @returns {string | null} 저장된 Access Token, 없으면 null
  */
-export const getAccessToken = () =>
-  isClient() ? sessionStorage.getItem(ACCESS) : null;
+export const getAccessToken = () => (isClient() ? sessionStorage.getItem(ACCESS) : null);
 
 /**
  * 세션 스토리지에서 Refresh Token 조회
  * @returns {string | null} 저장된 Refresh Token, 없으면 null
  */
-export const getRefreshToken = () =>
-  isClient() ? sessionStorage.getItem(REFRESH) : null;
+export const getRefreshToken = () => (isClient() ? sessionStorage.getItem(REFRESH) : null);
 
 /**
  * 세션 스토리지에서 Token Type 조회
@@ -37,11 +35,7 @@ export const getTokenType = () =>
  * @param {string} [refreshToken] 새 Refresh Token (옵션)
  * @param {string} [tokenType] 새 Token Type (옵션, 기본값: 'Bearer')
  */
-export const setTokens = (
-  accessToken: string,
-  refreshToken?: string,
-  tokenType?: string,
-) => {
+export const setTokens = (accessToken: string, refreshToken?: string, tokenType?: string) => {
   if (!isClient()) return;
   sessionStorage.setItem(ACCESS, accessToken);
   if (refreshToken) sessionStorage.setItem(REFRESH, refreshToken);

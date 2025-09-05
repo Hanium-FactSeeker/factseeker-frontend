@@ -5,7 +5,7 @@ import SectionTitle from '@/components/ui/title/SectionTitle';
 import Desktop from './HotVideos.desktop';
 import Mobile from './HotVideos.mobile';
 import { getHotVideos } from '@/apis/videos/getHotVideos';
-import { VideoItem } from '@/types/videos';
+import type { VideoItem } from '@/types/videos';
 import { getPercents } from '@/apis/videos/getPercents';
 
 export default function HotVideos() {

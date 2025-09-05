@@ -12,8 +12,7 @@ type Wrapped<T> = { success?: boolean; message?: string; data?: T };
 const API_PATH = '/youtube/search';
 
 function normalizeResponse(json: unknown): YoutubeRawItem[] {
-  const payload =
-    (json as Wrapped<YoutubeRawItem | YoutubeRawItem[]>)?.data ?? json;
+  const payload = (json as Wrapped<YoutubeRawItem | YoutubeRawItem[]>)?.data ?? json;
 
   if (!payload) return [];
   if (Array.isArray(payload)) return payload as YoutubeRawItem[];
@@ -36,14 +35,11 @@ export async function searchYoutubeByKeyword(
   if (!keyword?.trim()) return { items: [] };
 
   try {
-    const res = await apiClient.get<Wrapped<YoutubeRawItem | YoutubeRawItem[]>>(
-      API_PATH,
-      {
-        params: { keyword: keyword.trim() },
-        signal: options.signal, // Axios v1부터 AbortSignal 지원
-        headers: { Accept: '*/*' },
-      },
-    );
+    const res = await apiClient.get<Wrapped<YoutubeRawItem | YoutubeRawItem[]>>(API_PATH, {
+      params: { keyword: keyword.trim() },
+      signal: options.signal, // Axios v1부터 AbortSignal 지원
+      headers: { Accept: '*/*' },
+    });
 
     const json = res.data;
 

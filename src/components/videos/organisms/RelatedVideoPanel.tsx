@@ -46,9 +46,7 @@ const RelatedVideoPanel = ({ items, loading, error, keyword }: Props) => {
         </div>
       ) : !data.length ? (
         <div className="flex h-40 items-center justify-center md:h-72">
-          <span className="font-semibold text-gray-400 md:text-lg">
-            키워드를 선택해 주세요
-          </span>
+          <span className="font-semibold text-gray-400 md:text-lg">키워드를 선택해 주세요</span>
         </div>
       ) : (
         <div className="px-4 pb-6">
@@ -61,10 +59,7 @@ const RelatedVideoPanel = ({ items, loading, error, keyword }: Props) => {
             modules={[Navigation, Pagination]}
           >
             {data.map((v, idx) => (
-              <SwiperSlide
-                key={`${v.id}-${idx}`}
-                className={`${idx === 0 ? 'ml-[1%]' : ''}`}
-              >
+              <SwiperSlide key={`${v.id}-${idx}`} className={`${idx === 0 ? 'ml-[1%]' : ''}`}>
                 <RelatedCard item={v} />
               </SwiperSlide>
             ))}

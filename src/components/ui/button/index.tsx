@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { ButtonProps, ButtonColor } from './types';
+import type { ButtonProps, ButtonColor } from './types';
 
 const colorMap: Record<ButtonColor, string> = {
   default: 'bg-gray-light text-black-normal hover:bg-gray-normal',
@@ -14,8 +14,7 @@ const colorMap: Record<ButtonColor, string> = {
 const outlineMap: Record<ButtonColor, string> = {
   default:
     'border border-gray-400 text-black hover:bg-gray-light active:bg-gray-normal transition-colors',
-  kakao:
-    'border text-black hover:bg-[#fee500]/60 active:bg-[#fee500]/90 transition-colors',
+  kakao: 'border text-black hover:bg-[#fee500]/60 active:bg-[#fee500]/90 transition-colors',
   naver:
     'border border-green-500 text-green-500 hover:bg-[#03C75A]/10 active:bg-[#03C75A]/20 transition-colors',
   black:
@@ -64,13 +63,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         type={props.type || 'button'}
-        className={clsx(
-          base,
-          style,
-          sizeMap[size],
-          { 'w-full': fullWidth },
-          className,
-        )}
+        className={clsx(base, style, sizeMap[size], { 'w-full': fullWidth }, className)}
         disabled={disabled || loading}
         {...props}
       >

@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { VideoItem } from '@/types/videos';
+import type { VideoItem } from '@/types/videos';
 import { useRouter } from 'next/navigation';
 
 /**
@@ -12,8 +12,8 @@ const RelatedCard = ({ item }: { item: VideoItem }) => {
   const router = useRouter();
 
   const handleGoReport = () => {
-    const url = encodeURIComponent(item?.url || '');
-    router.push(`/report/${url}`);
+    const analysisId = encodeURIComponent(item?.id || '');
+    router.push(`/report?analysisId=${analysisId}`);
   };
 
   return (
@@ -25,21 +25,14 @@ const RelatedCard = ({ item }: { item: VideoItem }) => {
           className="mt-4 h-24 w-44 rounded-lg object-cover md:h-40 md:w-72"
         />
       </a>
-      <p className="line-clamp-2 w-44 text-sm font-semibold md:w-70">
-        {item?.title}
-      </p>
+      <p className="line-clamp-2 w-44 text-sm font-semibold md:w-70">{item?.title}</p>
       <hr className="text-gray-normal w-44 md:w-72" />
       <div className="mt-2 mb-10 flex w-44 justify-between md:w-72">
         <div className="text-xs font-medium text-gray-500 md:min-w-30 md:text-sm md:font-semibold">
           {item?.channelName}
         </div>
 
-        <Button
-          variant="outline"
-          color="purple"
-          size="sm"
-          onClick={handleGoReport}
-        >
+        <Button variant="outline" color="purple" size="sm" onClick={handleGoReport}>
           리포트 분석
         </Button>
       </div>

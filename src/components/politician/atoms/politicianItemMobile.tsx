@@ -42,9 +42,7 @@ export default function PoliticianItemMobile({ item }: Props) {
         </p>
         <p className="text-Black_alternative mt-2 flex items-center justify-baseline gap-1 text-[10px] font-light">
           <TbSunFilled className="h-3 w-3 text-red-400" />
-          <span className="shrink-0">
-            Gemini 기준 신뢰도 {item.stats.claude}%
-          </span>
+          <span className="shrink-0">Gemini 기준 신뢰도 {item.stats.claude}%</span>
         </p>
       </div>
     </Link>

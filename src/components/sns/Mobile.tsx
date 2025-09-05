@@ -4,29 +4,15 @@ import { useMemo, useState } from 'react';
 import Input from '@/components/ui/button/SearchInput';
 import SwitchButton from '@/components/ui/button/SwitchButton';
 import SnsCard from '@/components/ui/sns/SnsCard';
-import { snsData, SnsItem } from '@/constants/snsData';
+import type { SnsItem } from '@/constants/snsData';
+import { snsData } from '@/constants/snsData';
 
 const PAGE_SIZE = 1;
 
 const Magnifier = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden>
-    <circle
-      cx="11"
-      cy="11"
-      r="6"
-      fill="none"
-      stroke="#979999"
-      strokeWidth="2"
-    />
-    <line
-      x1="16"
-      y1="16"
-      x2="21"
-      y2="21"
-      stroke="#979999"
-      strokeWidth="2"
-      strokeLinecap="round"
-    />
+    <circle cx="11" cy="11" r="6" fill="none" stroke="#979999" strokeWidth="2" />
+    <line x1="16" y1="16" x2="21" y2="21" stroke="#979999" strokeWidth="2" strokeLinecap="round" />
   </svg>
 );
 
@@ -39,8 +25,7 @@ export default function Mobile() {
     const q = query.trim();
     let list = snsData;
     if (q) list = list.filter((p) => p.name.includes(q));
-    if (sortKey === 'trust')
-      list = [...list].sort((a, b) => b.percentage - a.percentage);
+    if (sortKey === 'trust') list = [...list].sort((a, b) => b.percentage - a.percentage);
     else list = [...list].reverse();
     return list;
   }, [query, sortKey]);

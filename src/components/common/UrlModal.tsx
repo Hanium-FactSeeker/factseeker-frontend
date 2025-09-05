@@ -3,6 +3,9 @@
 import { useEffect, useRef, useState } from 'react';
 import SearchInput from '@/components/ui/button/SearchInput';
 import { FaSearch } from 'react-icons/fa';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/store/useAuthStore';
+import { toast } from 'react-hot-toast';
 
 interface UrlModalProps {
   open: boolean;
@@ -21,6 +24,9 @@ export default function UrlModal({
   const backdropRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const router = useRouter();
+  const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
+
   useEffect(() => {
     if (open) {
       setValue(initialValue);
@@ -31,18 +37,30 @@ export default function UrlModal({
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
-      if (e.key === 'Enter') handleSubmit();
+      if (e.key === 'Enter') handleSearch();
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [value]);
+  }, [value, isLoggedIn]);
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === backdropRef.current) onClose();
   };
 
-  const handleSubmit = () => {
-    if (value.trim()) onSubmit(value.trim());
+  const handleSearch = () => {
+    const v = value.trim();
+    if (!v) return;
+
+    if (!isLoggedIn) {
+      toast.error('로그인이 필요한 서비스입니다');
+      return;
+    }
+
+    const s = v.trim();
+    const normalized = /^https?:\/\//i.test(s) ? s : `https://${s}`;
+    router.push(`/report?url=${encodeURIComponent(normalized)}`);
+    onSubmit?.(v);
+    onClose?.();
   };
 
   if (!open) return null;
@@ -78,7 +96,7 @@ export default function UrlModal({
             fullWidth
             iconRight={
               <button
-                onClick={handleSubmit}
+                onClick={handleSearch}
                 className="text-gray-strong cursor-pointer"
               >
                 <FaSearch />

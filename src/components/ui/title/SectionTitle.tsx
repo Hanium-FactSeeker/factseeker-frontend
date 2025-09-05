@@ -1,4 +1,4 @@
-import { SectionTitleProps } from '@/types/title';
+import type { SectionTitleProps } from '@/types/title';
 import Link from 'next/link';
 
 const SectionTitle = ({ title, className, link }: SectionTitleProps) => {
