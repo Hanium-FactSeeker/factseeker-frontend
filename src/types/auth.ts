@@ -2,6 +2,8 @@ export interface MeResponse {
   id: number;
   loginId: string;
   fullname: string;
+  gender: string;
+  ageRange: string;
   phone: string;
   email: string;
   roles: string[];

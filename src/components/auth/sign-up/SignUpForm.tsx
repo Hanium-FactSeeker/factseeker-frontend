@@ -8,6 +8,8 @@ import { signUpUser } from '@/apis/auth/sign-up';
 import { checkEmailDuplicate } from '@/apis/auth/check-email';
 import { checkIdDuplicate } from '@/apis/auth/check-id';
 import toast from 'react-hot-toast';
+import { genderOptions } from '@/constants/gender';
+import { ageOptions } from '@/constants/age';
 
 type FormData = {
   id: string;
@@ -15,6 +17,8 @@ type FormData = {
   confirmPassword: string;
   nickname: string;
   email: string;
+  gender: string;
+  ageRange: string;
   phone: string;
   agreed: boolean;
 };
@@ -51,13 +55,13 @@ export default function SignUpForm() {
     confirmPassword: '',
     nickname: '',
     email: '',
+    gender: '',
+    ageRange: '',
     phone: '',
     agreed: false,
   });
 
-  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
-    {},
-  );
+  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
 
   const [emailChecked, setEmailChecked] = useState(false);
   const [idChecked, setIdChecked] = useState(false);
@@ -83,18 +87,20 @@ export default function SignUpForm() {
     }
 
     const pw = formData.password;
-    if (
-      pw.length < 8 ||
-      !/[a-zA-Z]/.test(pw) ||
-      !/[0-9]/.test(pw) ||
-      !/[^a-zA-Z0-9]/.test(pw)
-    ) {
-      errs.password =
-        '비밀번호는 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다.';
+    if (pw.length < 8 || !/[a-zA-Z]/.test(pw) || !/[0-9]/.test(pw) || !/[^a-zA-Z0-9]/.test(pw)) {
+      errs.password = '비밀번호는 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다.';
     }
 
     if (formData.password !== formData.confirmPassword) {
       errs.confirmPassword = '비밀번호가 일치하지 않습니다.';
+    }
+
+    if (!formData.gender) {
+      errs.gender = '성별을 선택해 주세요.';
+    }
+
+    if (!formData.ageRange) {
+      errs.ageRange = '나이를 선택해 주세요.';
     }
 
     setErrors(errs);
@@ -194,6 +200,8 @@ export default function SignUpForm() {
         fullname: formData.nickname,
         phone: formData.phone.replace(/[\s-]/g, ''),
         email: formData.email,
+        gender: formData.gender,
+        ageRange: formData.ageRange,
       });
 
       if (res?.success) {
@@ -209,18 +217,11 @@ export default function SignUpForm() {
 
   return (
     <div className="w-full">
-      <h2 className="text-black-normal mb-6 text-center text-xl font-bold">
-        회원가입
-      </h2>
+      <h2 className="text-black-normal mb-6 text-center text-xl font-bold">회원가입</h2>
 
-      <form
-        onSubmit={handleSubmit}
-        className="mt-10 flex w-full flex-col items-center gap-8"
-      >
+      <form onSubmit={handleSubmit} className="mt-10 flex w-full flex-col items-center gap-8">
         <div className="flex w-full flex-col gap-1">
-          <label className="text-black-normal mb-1 ml-2 text-sm font-semibold">
-            아이디
-          </label>
+          <label className="text-black-normal mb-1 ml-2 text-sm font-semibold">아이디</label>
           <div className="flex gap-4">
             <TextInput
               name="id"
@@ -229,24 +230,15 @@ export default function SignUpForm() {
               onChange={handleChange}
               className="bg-gray-light text-foreground"
             />
-            <Button
-              color="purple"
-              size="sm"
-              onClick={handleIdCheck}
-              disabled={idChecked}
-            >
+            <Button color="purple" size="sm" onClick={handleIdCheck} disabled={idChecked}>
               {idChecked ? '완료' : '중복체크'}
             </Button>
           </div>
-          {errors.id && (
-            <p className="ml-4 text-sm text-red-500">{errors.id}</p>
-          )}
+          {errors.id && <p className="ml-4 text-sm text-red-500">{errors.id}</p>}
         </div>
 
         <div className="flex w-full flex-col gap-1">
-          <label className="text-black-normal mb-1 ml-2 text-sm font-semibold">
-            비밀번호
-          </label>
+          <label className="text-black-normal mb-1 ml-2 text-sm font-semibold">비밀번호</label>
           <TextInput
             name="password"
             type="password"
@@ -256,15 +248,11 @@ export default function SignUpForm() {
             onChange={handleChange}
             className="bg-gray-light text-foreground"
           />
-          {errors.password && (
-            <p className="ml-4 text-sm text-red-500">{errors.password}</p>
-          )}
+          {errors.password && <p className="ml-4 text-sm text-red-500">{errors.password}</p>}
         </div>
 
         <div className="flex w-full flex-col gap-1">
-          <label className="text-black-normal mb-1 ml-2 text-sm font-semibold">
-            비밀번호 확인
-          </label>
+          <label className="text-black-normal mb-1 ml-2 text-sm font-semibold">비밀번호 확인</label>
           <TextInput
             name="confirmPassword"
             type="password"
@@ -275,16 +263,12 @@ export default function SignUpForm() {
             className="bg-gray-light text-foreground"
           />
           {errors.confirmPassword && (
-            <p className="ml-4 text-sm text-red-500">
-              {errors.confirmPassword}
-            </p>
+            <p className="ml-4 text-sm text-red-500">{errors.confirmPassword}</p>
           )}
         </div>
 
         <div className="flex w-full flex-col gap-1">
-          <label className="text-black-normal mb-1 ml-2 text-sm font-semibold">
-            닉네임
-          </label>
+          <label className="text-black-normal mb-1 ml-2 text-sm font-semibold">닉네임</label>
           <TextInput
             name="nickname"
             placeholder="닉네임을 입력해 주세요"
@@ -293,15 +277,11 @@ export default function SignUpForm() {
             onChange={handleChange}
             className="bg-gray-light text-foreground"
           />
-          {errors.email && (
-            <p className="ml-4 text-sm text-red-500">{errors.nickname}</p>
-          )}
+          {errors.email && <p className="ml-4 text-sm text-red-500">{errors.nickname}</p>}
         </div>
 
         <div className="flex w-full flex-col gap-1">
-          <label className="text-black-normal mb-1 ml-2 text-sm font-semibold">
-            이메일
-          </label>
+          <label className="text-black-normal mb-1 ml-2 text-sm font-semibold">이메일</label>
           <div className="flex gap-4">
             <TextInput
               name="email"
@@ -310,24 +290,60 @@ export default function SignUpForm() {
               onChange={handleChange}
               className="bg-gray-light text-foreground"
             />
-            <Button
-              color="purple"
-              size="sm"
-              onClick={handleEmailCheck}
-              disabled={emailChecked}
-            >
+            <Button color="purple" size="sm" onClick={handleEmailCheck} disabled={emailChecked}>
               {emailChecked ? '완료' : '중복체크'}
             </Button>
           </div>
-          {errors.email && (
-            <p className="ml-4 text-sm text-red-500">{errors.email}</p>
-          )}
+          {errors.email && <p className="ml-4 text-sm text-red-500">{errors.email}</p>}
         </div>
 
         <div className="flex w-full flex-col gap-1">
-          <label className="text-black-normal mb-1 ml-2 text-sm font-semibold">
-            전화번호
-          </label>
+          <label className="text-black-normal mb-1 ml-2 text-sm font-semibold">성별</label>
+
+          <span className="flex justify-evenly gap-2 border-t-2 border-gray-300 pt-4">
+            {genderOptions.map((g) => (
+              <Button
+                type="button"
+                key={g.value}
+                // 선택된 값에 따라 스타일 변경
+                color={formData.gender === g.value ? 'purple' : 'gray'}
+                onClick={() => {
+                  setFormData((prev) => ({ ...prev, gender: g.value }));
+                  setErrors((prev) => ({ ...prev, ageRange: '' }));
+                }}
+              >
+                {g.label}
+              </Button>
+            ))}
+          </span>
+
+          {errors.gender && <p className="ml-4 text-sm text-red-500">{errors.gender}</p>}
+        </div>
+
+        <div className="flex w-full flex-col gap-1">
+          <label className="text-black-normal mb-1 ml-2 text-sm font-semibold">나이</label>
+          <span className="flex flex-wrap justify-center gap-14 border-t-2 border-gray-300 p-4">
+            {ageOptions.map((a) => (
+              <Button
+                type="button"
+                size="md"
+                key={a.value}
+                color={formData.ageRange === a.value ? 'purple' : 'gray'}
+                onClick={() => {
+                  setFormData((prev) => ({ ...prev, ageRange: a.value }));
+                  setErrors((prev) => ({ ...prev, ageRange: '' }));
+                }}
+              >
+                {a.label}
+              </Button>
+            ))}
+          </span>
+
+          {errors.ageRange && <p className="ml-4 text-sm text-red-500">{errors.ageRange}</p>}
+        </div>
+
+        <div className="flex w-full flex-col gap-1">
+          <label className="text-black-normal mb-1 ml-2 text-sm font-semibold">전화번호</label>
           <TextInput
             name="phone"
             placeholder="010-0000-0000"
@@ -336,9 +352,7 @@ export default function SignUpForm() {
             onChange={handleChange}
             className="bg-gray-light text-foreground"
           />
-          {errors.phone && (
-            <p className="ml-4 text-sm text-red-500">{errors.phone}</p>
-          )}
+          {errors.phone && <p className="ml-4 text-sm text-red-500">{errors.phone}</p>}
         </div>
 
         <div className="flex items-center justify-center gap-2">
