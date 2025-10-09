@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { FaUser, FaLock } from 'react-icons/fa';
 
-import Logo from '@/assets/Logo';
 import TextInput from '@/components/ui/button/TextInput';
 import { Button } from '@/components/ui/button';
 import { NaverLoginButton } from '@/components/ui/button/NaverLoginButton';
@@ -16,6 +15,13 @@ import { useAuthStore } from '@/store/useAuthStore';
 export default function LoginForm() {
   const router = useRouter();
   const loginWithCredentials = useAuthStore((s) => s.loginWithCredentials);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const timer = setTimeout(() => inputRef.current?.focus(), 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
@@ -34,7 +40,7 @@ export default function LoginForm() {
       await loginWithCredentials(loginId, password);
       toast('로그인에 성공했습니다');
       router.push('/');
-    } catch (err: any) {
+    } catch {
       toast.error('아이디와 비밀번호를 다시 확인해 주세요');
     }
   };
@@ -44,6 +50,7 @@ export default function LoginForm() {
       <h2 className="text-black-normal text-xl font-bold">로그인</h2>
       <form onSubmit={handleLogin} className="flex w-full flex-col gap-4">
         <TextInput
+          ref={inputRef}
           fullWidth
           placeholder="아이디"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLoginId(e.target.value)}
