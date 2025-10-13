@@ -19,15 +19,7 @@ export const metadata: Metadata = {
     template: '%s | FactSeeker',
   },
   description: '대한민국의 정치 분야 가짜뉴스를 AI로 판별하는 팩트체크 서비스',
-  keywords: [
-    '팩트체크',
-    '가짜뉴스',
-    '허위정보',
-    '정치',
-    'AI',
-    'FactSeeker',
-    '대한민국 정치',
-  ],
+  keywords: ['팩트체크', '가짜뉴스', '허위정보', '정치', 'AI', 'FactSeeker', '대한민국 정치'],
   icons: {
     icon: '/favicon.ico',
     apple: '/apple-touch-icon.png',
@@ -35,8 +27,7 @@ export const metadata: Metadata = {
   colorScheme: 'light dark',
   openGraph: {
     title: '팩트씨커 FactSeeker',
-    description:
-      '대한민국의 정치 분야 가짜뉴스를 AI로 판별하는 팩트체크 서비스',
+    description: '대한민국의 정치 분야 가짜뉴스를 AI로 판별하는 팩트체크 서비스',
     url: 'https://www.fact-seeker.com/',
     siteName: 'FactSeeker',
     images: [
@@ -62,18 +53,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <AuthInitializer />
         <CustomToaster />
+        <div id="modal" />
         <div className="flex min-h-dvh flex-col">
           <div className="flex flex-1 flex-col">{children}</div>
           <Footer />

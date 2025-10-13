@@ -1,6 +1,8 @@
 'use client';
-import React from 'react';
+
 import clsx from 'clsx';
+import { useEffect, useRef } from 'react';
+import ModalPortal from '../ui/modal/modalPortal';
 
 type ModalBaseProps = {
   open: boolean;
@@ -10,32 +12,46 @@ type ModalBaseProps = {
 };
 
 export default function ModalBase({ open, onClose, children, className }: ModalBaseProps) {
+  const contentRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    contentRef.current?.focus?.();
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
   if (!open) return null;
-
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/50 px-4 md:px-0"
-      onClick={onClose}
-    >
-      <div
-        className={clsx(
-          'relative w-full max-w-xs rounded-xl bg-white p-6 shadow md:max-w-md md:rounded-2xl md:p-8',
-          className,
-        )}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button
-          type="button"
-          aria-label="닫기"
-          className="text-black-alternative absolute top-4 right-4 hover:opacity-70"
+    <ModalPortal>
+      <div className="fixed inset-0 z-[100] flex items-center justify-center">
+        <div
+          aria-modal="true"
+          className="fixed inset-0 flex items-center justify-center bg-black/50 px-4 md:px-0"
           onClick={onClose}
         >
-          ✕
-        </button>
-        {children}
+          <div
+            className={clsx(
+              'relative w-full max-w-xs rounded-xl bg-white p-6 shadow md:max-w-md md:rounded-2xl md:p-8',
+              className,
+            )}
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            ref={contentRef}
+          >
+            <button
+              type="button"
+              aria-label="닫기"
+              className="text-black-alternative absolute top-4 right-4 hover:opacity-70"
+              onClick={onClose}
+            >
+              ✕
+            </button>
+            {children}
+          </div>
+        </div>
       </div>
-    </div>
+    </ModalPortal>
   );
 }

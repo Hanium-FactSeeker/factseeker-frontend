@@ -1,5 +1,6 @@
 'use client';
-import React from 'react';
+
+import React, { useEffect, useRef } from 'react';
 import ModalBase from './ModalBase';
 import TextInput from '@/components/ui/button/TextInput';
 import { Button } from '@/components/ui/button';
@@ -8,6 +9,14 @@ import { FaUser } from 'react-icons/fa';
 type Props = { open: boolean; onClose?: () => void };
 
 export default function FindIdModal({ open, onClose }: Props) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const timer = setTimeout(() => inputRef.current?.focus(), 0);
+    return () => clearTimeout(timer);
+  }, [open]);
+
   return (
     <ModalBase open={open} onClose={onClose}>
       <h3 className="text-black-normal mb-4 text-center text-lg font-bold md:mb-6 md:text-xl">
@@ -16,6 +25,7 @@ export default function FindIdModal({ open, onClose }: Props) {
 
       <div className="space-y-3 md:space-y-4">
         <TextInput
+          ref={inputRef}
           iconLeft={<FaUser />}
           fullWidth
           placeholder="이메일을 입력해 주세요"
