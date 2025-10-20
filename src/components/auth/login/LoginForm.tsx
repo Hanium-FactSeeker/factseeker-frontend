@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { FaUser, FaLock } from 'react-icons/fa';
-
 import TextInput from '@/components/ui/button/TextInput';
 import { Button } from '@/components/ui/button';
 import { NaverLoginButton } from '@/components/ui/button/NaverLoginButton';
@@ -43,6 +42,14 @@ export default function LoginForm() {
     } catch {
       toast.error('아이디와 비밀번호를 다시 확인해 주세요');
     }
+  };
+
+  const handleGoNaver = () => {
+    window.location.href = 'https://prod.fact-seeker.com/oauth2/authorization/naver';
+  };
+
+  const handleGoKakao = () => {
+    window.location.href = 'https://prod.fact-seeker.com/oauth2/authorization/kakao';
   };
 
   return (
@@ -92,8 +99,8 @@ export default function LoginForm() {
 
       <p className="mt-4 text-sm">소셜 로그인</p>
       <div className="flex w-full flex-col gap-3">
-        <NaverLoginButton className="h-12 w-full text-base" />
-        <KakaoLoginButton className="h-12 w-full text-base" />
+        <NaverLoginButton className="h-12 w-full text-base" onClick={handleGoNaver} />
+        <KakaoLoginButton className="h-12 w-full text-base" onClick={handleGoKakao} />
       </div>
     </div>
   );

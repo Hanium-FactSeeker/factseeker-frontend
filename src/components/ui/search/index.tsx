@@ -7,12 +7,7 @@ interface SearchBarProps {
   onClick: () => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
-const Search: React.FC<SearchBarProps> = ({
-  value,
-  onChange,
-  placeHolder,
-  onClick,
-}) => {
+const Search: React.FC<SearchBarProps> = ({ value, onChange, placeHolder, onClick }) => {
   return (
     <div className="border-gray-normal relative mt-4 flex w-full items-center rounded-2xl border-1 bg-white md:max-w-[708px]">
       <input

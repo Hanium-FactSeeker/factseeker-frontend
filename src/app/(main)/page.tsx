@@ -3,13 +3,11 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '@/styles/globals.css';
 
-import MainHeader from '@/components/header/MainHeader';
 import InfoBar from '@/components/main/molecules/InfoBar';
 import SearchSection from '@/components/main/organisms/SearchSection';
 import PoliticianSection from '@/components/main/organisms/PoliticianSection';
 import HotVideosSection from '@/components/main/organisms/HotVideos';
 import SnsSection from '@/components/main/organisms/SnsSection';
-import Footer from '@/components/footer';
 
 export default function Home() {
   return (

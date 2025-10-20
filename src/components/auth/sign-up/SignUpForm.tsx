@@ -277,7 +277,7 @@ export default function SignUpForm() {
             onChange={handleChange}
             className="bg-gray-light text-foreground"
           />
-          {errors.email && <p className="ml-4 text-sm text-red-500">{errors.nickname}</p>}
+          {errors.nickname && <p className="ml-4 text-sm text-red-500">{errors.nickname}</p>}
         </div>
 
         <div className="flex w-full flex-col gap-1">

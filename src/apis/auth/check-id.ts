@@ -8,9 +8,7 @@ export interface LoginIdCheckResponse {
 }
 
 /** 아이디 중복 체크 */
-export async function checkIdDuplicate(
-  loginId: string,
-): Promise<LoginIdCheckResponse> {
+export async function checkIdDuplicate(loginId: string): Promise<LoginIdCheckResponse> {
   const res = await apiClient.get<LoginIdCheckResponse>('/check/loginId', {
     params: { loginId },
     headers: { Accept: 'application/json' },
