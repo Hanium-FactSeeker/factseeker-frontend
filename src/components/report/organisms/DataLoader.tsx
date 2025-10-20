@@ -10,12 +10,14 @@ import { useReportPolling, type FetchData } from '@/hooks/useReportPolling';
 type Props = { fetchData: FetchData | null; onCancel?: () => void };
 
 export default function DataLoader({ fetchData, onCancel }: Props) {
-  const { data, totalScore, loaded, isLoading, error, reset, cancel } =
-    useReportPolling(fetchData, {
+  const { data, totalScore, loaded, isLoading, error, reset, cancel } = useReportPolling(
+    fetchData,
+    {
       onCancel,
       intervalMs: 6000,
       maxTries: 30000,
-    });
+    },
+  );
 
   const handleExternalCancel = () => cancel();
 
@@ -41,9 +43,7 @@ export default function DataLoader({ fetchData, onCancel }: Props) {
     <div className="flex flex-col items-center">
       <ReportTitle totalScore={totalScore} />
       {data?.info && <ContentInfo info={data.info} />}
-      {data?.claims && (
-        <ContentEvidence claims={data.claims} totalScore={totalScore} />
-      )}
+      {data?.claims && <ContentEvidence claims={data.claims} totalScore={totalScore} />}
     </div>
   );
 }

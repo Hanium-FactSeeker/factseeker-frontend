@@ -34,16 +34,12 @@ type SearchScoreRow = {
   profileImageUrl?: string | null;
 };
 
-const safeImg = (u?: string | null) =>
-  u && u !== 'null' && u !== 'undefined' ? u : '';
-const normalizeName = (name?: string) =>
-  (name ?? '').replace(/\s+/g, '').trim();
+const safeImg = (u?: string | null) => (u && u !== 'null' && u !== 'undefined' ? u : '');
+const normalizeName = (name?: string) => (name ?? '').replace(/\s+/g, '').trim();
 const dateKey = (s?: string) => (s ? new Date(s).getTime() || 0 : 0);
 
 const imgOf = (v: unknown) =>
-  safeImg(
-    typeof v === 'function' ? undefined : (v as string | null | undefined),
-  );
+  safeImg(typeof v === 'function' ? undefined : (v as string | null | undefined));
 
 function kstNowText() {
   const now = new Date();
@@ -83,14 +79,8 @@ function dedupLatest(rows: SearchScoreRow[]) {
     if (dNew > dOld) {
       map.set(key, row);
     } else if (dNew === dOld) {
-      const sNew = (row.overallScore ??
-        row.trustScore ??
-        row.totalScore ??
-        0) as number;
-      const sOld = (prev.overallScore ??
-        prev.trustScore ??
-        prev.totalScore ??
-        0) as number;
+      const sNew = (row.overallScore ?? row.trustScore ?? row.totalScore ?? 0) as number;
+      const sOld = (prev.overallScore ?? prev.trustScore ?? prev.totalScore ?? 0) as number;
       if (sNew >= sOld) map.set(key, row);
     }
   }
@@ -123,10 +113,7 @@ export default function PoliticianBoardMobile() {
 
         const basics = await fetchPoliticiansPage(0, 1000);
         if (!mounted) return;
-        const bm: Record<
-          string,
-          { id?: number; party?: string; img?: string }
-        > = {};
+        const bm: Record<string, { id?: number; party?: string; img?: string }> = {};
         (basics.politicians ?? []).forEach((p) => {
           bm[p.name] = {
             id: p.id,
@@ -144,9 +131,7 @@ export default function PoliticianBoardMobile() {
           party: s.party || bm[s.name]?.party || '',
           img: bm[s.name]?.img || imgOf((s as any).profileImageUrl), // 🔧 imgOf
           stats: {
-            fact: Math.round(
-              s.overallScore ?? s.trustScore ?? s.totalScore ?? 0,
-            ),
+            fact: Math.round(s.overallScore ?? s.trustScore ?? s.totalScore ?? 0),
             gpt: Math.round(s.gptScore ?? 0),
             claude: Math.round(s.geminiScore ?? 0),
           },
@@ -182,19 +167,11 @@ export default function PoliticianBoardMobile() {
       try {
         setSearching(true);
 
-        const resp: any = await (searchPoliticianScoresByName as any)(
-          q,
-          /*page*/ 0,
-          /*size*/ 500,
-        );
+        const resp: any = await (searchPoliticianScoresByName as any)(q, /*page*/ 0, /*size*/ 500);
         const payload = (resp?.data ?? resp) || {};
         const listRaw: SearchScoreRow[] = Array.isArray(payload)
           ? payload
-          : (payload.politicians ??
-            payload.results ??
-            payload.items ??
-            payload.data ??
-            []);
+          : (payload.politicians ?? payload.results ?? payload.items ?? payload.data ?? []);
 
         const latest = dedupLatest(listRaw);
 
@@ -246,9 +223,7 @@ export default function PoliticianBoardMobile() {
         onClick={() => {}}
       />
       <div className="mt-4 flex flex-col gap-5">
-        <span className="text-gray-strong ml-3 text-xs font-normal">
-          {updatedAt || '로딩 중…'}
-        </span>
+        <span className="text-gray-strong ml-3 text-xs font-normal">{updatedAt || '로딩 중…'}</span>
       </div>
 
       {loading ? (
@@ -262,10 +237,7 @@ export default function PoliticianBoardMobile() {
       ) : (
         <div className="mt-4 flex flex-col gap-5">
           {list.map((p, i) => (
-            <PoliticianItemMobile
-              key={`${p.name}-${p.id ?? i}`}
-              item={p as any}
-            />
+            <PoliticianItemMobile key={`${p.name}-${p.id ?? i}`} item={p as any} />
           ))}
           {!list.length && (
             <div className="rounded-[12px] border border-gray-200 bg-white p-4 text-center text-sm text-gray-500">
