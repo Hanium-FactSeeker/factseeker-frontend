@@ -21,6 +21,14 @@ const JSON_HEADERS = {
   Accept: 'application/json',
 } as const;
 
+const EXEMPT_PATHS = [
+  '/auth/login',
+  '/auth/refresh',
+  '/auth/logout',
+  '/auth/social/verify',
+  '/social/complete',
+];
+
 /** 동시에 여러 refresh 요청을 막기 위한 플래그 */
 let refreshInFlight: Promise<string> | null = null;
 
@@ -91,8 +99,8 @@ apiClient.interceptors.response.use(
 
     const url = cfg.url ?? '';
 
-    // 로그인/리프레시/로그아웃 요청은 예외 처리
-    if (url.includes(PATH.LOGIN) || url.includes(PATH.REFRESH) || url.includes(PATH.LOGOUT)) {
+    //  자동 리프레시/리다이렉트 예외 처리
+    if (EXEMPT_PATHS.some((p) => url.includes(p))) {
       return Promise.reject(err);
     }
 
