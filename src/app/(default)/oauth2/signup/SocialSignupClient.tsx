@@ -12,15 +12,13 @@ import { ageMapping } from '@/utils/ageMapping';
 type FormData = {
   nickname: string;
   gender: string;
-  ageRange: string; // '10' | '20' | '30' | '40' | '50' | '60+'
-  phone: string; // 010-0000-0000 표기
+  ageRange: string;
+  phone: string;
   agreed: boolean;
 };
 
 type VerifyRes = { name?: string; age?: string; age_range?: string };
 type CompleteRes = { accessToken: string; refreshToken: string };
-
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL as string;
 
 export default function SocialSignupClient() {
   const router = useRouter();
@@ -66,7 +64,7 @@ export default function SocialSignupClient() {
     (async () => {
       try {
         const res = await fetch(
-          `${API_BASE}/api/auth/social/verify?token=${encodeURIComponent(token)}`,
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/social/verify?token=${encodeURIComponent(token)}`,
         );
         if (!res.ok) throw new Error('소셜 검증 실패');
         const data: VerifyRes = await res.json();
@@ -78,12 +76,15 @@ export default function SocialSignupClient() {
           ageRange: ageMapping(data.age || data.age_range) || prev.ageRange,
         }));
 
-        // 이미 가입된 유저면 폼 없이 바로 완료 시도
-        const tryComplete = await fetch(`${API_BASE}/api/social/complete`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ tempToken: token }),
-        });
+        /* 이미 가입된 유저면 바로 로그인 */
+        const tryComplete = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/social/complete`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tempToken: token }),
+          },
+        );
 
         if (tryComplete.ok) {
           const tokens: CompleteRes = await tryComplete.json();
@@ -127,7 +128,7 @@ export default function SocialSignupClient() {
     if (!validate()) return;
 
     try {
-      const res = await fetch(`${API_BASE}/api/social/complete`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/social/complete`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
