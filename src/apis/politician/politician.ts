@@ -28,9 +28,7 @@ export async function fetchPoliticianScores(
     const body = (error?.response?.data ?? {}) as ApiWrap;
 
     if (status === 400 || status === 404) {
-      const msg =
-        body.message ||
-        (status === 400 ? '잘못된 요청' : '정치인을 찾을 수 없음');
+      const msg = body.message || (status === 400 ? '잘못된 요청' : '정치인을 찾을 수 없음');
       console.warn(`GET /api/politicians/scores ${status}`, body);
       const e = new Error(msg);
       (e as any).status = status;
@@ -56,10 +54,7 @@ export async function fetchPoliticianScoreDetail(
 
   try {
     const res = await apiClient.get(path);
-    const raw = res.data as
-      | PoliticianScoreDetail
-      | ApiWrap<PoliticianScoreDetail>
-      | unknown;
+    const raw = res.data as PoliticianScoreDetail | ApiWrap<PoliticianScoreDetail> | unknown;
 
     let payload: unknown = raw as any;
     if (payload && typeof payload === 'object' && 'data' in (payload as any)) {
@@ -85,9 +80,7 @@ export async function fetchPoliticianScoreDetail(
 }
 
 //3. 이름 부분일치로 정치인의 최신 신뢰도 상세들을 조회
-export async function searchPoliticianScoresByName(
-  name: string,
-): Promise<PoliticianScoreDetail[]> {
+export async function searchPoliticianScoresByName(name: string): Promise<PoliticianScoreDetail[]> {
   const trimmed = (name ?? '').trim();
 
   if (!trimmed) {
@@ -158,11 +151,7 @@ export async function fetchTopScoresSummary(): Promise<PoliticianScoreItem[]> {
     if (raw && typeof raw === 'object' && 'data' in (raw as any)) {
       const data = (raw as any).data;
       if (Array.isArray(data)) return data as PoliticianScoreItem[];
-      if (
-        data &&
-        typeof data === 'object' &&
-        Array.isArray((data as any).politicians)
-      ) {
+      if (data && typeof data === 'object' && Array.isArray((data as any).politicians)) {
         return (data as TopScoresSummaryResponse).politicians;
       }
       return [];
@@ -180,9 +169,7 @@ export async function fetchTopScoresSummary(): Promise<PoliticianScoreItem[]> {
     const body = (error?.response?.data ?? {}) as ApiWrap;
 
     if (status === 400 || status === 404) {
-      const msg =
-        body?.message ||
-        (status === 400 ? '잘못된 요청' : '정치인을 찾을 수 없음');
+      const msg = body?.message || (status === 400 ? '잘못된 요청' : '정치인을 찾을 수 없음');
       console.warn(`GET ${path} ${status}`, body);
       const e = new Error(msg);
       (e as any).status = status;
@@ -254,9 +241,7 @@ export async function fetchPoliticiansPage(
     const body = (error?.response?.data ?? {}) as ApiWrap;
 
     if (status === 400 || status === 404) {
-      const msg =
-        body?.message ||
-        (status === 400 ? '잘못된 요청' : '정치인을 찾을 수 없음');
+      const msg = body?.message || (status === 400 ? '잘못된 요청' : '정치인을 찾을 수 없음');
       console.warn(`GET ${path} ${status}`, body);
       const e = new Error(msg);
       (e as any).status = status;
@@ -269,9 +254,7 @@ export async function fetchPoliticiansPage(
 }
 
 //ID로 정치인 상세 조회
-export async function fetchPoliticianDetail(
-  id: number | string,
-): Promise<PoliticianDetail> {
+export async function fetchPoliticianDetail(id: number | string): Promise<PoliticianDetail> {
   const idStr = `${id ?? ''}`.trim();
   if (!idStr) {
     const e = new Error('유효한 정치인 ID가 필요합니다.');
@@ -282,10 +265,7 @@ export async function fetchPoliticianDetail(
   const path = `/politicians/${idStr}`;
   try {
     const res = await apiClient.get(path);
-    const raw = res.data as
-      | PoliticianDetail
-      | ApiWrap<PoliticianDetail>
-      | unknown;
+    const raw = res.data as PoliticianDetail | ApiWrap<PoliticianDetail> | unknown;
 
     if (raw && typeof raw === 'object' && 'data' in (raw as any)) {
       return (raw as any).data as PoliticianDetail;
@@ -317,9 +297,7 @@ export async function fetchPoliticianDetail(
 }
 
 //이름으로 정치인 검색
-export async function fetchPoliticiansByName(
-  name: string,
-): Promise<PoliticianBasic[]> {
+export async function fetchPoliticiansByName(name: string): Promise<PoliticianBasic[]> {
   const q = (name ?? '').trim();
   if (!q) {
     const e = new Error('name 파라미터는 비어 있을 수 없습니다.');
@@ -342,8 +320,7 @@ export async function fetchPoliticiansByName(
     }
 
     if (Array.isArray(payload)) return payload as PoliticianBasic[];
-    if (payload && typeof payload === 'object')
-      return [payload as PoliticianBasic];
+    if (payload && typeof payload === 'object') return [payload as PoliticianBasic];
     return [];
   } catch (error: any) {
     const status = error?.response?.status;

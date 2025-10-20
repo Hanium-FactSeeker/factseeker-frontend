@@ -1,5 +1,6 @@
 'use client';
-import React from 'react';
+
+import React, { useEffect, useRef } from 'react';
 import ModalBase from './ModalBase';
 import TextInput from '@/components/ui/button/TextInput';
 import { Button } from '@/components/ui/button';
@@ -8,6 +9,13 @@ import { FaUser, FaLock } from 'react-icons/fa';
 type Props = { open: boolean; onClose?: () => void };
 
 export default function FindPasswordModal({ open, onClose }: Props) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const timer = setTimeout(() => inputRef.current?.focus(), 0);
+    return () => clearTimeout(timer);
+  }, [open]);
+
   return (
     <ModalBase open={open} onClose={onClose}>
       <h3 className="text-black-normal mb-4 text-center text-xl font-bold md:mb-6 md:text-2xl">
@@ -16,6 +24,7 @@ export default function FindPasswordModal({ open, onClose }: Props) {
 
       <div className="w-full space-y-5 md:space-y-6">
         <TextInput
+          ref={inputRef}
           fullWidth
           placeholder="아이디"
           iconLeft={<FaUser />}

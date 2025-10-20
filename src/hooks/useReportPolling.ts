@@ -22,10 +22,7 @@ type UseReportPollingOptions = {
   onCancel?: () => void;
 };
 
-export function useReportPolling(
-  fetchData: FetchData | null,
-  opts?: UseReportPollingOptions,
-) {
+export function useReportPolling(fetchData: FetchData | null, opts?: UseReportPollingOptions) {
   const INTERVAL = opts?.intervalMs ?? 300000;
   const MAX_TRIES = opts?.maxTries ?? 999999;
 
@@ -66,7 +63,7 @@ export function useReportPolling(
         // 1) URL → create → analysisId 폴링
         if (fetchData.kind === 'url') {
           let analysisId: number;
-          // eslint-disable-next-line prefer-const
+
           analysisId = await createReport(fetchData.url);
 
           if (cancelled) return;
@@ -75,8 +72,7 @@ export function useReportPolling(
             if (cancelled || signal.aborted) return;
             try {
               const res = await getReportData<any>(analysisId, { signal });
-              const status: string | undefined =
-                (res as any)?.data?.status ?? (res as any)?.status;
+              const status: string | undefined = (res as any)?.data?.status ?? (res as any)?.status;
 
               if (status === 'FAILED') throw new Error('분석이 실패했습니다.');
               if (res?.success && res?.data && status !== 'PENDING') {
@@ -108,8 +104,7 @@ export function useReportPolling(
             if (cancelled || signal.aborted) return;
             try {
               const res = await getReportData<any>(analysisId, { signal });
-              const status: string | undefined =
-                (res as any)?.data?.status ?? (res as any)?.status;
+              const status: string | undefined = (res as any)?.data?.status ?? (res as any)?.status;
 
               if (status === 'FAILED') throw new Error('분석이 실패했습니다.');
               if (res?.success && res?.data && status !== 'PENDING') {
@@ -144,8 +139,7 @@ export function useReportPolling(
               const payload = res?.data;
               const status: string | undefined = (payload as any)?.status;
 
-              if (status === 'FAILED')
-                throw new Error('Top10 분석이 실패했습니다.');
+              if (status === 'FAILED') throw new Error('Top10 분석이 실패했습니다.');
               if (res?.success && payload && status !== 'PENDING') {
                 const info: ReportInfo = payload;
                 const claims: EvidenceItem[] = (payload as any)?.claims ?? [];
@@ -169,8 +163,7 @@ export function useReportPolling(
         }
       } catch (err: any) {
         if (isAbortError(err)) return;
-        const e =
-          err instanceof Error ? err : new Error(String(err?.message ?? err));
+        const e = err instanceof Error ? err : new Error(String(err?.message ?? err));
         if (!cancelled) {
           setError(e);
           setIsLoading(false);
