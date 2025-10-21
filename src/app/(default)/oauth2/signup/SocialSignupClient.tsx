@@ -20,7 +20,14 @@ type FormData = {
 };
 
 type VerifyRes = { name?: string; age?: string; age_range?: string };
-type CompleteRes = { accessToken: string; refreshToken: string };
+type TokenRes = { accessToken?: unknown; refreshToken?: unknown };
+type FailRes = { success?: boolean; message?: string };
+
+const hasTokens = (b: TokenRes): b is { accessToken: string; refreshToken: string } =>
+  typeof b?.accessToken === 'string' && typeof b?.refreshToken === 'string';
+
+const isExplicitFail = (b: FailRes): b is { success: false; message?: string } =>
+  b && b.success === false;
 
 export default function SocialSignupClient() {
   const router = useRouter();
@@ -65,25 +72,23 @@ export default function SocialSignupClient() {
 
     (async () => {
       try {
-        const { data } = await apiClient.get<VerifyRes>('/auth/social/verify', {
+        const { data: v } = await apiClient.get<VerifyRes>('/auth/social/verify', {
           params: { token },
         });
 
         if (!mounted) return;
         setFormData((prev) => ({
           ...prev,
-          nickname: data.name ?? prev.nickname,
-          ageRange: ageMapping(data.age || data.age_range) || prev.ageRange,
+          nickname: v.name ?? prev.nickname,
+          ageRange: ageMapping(v.age || v.age_range) || prev.ageRange,
         }));
 
-        /* 이미 가입된 유저면 바로 로그인 시도 */
-        const complete = await apiClient.post<CompleteRes>('/social/complete', {
-          tempToken: token,
-        });
+        /* 이미 가입된 유저면 자동 로그인 시도 */
+        const res = await apiClient.post('/social/complete', { tempToken: token });
+        const body = res.data as TokenRes & FailRes;
 
-        if (complete.status === 200) {
-          const tokens = complete.data;
-          setTokens(tokens.accessToken, tokens.refreshToken, 'Bearer');
+        if (hasTokens(body)) {
+          setTokens(body.accessToken, body.refreshToken, 'Bearer');
           toast.success('로그인에 성공했습니다.');
           router.replace('/');
           return;
@@ -122,7 +127,7 @@ export default function SocialSignupClient() {
     if (!validate()) return;
 
     try {
-      const { data } = await apiClient.post<CompleteRes>('/social/complete', {
+      const res = await apiClient.post('/social/complete', {
         tempToken: token,
         fullname: formData.nickname,
         gender: formData.gender || '',
@@ -130,12 +135,24 @@ export default function SocialSignupClient() {
         phone: formData.phone.replace(/\D/g, ''),
       });
 
-      setTokens(data.accessToken, data.refreshToken, 'Bearer');
-      toast.success('소셜 회원가입이 완료되었습니다.');
-      router.replace('/');
-    } catch (error) {
-      if (error instanceof Error) toast.error(error.message);
-      else if (typeof error === 'string') toast.error(error);
+      const body = res.data as TokenRes & FailRes;
+
+      if (hasTokens(body)) {
+        setTokens(body.accessToken, body.refreshToken, 'Bearer');
+        toast.success('소셜 회원가입이 완료되었습니다.');
+        router.replace('/');
+        return;
+      }
+
+      if (isExplicitFail(body)) {
+        toast.error(typeof body.message === 'string' ? body.message : '회원가입에 실패했습니다.');
+        return;
+      }
+
+      toast.error('회원가입에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+    } catch (e) {
+      if (e instanceof Error) toast.error(e.message);
+      else if (typeof e === 'string') toast.error(e);
       else toast.error('처리 중 알 수 없는 오류가 발생했습니다.');
     }
   };
