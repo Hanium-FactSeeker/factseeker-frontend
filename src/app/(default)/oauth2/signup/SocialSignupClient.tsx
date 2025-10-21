@@ -10,6 +10,7 @@ import { genderOptions } from '@/constants/gender';
 import { ageMapping } from '@/utils/ageMapping';
 import apiClient from '@/apis/apiClient';
 import { setTokens } from '@/lib/auth/tokens';
+import { generateRandomEmail } from '@/utils/generateRandomEmail';
 
 type FormData = {
   nickname: string;
@@ -43,7 +44,7 @@ export default function SocialSignupClient() {
     ageRange: '',
     phone: '',
     agreed: false,
-    email: '',
+    email: generateRandomEmail(),
   });
 
   const formatPhone = (raw: string) => {
@@ -71,36 +72,23 @@ export default function SocialSignupClient() {
     }
 
     let mounted = true;
-
     (async () => {
       try {
         const { data: v } = await apiClient.get<VerifyRes>('/auth/social/verify', {
           params: { token },
         });
-
         if (!mounted) return;
+
         setFormData((prev) => ({
           ...prev,
           nickname: v.name ?? prev.nickname,
           ageRange: ageMapping(v.age || v.age_range) || prev.ageRange,
         }));
-
-        /* 이미 가입된 유저면 자동 로그인 시도 */
-        const res = await apiClient.post('/social/complete', { tempToken: token });
-        const body = res.data as TokenRes & FailRes;
-
-        if (hasTokens(body)) {
-          setTokens(body.accessToken, body.refreshToken, 'Bearer');
-          toast.success('로그인에 성공했습니다.');
-          router.replace('/');
-          return;
-        }
       } catch (error) {
         if (error instanceof Error) toast.error(error.message);
         else if (typeof error === 'string') toast.error(error);
         else toast.error('예기치 못한 오류가 발생했습니다.');
         router.replace('/login');
-        return;
       } finally {
         if (mounted) setLoading(false);
       }
@@ -115,7 +103,6 @@ export default function SocialSignupClient() {
     const errs: Partial<Record<keyof FormData, string>> = {};
     const phoneDigits = formData.phone.replace(/\D/g, '');
 
-    if (!formData.email.trim()) errs.email = '이메일을 입력해 주세요.';
     if (!formData.nickname.trim()) errs.nickname = '닉네임을 입력해 주세요.';
     if (phoneDigits.length !== 11) errs.phone = '전화번호 형식이 올바르지 않습니다.';
     if (!formData.gender) errs.gender = '성별을 선택해 주세요.';
@@ -167,19 +154,6 @@ export default function SocialSignupClient() {
     <div className="mx-auto max-w-md space-y-8 p-10">
       <h2 className="text-center text-xl font-bold">회원가입</h2>
       <p className="mb-6 text-center text-sm">추가 정보를 입력해 주세요</p>
-
-      <div className="flex w-full flex-col gap-1">
-        <label className="text-black-normal mb-1 ml-2 text-sm font-semibold">이메일</label>
-        <TextInput
-          name="email"
-          placeholder="이메일을 입력해 주세요"
-          fullWidth
-          value={formData.email}
-          onChange={handleChange}
-          className="bg-gray-light text-foreground"
-        />
-        {errors.email && <p className="ml-4 text-sm text-red-500">{errors.email}</p>}
-      </div>
 
       <div className="flex w-full flex-col gap-1">
         <label className="text-black-normal mb-1 ml-2 text-sm font-semibold">닉네임</label>
