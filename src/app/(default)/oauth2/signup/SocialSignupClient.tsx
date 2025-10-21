@@ -17,6 +17,7 @@ type FormData = {
   ageRange: string;
   phone: string;
   agreed: boolean;
+  email: string;
 };
 
 type VerifyRes = { name?: string; age?: string; age_range?: string };
@@ -42,6 +43,7 @@ export default function SocialSignupClient() {
     ageRange: '',
     phone: '',
     agreed: false,
+    email: '',
   });
 
   const formatPhone = (raw: string) => {
@@ -113,6 +115,7 @@ export default function SocialSignupClient() {
     const errs: Partial<Record<keyof FormData, string>> = {};
     const phoneDigits = formData.phone.replace(/\D/g, '');
 
+    if (!formData.email.trim()) errs.email = '이메일을 입력해 주세요.';
     if (!formData.nickname.trim()) errs.nickname = '닉네임을 입력해 주세요.';
     if (phoneDigits.length !== 11) errs.phone = '전화번호 형식이 올바르지 않습니다.';
     if (!formData.gender) errs.gender = '성별을 선택해 주세요.';
@@ -132,6 +135,7 @@ export default function SocialSignupClient() {
         fullname: formData.nickname,
         gender: formData.gender || '',
         ageRange: formData.ageRange,
+        email: formData.email,
         phone: formData.phone.replace(/\D/g, ''),
       });
 
@@ -163,6 +167,19 @@ export default function SocialSignupClient() {
     <div className="mx-auto max-w-md space-y-8 p-10">
       <h2 className="text-center text-xl font-bold">회원가입</h2>
       <p className="mb-6 text-center text-sm">추가 정보를 입력해 주세요</p>
+
+      <div className="flex w-full flex-col gap-1">
+        <label className="text-black-normal mb-1 ml-2 text-sm font-semibold">이메일</label>
+        <TextInput
+          name="email"
+          placeholder="이메일을 입력해 주세요"
+          fullWidth
+          value={formData.email}
+          onChange={handleChange}
+          className="bg-gray-light text-foreground"
+        />
+        {errors.email && <p className="ml-4 text-sm text-red-500">{errors.email}</p>}
+      </div>
 
       <div className="flex w-full flex-col gap-1">
         <label className="text-black-normal mb-1 ml-2 text-sm font-semibold">닉네임</label>
