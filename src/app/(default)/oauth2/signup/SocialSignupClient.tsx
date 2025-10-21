@@ -8,8 +8,8 @@ import { Button } from '@/components/ui/button';
 import { ageOptions } from '@/constants/age';
 import { genderOptions } from '@/constants/gender';
 import { ageMapping } from '@/utils/ageMapping';
-import apiClient from '@/apis/apiClient';
 import { setTokens } from '@/lib/auth/tokens';
+import { verifySocial, completeSocial } from '@/apis/auth/social-login';
 
 type FormData = {
   nickname: string;
@@ -19,15 +19,7 @@ type FormData = {
   agreed: boolean;
 };
 
-type VerifyRes = { name?: string; age?: string; age_range?: string };
-type TokenRes = { accessToken?: unknown; refreshToken?: unknown };
-type FailRes = { success?: boolean; message?: string };
-
-const hasTokens = (b: TokenRes): b is { accessToken: string; refreshToken: string } =>
-  typeof b?.accessToken === 'string' && typeof b?.refreshToken === 'string';
-
-const isExplicitFail = (b: FailRes): b is { success: false; message?: string } =>
-  b && b.success === false;
+type FailLike = { success?: boolean; message?: string };
 
 export default function SocialSignupClient() {
   const router = useRouter();
@@ -71,9 +63,7 @@ export default function SocialSignupClient() {
     let mounted = true;
     (async () => {
       try {
-        const { data: v } = await apiClient.get<VerifyRes>('/auth/social/verify', {
-          params: { token },
-        });
+        const v = await verifySocial(token);
         if (!mounted) return;
 
         setFormData((prev) => ({
@@ -114,7 +104,7 @@ export default function SocialSignupClient() {
     if (!validate()) return;
 
     try {
-      const res = await apiClient.post('/social/complete', {
+      const { raw, tokens } = await completeSocial({
         tempToken: token,
         fullname: formData.nickname,
         gender: formData.gender || '',
@@ -122,17 +112,16 @@ export default function SocialSignupClient() {
         phone: formData.phone.replace(/\D/g, ''),
       });
 
-      const body = res.data as TokenRes & FailRes;
-
-      if (hasTokens(body)) {
-        setTokens(body.accessToken, body.refreshToken, 'Bearer');
+      if (tokens) {
+        setTokens(tokens.accessToken, tokens.refreshToken, tokens.tokenType ?? 'Bearer');
         toast.success('소셜 회원가입이 완료되었습니다.');
         router.replace('/');
         return;
       }
 
-      if (isExplicitFail(body)) {
-        toast.error(typeof body.message === 'string' ? body.message : '회원가입에 실패했습니다.');
+      const fail = raw as FailLike;
+      if (fail?.success === false) {
+        toast.error(fail.message ?? '회원가입에 실패했습니다.');
         return;
       }
 
