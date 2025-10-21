@@ -15,15 +15,26 @@ export type ApiSuccess<T> = { success: true; message?: string; data: T };
 export type ApiFail = { success: false; message?: string };
 
 export function extractTokenPayload(d: unknown): TokenPayload | null {
-  const maybe: any = (d as any)?.data ?? d;
-  if (maybe && typeof maybe.accessToken === 'string' && typeof maybe.refreshToken === 'string') {
+  if (!d || typeof d !== 'object') return null;
+  const hasDataField = 'data' in d && typeof (d as { data?: unknown }).data === 'object';
+  const maybe = hasDataField ? (d as { data: object }).data : d;
+
+  const isTokenPayload = (obj: unknown): obj is TokenPayload => {
+    if (!obj || typeof obj !== 'object') return false;
+    const o = obj as Record<string, unknown>;
+    return typeof o.accessToken === 'string' && typeof o.refreshToken === 'string';
+  };
+
+  if (isTokenPayload(maybe)) {
+    const o = maybe as TokenPayload;
     return {
-      accessToken: maybe.accessToken,
-      refreshToken: maybe.refreshToken,
-      tokenType: typeof maybe.tokenType === 'string' ? maybe.tokenType : 'Bearer',
-      expiresIn: typeof maybe.expiresIn === 'number' ? maybe.expiresIn : undefined,
+      accessToken: o.accessToken,
+      refreshToken: o.refreshToken,
+      tokenType: o.tokenType ?? 'Bearer',
+      expiresIn: o.expiresIn,
     };
   }
+
   return null;
 }
 
