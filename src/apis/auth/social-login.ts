@@ -47,11 +47,11 @@ export async function verifySocial(token: string) {
 
 export type CompleteReq = {
   tempToken: string;
-  fullname?: string;
-  gender?: string;
-  ageRange?: string;
-  phone?: string;
-  email?: string;
+  fullname: string;
+  gender: string;
+  ageRange: string;
+  phone: string;
+  email: string;
 };
 
 export async function completeSocial(payload: CompleteReq) {
