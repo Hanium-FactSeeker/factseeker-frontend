@@ -5,14 +5,17 @@ import { Button } from '@/components/ui/button';
 import FactMark from '@/components/ui/factMark';
 import type { VideoItem } from '@/types/videos';
 import { percentToValidity } from '@/utils/calculateValidity';
+import { useVideoTracking } from '@/hooks/gtm/useVideoTracking';
 
 interface VideoItemProps {
   video: VideoItem;
 }
 const VideoItemDesktop = ({ video }: VideoItemProps) => {
   const router = useRouter();
+  const { trackTrendingClick, trackReportClick, trackRelatedClick } = useVideoTracking();
 
   const goRelated = () => {
+    trackRelatedClick(video.title ?? '(no title)');
     const params = new URLSearchParams({
       title: video.title ?? '',
       thumb: video.thumbnail ?? '',
@@ -21,6 +24,8 @@ const VideoItemDesktop = ({ video }: VideoItemProps) => {
   };
 
   const handleGoReport = () => {
+    trackReportClick(video.title ?? '(no title)');
+
     const videoId = encodeURIComponent(video?.id ?? '');
     router.push(`/report?videoId=${videoId}`);
   };
@@ -31,6 +36,7 @@ const VideoItemDesktop = ({ video }: VideoItemProps) => {
         href={video?.link}
         target="_blank"
         className="relative flex h-20 w-36 items-center justify-center"
+        onClick={() => trackTrendingClick(video.title ?? '(no title)', video.gradePercent ?? 0)}
       >
         <img className="h-20 w-36" src={video?.thumbnail} />
         <div className="absolute right-22 bottom-2 z-10">

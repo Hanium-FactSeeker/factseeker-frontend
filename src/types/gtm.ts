@@ -22,6 +22,10 @@ export type GTMEvent =
   | ({ event: 'search_submit' } & Required<Pick<GTMCommon, 'page_path'>> & Partial<GTMCommon>)
   | ({ event: 'search_result_loaded' } & Required<Pick<GTMCommon, 'page_path'>> &
       Partial<GTMCommon>)
+  | ({ event: 'video_report_click' } & Required<Pick<GTMCommon, 'page_path' | 'target_name'>> &
+      Partial<GTMCommon>)
+  | ({ event: 'video_related_click' } & Required<Pick<GTMCommon, 'page_path' | 'target_name'>> &
+      Partial<GTMCommon>)
 
   // 2) 인기영상 페이지 (/trending)
   | ({ event: 'trending_click' } & Required<Pick<GTMCommon, 'page_path' | 'target_name'>> &

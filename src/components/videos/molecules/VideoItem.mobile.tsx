@@ -5,6 +5,7 @@ import FactMark from '@/components/ui/factMark';
 import type { VideoItem } from '@/types/videos';
 import { useRouter } from 'next/navigation';
 import { percentToValidity } from '@/utils/calculateValidity';
+import { useVideoTracking } from '@/hooks/gtm/useVideoTracking';
 
 interface VideoItemProps {
   idx: number;
@@ -13,8 +14,10 @@ interface VideoItemProps {
 
 const VideoItemMobile = ({ idx, video }: VideoItemProps) => {
   const router = useRouter();
+  const { trackTrendingClick, trackRelatedClick, trackReportClick } = useVideoTracking();
 
   const goRelated = () => {
+    trackRelatedClick(video.title ?? '(no title)');
     const params = new URLSearchParams({
       title: video.title ?? '',
       thumb: video.thumbnail ?? '',
@@ -23,6 +26,8 @@ const VideoItemMobile = ({ idx, video }: VideoItemProps) => {
   };
 
   const handleGoReport = () => {
+    trackReportClick(video.title ?? '(no title)');
+
     const videoId = encodeURIComponent(video?.id ?? '');
     router.push(`/report?videoId=${videoId}`);
   };
@@ -35,6 +40,7 @@ const VideoItemMobile = ({ idx, video }: VideoItemProps) => {
           href={video?.link}
           target="_blank"
           className="relative flex h-24 w-36 items-center justify-center"
+          onClick={() => trackTrendingClick(video.title ?? '(no title)', video.gradePercent ?? 0)}
         >
           <img className="relative mb-2 h-32 w-34 rounded-xl" src={video?.thumbnail} />
           <div className="absolute -top-5 left-2 z-10">
