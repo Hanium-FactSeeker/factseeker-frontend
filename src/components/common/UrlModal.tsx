@@ -9,6 +9,8 @@ import ModalBase from '../findmodal/ModalBase';
 import SearchInput from '@/components/ui/button/SearchInput';
 import { useAuthStore } from '@/store/useAuthStore';
 
+import { useSearchTracking } from '@/hooks/gtm/useSearchTracking';
+
 interface UrlModalProps {
   open: boolean;
   initialValue?: string;
@@ -22,6 +24,8 @@ export default function UrlModal({ open, initialValue = '', onClose, onSubmit }:
 
   const router = useRouter();
   const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
+
+  const { trackSearchSubmit } = useSearchTracking();
 
   // 모달 열릴 때 초기값/포커스
   useEffect(() => {
@@ -41,6 +45,8 @@ export default function UrlModal({ open, initialValue = '', onClose, onSubmit }:
     }
 
     const normalized = /^https?:\/\//i.test(v) ? v : `https://${v}`;
+
+    trackSearchSubmit(normalized);
     router.push(`/report?url=${encodeURIComponent(normalized)}`);
     onSubmit?.(v);
     onClose?.();
