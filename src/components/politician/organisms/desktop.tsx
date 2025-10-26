@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Input from '@/components/ui/button/SearchInput';
 import PoliticianBoard from '../molecules/politicianBoardDesktop';
 import ClientTime from '@/components/common/ClientTime';
+import { usePoliticianSearchTracking } from '@/hooks/gtm/usePoliticianSearchTracking';
 
 const Magnifier = () => (
   <svg width="25" height="25" viewBox="0 0 24 24" aria-hidden>
@@ -22,7 +23,13 @@ const Magnifier = () => (
 
 export default function PoliticianDesktop() {
   const [query, setQuery] = useState('');
+  const { trackSearchQuery } = usePoliticianSearchTracking();
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      trackSearchQuery(query);
+    }
+  };
   return (
     <section className="flex w-full flex-col items-center">
       <div className="mx-auto mt-14 w-full max-w-[1200px] px-4">
@@ -39,7 +46,10 @@ export default function PoliticianDesktop() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="순위에 없는 다른 정치인을 검색해 보세요"
-          onClick={() => {}}
+          onClick={() => {
+            trackSearchQuery(query);
+          }}
+          onKeyDown={handleKeyDown}
           iconRight={<Magnifier />}
           className="h-14 w-[70%] rounded-[20px] border-[#D9DBDC]"
         />

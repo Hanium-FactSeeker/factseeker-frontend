@@ -1,11 +1,13 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
 import { gtmPush } from '@/utils/gtm';
 
+//특정 정치인 상세 화면
 export function usePoliticianTracking(personName: string) {
   const page_path = '/politician';
   const startTimeRef = useRef<number | null>(null);
 
-  // 사용자가 특정 인물을 검색했을 때 (검색 제출 시 호출)
   function trackPersonSearch() {
     gtmPush({
       event: 'person_search',
@@ -14,7 +16,7 @@ export function usePoliticianTracking(personName: string) {
     });
   }
 
-  // 페이지 들어왔을 때 타이머 시작
+  // 페이지 체류 시간 측정
   useEffect(() => {
     startTimeRef.current = performance.now();
     return () => {
@@ -26,7 +28,7 @@ export function usePoliticianTracking(personName: string) {
           event: 'person_view_time',
           page_path,
           target_name: personName,
-          duration_sec: Number(durationSec.toFixed(1)),
+          duration_sec: Number(durationSec.toFixed(1)), // 예: 12.3초
         });
       }
     };
