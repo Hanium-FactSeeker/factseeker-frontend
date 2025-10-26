@@ -6,6 +6,7 @@ import SwitchButton from '@/components/ui/button/SwitchButton';
 import SnsCard from '@/components/ui/sns/SnsCard';
 import type { SnsItem } from '@/constants/snsData';
 import { snsData } from '@/constants/snsData';
+import { useSnsTracking } from '@/hooks/gtm/useSnsTracking';
 
 const PAGE_SIZE = 10;
 
@@ -13,6 +14,8 @@ export default function Desktop() {
   const [query, setQuery] = useState('');
   const [sortKey, setSortKey] = useState<'latest' | 'trust'>('trust');
   const [page, setPage] = useState(1);
+
+  const { trackSnsSearch } = useSnsTracking();
 
   const filtered: SnsItem[] = useMemo(() => {
     const q = query.trim();
@@ -26,6 +29,17 @@ export default function Desktop() {
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const current = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
+  const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPage(1);
+    setQuery(e.target.value);
+  };
+
+  const handleQueryKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      trackSnsSearch(query);
+    }
+  };
+
   return (
     <section className="bg-background text-foreground">
       <div className="mx-auto max-w-[1280px] px-6 pt-6">
@@ -35,10 +49,8 @@ export default function Desktop() {
               placeholder="모아보고 싶은 정치인을 검색해 보세요"
               iconRight={<span className="text-black-alternative">🔍</span>}
               value={query}
-              onChange={(e) => {
-                setPage(1);
-                setQuery(e.target.value);
-              }}
+              onChange={handleQueryChange}
+              onKeyDown={handleQueryKeyDown}
             />
           </div>
 

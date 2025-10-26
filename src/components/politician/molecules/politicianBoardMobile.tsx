@@ -8,6 +8,7 @@ import {
   fetchTopScoresSummary,
   searchPoliticianScoresByName,
 } from '@/apis/politician/politician';
+import { usePoliticianSearchTracking } from '@/hooks/gtm/usePoliticianSearchTracking';
 
 type Stat = { fact: number; gpt: number; claude: number };
 type CardItem = {
@@ -104,6 +105,8 @@ export default function PoliticianBoardMobile() {
   const [searching, setSearching] = useState(false);
   const [searchAll, setSearchAll] = useState<CardItem[]>([]);
   const [totalPages, setTotalPages] = useState(0);
+
+  const { trackSearchQuery } = usePoliticianSearchTracking();
 
   useEffect(() => {
     let mounted = true;
@@ -220,7 +223,9 @@ export default function PoliticianBoardMobile() {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeHolder="순위에 없는 정치인도 검색해보세요"
-        onClick={() => {}}
+        onClick={() => {
+          trackSearchQuery(query);
+        }}
       />
       <div className="mt-4 flex flex-col gap-5">
         <span className="text-gray-strong ml-3 text-xs font-normal">{updatedAt || '로딩 중…'}</span>

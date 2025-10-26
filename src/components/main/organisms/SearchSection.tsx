@@ -9,6 +9,8 @@ import { getRecentReport } from '@/apis/report/getRecentReport';
 import { useAuthStore } from '@/store/useAuthStore';
 import { toast } from 'react-hot-toast';
 
+import { useSearchTracking } from '@/hooks/gtm/useSearchTracking';
+
 interface SearchSectionProps {
   placeHolder: string;
 }
@@ -20,6 +22,7 @@ const SearchSection = ({ placeHolder }: SearchSectionProps) => {
   const router = useRouter();
 
   const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
+  const { trackSearchSubmit } = useSearchTracking();
 
   const handleSearch = () => {
     if (!isLoggedIn) {
@@ -32,6 +35,8 @@ const SearchSection = ({ placeHolder }: SearchSectionProps) => {
     }
     const s = search.trim();
     const normalized = /^https?:\/\//i.test(s) ? s : `https://${s}`;
+
+    trackSearchSubmit(normalized);
     router.push(`/report?url=${encodeURIComponent(normalized)}`);
   };
 
@@ -92,6 +97,10 @@ const SearchSection = ({ placeHolder }: SearchSectionProps) => {
                   key={r.videoAnalysisId}
                   className="text-gray-strong hover:text-primary-normal max-w-36 truncate pb-1 text-left underline md:max-w-100"
                   title={r.videoTitle}
+                  onClick={() => {
+                    trackSearchSubmit(r.videoTitle ?? '(recent)');
+                    router.push(`/report?url=${encodeURIComponent(r.videoUrl)}`);
+                  }}
                 >
                   {r.videoTitle}
                 </button>
