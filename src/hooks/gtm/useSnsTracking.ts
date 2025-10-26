@@ -3,25 +3,34 @@ import { gtmPush } from '@/utils/gtm';
 export function useSnsTracking() {
   const page_path = '/sns';
 
-  function trackSnsAnalyzeClick(politicianName: string) {
+  /**
+   * 사용자가 특정 이름(정치인 이름 등)을 검색창에 입력하고 검색했을 때 호출.
+   */
+  function trackSnsSearch(query: string) {
+    if (!query || !query.trim()) return;
+
     gtmPush({
-      event: 'sns_analyze_click',
+      event: 'sns_search',
       page_path,
-      target_name: politicianName,
+      target_name: query.trim(),
     });
   }
 
-  function trackSnsResultView(politicianName: string, reliabilityScore: number) {
+  /**
+   * 특정 정치인의 SNS 카드에서 외부 SNS 원문(트위터/X, 유튜브 등)으로 나갈 때 호출.
+   * 어떤 정치인(또는 계정)의 SNS가 제일 많이 클릭됐는지 알 수 있음.
+   */
+  function trackSnsExternalClick(politicianName: string, snsType: string) {
     gtmPush({
-      event: 'sns_result_view',
+      event: 'sns_external_click',
       page_path,
       target_name: politicianName,
-      reliability: reliabilityScore,
+      filter_value: snsType,
     });
   }
 
   return {
-    trackSnsAnalyzeClick,
-    trackSnsResultView,
+    trackSnsSearch,
+    trackSnsExternalClick,
   };
 }

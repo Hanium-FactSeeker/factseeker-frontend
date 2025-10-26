@@ -34,10 +34,16 @@ export type GTMEvent =
       Partial<GTMCommon>)
 
   // 3) SNS 분석 페이지 (/sns)
-  | ({ event: 'sns_analyze_click' } & Required<Pick<GTMCommon, 'page_path' | 'target_name'>> &
+  | ({
+      event: 'sns_search';
+    } & Required<Pick<GTMCommon, 'page_path' | 'target_name'>> &
       Partial<GTMCommon>)
-  | ({ event: 'sns_result_view' } & Required<Pick<GTMCommon, 'page_path' | 'target_name'>> &
-      Partial<GTMCommon>)
+  | ({
+      event: 'sns_external_click';
+    } & Required<Pick<GTMCommon, 'page_path' | 'target_name'>> &
+      Partial<GTMCommon> & {
+        filter_value?: string;
+      })
 
   // 4) 인물 분석 페이지 (/profile)
   | ({ event: 'person_search' } & Required<Pick<GTMCommon, 'page_path' | 'target_name'>> &
