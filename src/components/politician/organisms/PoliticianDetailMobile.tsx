@@ -6,7 +6,6 @@ import PoliticianImage from '@/components/ui/profile/PoliticianImage';
 import VideoRow from '@/components/politician/molecules/VideoRow';
 import SwitchButton from '@/components/ui/button/SwitchButton';
 import type { VideoItem } from '@/types/videos';
-import { maskTail } from '@/utils/maskTail';
 
 type Stat = { fact: number; gpt: number; claude: number };
 type Politician = {
@@ -72,9 +71,7 @@ export default function PoliticianDetailMobile({
               <PoliticianImage src={imgSrc} alt={`${politician.name} 이미지`} />
             </div>
             <div className="min-w-0">
-              <p className="text-black-normal truncate text-base font-bold">
-                {maskTail(politician.name, 1)}
-              </p>
+              <p className="text-black-normal truncate text-base font-bold">{politician.name}</p>
               <p className="text-black-normal mt-1 truncate text-xs">{politician.party}</p>
             </div>
           </div>

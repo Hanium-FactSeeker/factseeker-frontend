@@ -4,7 +4,6 @@ import ReliabilityStat from '@/components/ui/validity';
 import PoliticianImage from '../../ui/profile/PoliticianImage';
 import FactMark from '@/components/ui/factMark';
 import { percentToValidity, faceImgByPercent } from '@/utils/calculateValidity';
-import { maskTail } from '@/utils/maskTail';
 
 type Stats = { gpt: number; gemini: number; overall: number };
 
@@ -30,7 +29,7 @@ const PoliticianItem = ({ p }: { p: Politician }) => {
           </div>
         </div>
 
-        <p className="text-black-normal text-md font-bold md:text-xl">{maskTail(p.name, 1)}</p>
+        <p className="text-black-normal text-md font-bold md:text-xl">{p.name}</p>
         <p className="text-black-normal text-sm font-normal md:text-base">{p.party}</p>
       </div>
 
