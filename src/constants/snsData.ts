@@ -1,5 +1,3 @@
-import { maskTail } from '@/utils/maskTail';
-
 export interface SnsItem {
   name: string;
   id?: string;
@@ -14,7 +12,7 @@ export interface SnsItem {
 
 export const snsData: SnsItem[] = [
   {
-    name: maskTail('이재명'),
+    name: '이재명',
     party: '더불어민주당',
     type: 'facebook',
     percentage: 70,
@@ -22,7 +20,7 @@ export const snsData: SnsItem[] = [
     url: 'https://www.facebook.com/jaemyunglee/',
   },
   {
-    name: maskTail('홍준표'),
+    name: '홍준표',
     party: '무소속',
     type: 'facebook',
     percentage: 87,
@@ -30,7 +28,7 @@ export const snsData: SnsItem[] = [
     url: 'https://www.facebook.com/joonpyohong21',
   },
   {
-    name: maskTail('이준석'),
+    name: '이준석',
     party: '개혁신당',
     type: 'facebook',
     percentage: 85,
@@ -38,7 +36,7 @@ export const snsData: SnsItem[] = [
     url: 'https://www.facebook.com/junseokandylee',
   },
   {
-    name: maskTail('한동훈'),
+    name: '한동훈',
     party: '국민의힘',
     type: 'facebook',
     percentage: 88,
@@ -46,7 +44,7 @@ export const snsData: SnsItem[] = [
     url: 'https://www.facebook.com/dh.han.3',
   },
   {
-    name: maskTail('안철수'),
+    name: '안철수',
     party: '국민의힘',
     type: 'x',
     percentage: 85,
@@ -54,7 +52,7 @@ export const snsData: SnsItem[] = [
     url: 'https://x.com/cheolsoo0919/status/1958738538243268958',
   },
   {
-    name: maskTail('박지현'),
+    name: '박지현',
     party: '더불어민주당',
     type: 'x',
     percentage: 64,
@@ -62,7 +60,7 @@ export const snsData: SnsItem[] = [
     url: 'https://x.com/paarkjihy_20/status/1958419712750268633',
   },
   {
-    name: maskTail('유승민'),
+    name: '유승민',
     party: '국민의힘',
     type: 'youtube',
     percentage: 77,
@@ -70,7 +68,7 @@ export const snsData: SnsItem[] = [
     url: 'https://www.youtube.com/@loveyoo../posts',
   },
   {
-    name: maskTail('오세훈'),
+    name: '오세훈',
     party: '국민의힘',
     type: 'x',
     percentage: 85,
@@ -78,7 +76,7 @@ export const snsData: SnsItem[] = [
     url: 'https://www.facebook.com/jaemyunglee/',
   },
   {
-    name: maskTail('김두관'),
+    name: '김두관',
     party: '더불어민주당',
     type: 'youtube',
     percentage: 80,
@@ -86,7 +84,7 @@ export const snsData: SnsItem[] = [
     url: 'https://www.youtube.com/@TV-dw9ee/posts',
   },
   {
-    name: maskTail('하태경'),
+    name: '하태경',
     party: '국민의힘',
     type: 'facebook',
     percentage: 83,
@@ -94,7 +92,7 @@ export const snsData: SnsItem[] = [
     url: 'https://www.facebook.com/radiohahapage',
   },
   {
-    name: maskTail('박용진'),
+    name: '박용진',
     party: '더불어민주당',
     type: 'x',
     percentage: 81,
@@ -102,7 +100,7 @@ export const snsData: SnsItem[] = [
     url: 'https://x.com/hopeparkyongjin',
   },
   {
-    name: maskTail('원희룡'),
+    name: '원희룡',
     party: '국민의힘',
     type: 'facebook',
     percentage: 89,
