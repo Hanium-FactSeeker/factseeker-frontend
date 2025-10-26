@@ -4,7 +4,6 @@ import Link from 'next/link';
 import PoliticianImage from '@/components/ui/profile/PoliticianImage';
 import { SiOpenai } from 'react-icons/si';
 import { TbSunFilled } from 'react-icons/tb';
-import { maskTail } from '@/utils/maskTail';
 
 export type PoliticianTopItem = {
   id?: number;
@@ -52,7 +51,7 @@ export default function PoliticianItemDesktop({ item }: Props) {
           <PoliticianImage src={safeImg} alt={`${item.name} 이미지`} />
         </div>
         <div className="leading-none">
-          <p className="text-Black_normal text-[15px] font-bold">{maskTail(item.name, 1)}</p>
+          <p className="text-Black_normal text-[15px] font-bold">{item.name}</p>
           <p className="text-Black_alternative mt-1 text-[11px]">{item.party}</p>
         </div>
       </div>

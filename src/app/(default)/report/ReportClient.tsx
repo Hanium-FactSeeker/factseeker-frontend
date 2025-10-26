@@ -1,8 +1,9 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import DataLoader from '@/components/report/organisms/DataLoader';
+import { useSearchTracking } from '@/hooks/gtm/useSearchTracking';
 import type { FetchData } from '@/hooks/useReportPolling';
 
 function nonEmpty(v: string | null): string | undefined {
@@ -23,6 +24,7 @@ function isLikelyUrl(v: string | undefined): v is string {
 export default function ReportClient() {
   const router = useRouter();
   const sp = useSearchParams();
+  const { trackSearchResultLoaded } = useSearchTracking();
 
   const analysisIdRaw = nonEmpty(sp.get('analysisId'));
   const analysisId =
@@ -47,6 +49,11 @@ export default function ReportClient() {
     }
     return null;
   }, [analysisId, videoId, url]);
+
+  useEffect(() => {
+    if (!fetchData) return;
+    trackSearchResultLoaded(0);
+  }, [fetchData, trackSearchResultLoaded]);
 
   const handleCancel = () => {
     if (typeof window !== 'undefined' && window.history.length > 1) router.back();

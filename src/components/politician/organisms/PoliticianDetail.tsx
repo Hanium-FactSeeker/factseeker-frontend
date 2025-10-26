@@ -1,7 +1,9 @@
 'use client';
 
+import { useEffect } from 'react';
 import PoliticianDetailDesktop from './PoliticianDetailDesktop';
 import PoliticianDetailMobile from './PoliticianDetailMobile';
+import { usePoliticianTracking } from '@/hooks/gtm/usePoliticianTracking';
 import type { VideoItem } from '@/types/videos';
 
 type Stat = { fact: number; gpt: number; claude: number };
@@ -20,6 +22,11 @@ interface Props {
 }
 
 export default function PoliticianDetail(props: Props) {
+  const { trackPersonSearch } = usePoliticianTracking(props.politician.name);
+  useEffect(() => {
+    trackPersonSearch();
+  }, [trackPersonSearch]);
+
   return (
     <div className="w-full">
       <PoliticianDetailMobile {...props} />

@@ -6,7 +6,6 @@ import PoliticianImage from '@/components/ui/profile/PoliticianImage';
 import VideoRow from '@/components/politician/molecules/VideoRow';
 import SwitchButton from '@/components/ui/button/SwitchButton';
 import type { VideoItem } from '@/types/videos';
-import { maskTail } from '@/utils/maskTail';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -80,9 +79,7 @@ export default function PoliticianDetailDesktop({
                   <PoliticianImage src={imgSrc} alt={`${politician.name} 이미지`} />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-black-normal truncate text-lg font-bold">
-                    {maskTail(politician.name, 1)}
-                  </p>
+                  <p className="text-black-normal truncate text-lg font-bold">{politician.name}</p>
                   <p className="text-black-normal mt-1 truncate text-sm">{politician.party}</p>
                 </div>
               </div>

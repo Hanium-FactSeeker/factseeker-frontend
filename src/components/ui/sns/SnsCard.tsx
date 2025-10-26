@@ -4,6 +4,7 @@ import Youtube from '@/assets/logo/logo_youtube.svg';
 import Facebook from '@/assets/logo/logo_facebook.svg';
 import type { SnsType } from '@/types/logo';
 import clsx from 'clsx';
+import { useSnsTracking } from '@/hooks/gtm/useSnsTracking';
 
 const SNS_MAP: Record<SnsType, React.FC<React.SVGProps<SVGSVGElement>>> = {
   x: X,
@@ -31,13 +32,15 @@ const SnsCard = ({
   figureImg,
   className,
   post,
-  postedAt,
   url,
 }: SnsCardProps) => {
   const SnsLogo = SNS_MAP[type] ?? X;
 
+  const { trackSnsExternalClick } = useSnsTracking();
+
   const handleOpen = () => {
     if (!url || !url.trim()) return;
+    trackSnsExternalClick(name, type);
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 

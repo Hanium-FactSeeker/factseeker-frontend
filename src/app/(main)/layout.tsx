@@ -1,7 +1,6 @@
 'use client';
 
 import MainHeader from '@/components/header/MainHeader';
-import Footer from '@/components/footer';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
